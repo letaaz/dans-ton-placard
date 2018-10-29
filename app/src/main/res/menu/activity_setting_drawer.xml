@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_accueil"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/accueil" />
+        <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/ic_wordpress"
+            android:title="@string/blog" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/notifications" />
+        <item
+            android:id="@+id/nav_deconnexion"
+            android:icon="@drawable/ic_sign_out_option_24dp"
+            android:title="@string/deconnexion" />
+    </group>
+
+    <item android:title="@string/autres">
+        <menu>
+            <item
+                android:id="@+id/nav_param"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/parametres" />
+            <item
+                android:id="@+id/nav_notez_nous"
+                android:icon="@drawable/ic_like_fb_24dp"
+                android:title="@string/notez_nous" />
+        </menu>
+    </item>
+
+</menu>
