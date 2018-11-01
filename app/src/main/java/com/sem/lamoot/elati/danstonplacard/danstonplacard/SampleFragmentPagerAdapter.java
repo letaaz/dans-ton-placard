@@ -29,6 +29,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     public CharSequence getPageTitle(int i)
     {
-        return tabTitle[i];
+        //return tabTitle[i];
+        return null;
     }
 }

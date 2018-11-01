@@ -54,6 +54,12 @@ public class SettingActivity extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_check_list, R.drawable.ic_recipe_book, R.drawable.ic_discount};
+        for(int i = 0; i < imageResId.length; i++)
+        {
+            tabLayout.getTabAt(i).setIcon(imageResId[i]);
+        }
     }
 
     @Override
