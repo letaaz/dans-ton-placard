@@ -17,6 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabMode="fixed" />
+    <!--app:tabBackground="@color/colorTabLayoutBackground"-->
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
