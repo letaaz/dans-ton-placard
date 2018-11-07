@@ -1,9 +1,15 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.models;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.PieceTypeConverter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.RayonTypeConverter;
 
 import java.util.Date;
 
@@ -12,33 +18,27 @@ public class Produit {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    @ColumnInfo(name = "id")
     private int id;
 
-
-    @ColumnInfo(name = "nom")
     @NonNull
     private String nom;
 
-    @ColumnInfo(name = "quantite")
     @NonNull
     private int quantite;
 
-    @ColumnInfo(name = "poids")
     private float poids;
 
-    @ColumnInfo(name = "dlc")
+    @TypeConverters(DateTypeConverter.class)
     private Date dlc;
 
-    @ColumnInfo(name = "rayon")
     @NonNull
+    @TypeConverters(RayonTypeConverter.class)
     private Rayon rayon;
 
-    @ColumnInfo(name = "prix")
     private float prix;
 
-    @ColumnInfo(name = "piece")
     @NonNull
+    @TypeConverters(PieceTypeConverter.class)
     private Piece piece;
 
 
@@ -52,6 +52,7 @@ public class Produit {
         this.piece = piece;
     }
 
+    @Ignore
     public Produit(String nom, int quantite, Rayon rayon, Piece piece)
     {
         this.nom = nom;

@@ -43,6 +43,7 @@ dependencies {
 
     // optional - RxJava support for Room
     implementation "android.arch.persistence.room:rxjava2:$room_version"
+    implementation "com.google.code.gson:gson:2.8.0"
 
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "android.arch.persistence.room:guava:$room_version"
