@@ -1,9 +1,8 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +14,11 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Pieces_list.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Pieces_list#newInstance} factory method to
+ * Use the {@link Pieces_liste_fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Pieces_list extends Fragment {
+public class Pieces_liste_fragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
@@ -28,7 +26,7 @@ public class Pieces_list extends Fragment {
 
     private View view;
 
-    public Pieces_list() {
+    public Pieces_liste_fragment() {
         // Required empty public constructor
     }
 
@@ -37,12 +35,12 @@ public class Pieces_list extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param Parameter 1.
-     * @return A new instance of fragment Pieces_list.
+     * @return A new instance of fragment Pieces_liste_fragment.
      */
-    public static Pieces_list newInstance(String param) {
+    public static Pieces_liste_fragment newInstance(String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PAGE, param);
-        Pieces_list fragment = new Pieces_list();
+        Pieces_liste_fragment fragment = new Pieces_liste_fragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,23 +58,40 @@ public class Pieces_list extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_pieces_list, container, false);
-        Log.d("click", "onCreateView");
-        initUI(view);
-        Log.d("click", "end onCreateView");
+        initImageButton();
         return view;
     }
 
-    private void initUI(View view) {
-        Log.d("click", "IM INSIDE INITUI");
-        ImageButton kitchen = (ImageButton) view.findViewById(R.id.kitchen_btn);
+    private void initImageButton() {
+        ImageButton kitchen = (ImageButton) this.view.findViewById(R.id.kitchen_btn);
         kitchen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "KITCHEN CLICKED", Toast.LENGTH_LONG).show();
-                Log.d("click","CLICKED KITCHEN");
+                Toast.makeText(v.getContext(), "KITCHEN CLICKED", Toast.LENGTH_SHORT).show();
+                showFragmentKitchen();
             }
         });
+
+        ImageButton bathroom = (ImageButton) this.view.findViewById(R.id.bathroom_btn);
+        bathroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "BATHROOM CLICKED", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
+
+    private void showFragmentKitchen() {
+
+        Inventaire_fragment inventaire_fragment= new Inventaire_fragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_piece_list, inventaire_fragment,"findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
+
 
 
 

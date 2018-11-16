@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -14,12 +16,23 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
+
     }
 
 
     @Override
     public Fragment getItem(int i) {
-        return PageFragment.newInstance(i + 1);
+        //return PageFragment.newInstance(i + 1);
+
+        switch (i+1)
+        {
+            case 1:
+                return Pieces_liste_fragment.newInstance("Param");
+            case 2:
+                return PageFragment.newInstance(i+1);
+            default :
+                return PageFragment.newInstance(i+1);
+        }
     }
 
     @Override

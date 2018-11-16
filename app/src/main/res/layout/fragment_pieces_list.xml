@@ -4,12 +4,13 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_piece_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:columnCount="2"
-    android:rowCount="6"
+    android:rowCount="4"
     android:visibility="visible"
-    tools:context=".Pieces_list">
+    tools:context=".Pieces_liste_fragment">
 
     <ImageButton
         android:id="@+id/kitchen_btn"
@@ -41,7 +42,7 @@
         app:srcCompat="@drawable/ic_shower" />
 
     <ImageButton
-        android:id="@+id/imageButton1"
+        android:id="@+id/dinner_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_rowWeight="1"
@@ -49,10 +50,11 @@
         android:layout_gravity="fill"
         android:layout_margin="5dp"
         android:padding="15dp"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_chair" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/cellar_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_rowWeight="1"
@@ -60,7 +62,8 @@
         android:layout_gravity="fill"
         android:layout_margin="5dp"
         android:padding="15dp"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_brickwall" />
 
     <ImageButton
         android:id="@+id/imageButton3"
