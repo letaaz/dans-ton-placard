@@ -10,7 +10,7 @@
     android:columnCount="2"
     android:rowCount="4"
     android:visibility="visible"
-    tools:context=".Pieces_liste_fragment">
+    tools:context=".ListePiecesFragment">
 
     <ImageButton
         android:id="@+id/kitchen_btn"

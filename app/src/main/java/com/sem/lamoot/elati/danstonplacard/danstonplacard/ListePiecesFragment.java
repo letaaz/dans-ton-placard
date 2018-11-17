@@ -3,8 +3,6 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +14,10 @@ import android.widget.Toast;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link Pieces_liste_fragment#newInstance} factory method to
+ * Use the {@link ListePiecesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Pieces_liste_fragment extends Fragment {
+public class ListePiecesFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
@@ -27,7 +25,7 @@ public class Pieces_liste_fragment extends Fragment {
 
     private View view;
 
-    public Pieces_liste_fragment() {
+    public ListePiecesFragment() {
         // Required empty public constructor
     }
 
@@ -36,12 +34,12 @@ public class Pieces_liste_fragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param Parameter 1.
-     * @return A new instance of fragment Pieces_liste_fragment.
+     * @return A new instance of fragment ListePiecesFragment.
      */
-    public static Pieces_liste_fragment newInstance(String param) {
+    public static ListePiecesFragment newInstance(String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PAGE, param);
-        Pieces_liste_fragment fragment = new Pieces_liste_fragment();
+        ListePiecesFragment fragment = new ListePiecesFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,12 +89,11 @@ public class Pieces_liste_fragment extends Fragment {
 
     private void showFragmentKitchen() {
 
-//        Inventaire_fragment inventaire_fragment= new Inventaire_fragment();
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.viewpager_container, inventaire_fragment)
-//                .addToBackStack(null)
-//                .commit();
-
+        InventaireFragment inventaire_fragment= new InventaireFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.viewpager, inventaire_fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 

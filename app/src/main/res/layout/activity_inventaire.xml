@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="com.sem.lamoot.elati.danstonplacard.danstonplacard.Inventaire_fragment"
+        android:name="com.sem.lamoot.elati.danstonplacard.danstonplacard.InventaireFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

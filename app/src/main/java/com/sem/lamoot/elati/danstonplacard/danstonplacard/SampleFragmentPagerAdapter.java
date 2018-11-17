@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 import android.widget.Toast;
 
 
@@ -30,7 +29,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         switch (i)
         {
             case 0:
-                return Pieces_liste_fragment.newInstance("Param");
+                return ListePiecesFragment.newInstance("Param");
             case 1:
                 return PageFragment.newInstance(i+1);
 
