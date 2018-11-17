@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
+
 public class InventaireActivity extends AppCompatActivity {
 
     @Override
@@ -13,7 +15,11 @@ public class InventaireActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inventaire);
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(R.string.cuisine);
+        //setTitle(R.string.cuisine);
+        Piece piece;
+        Bundle extras = getIntent().getExtras();
+        piece = (Piece) extras.get("piece");
+        setTitle(piece.toString());
     }
 
     @Override

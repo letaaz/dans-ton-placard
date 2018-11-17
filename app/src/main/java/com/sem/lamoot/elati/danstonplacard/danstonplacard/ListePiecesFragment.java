@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +69,7 @@ public class ListePiecesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "KITCHEN CLICKED", Toast.LENGTH_SHORT).show();
-                showInventaireActivity();
+                showInventaireActivity(Piece.CUISINE);
             }
         });
 
@@ -76,14 +78,16 @@ public class ListePiecesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "BATHROOM CLICKED", Toast.LENGTH_SHORT).show();
+                showInventaireActivity(Piece.SALLE_DE_BAIN);
             }
         });
 
 
     }
 
-    private void showInventaireActivity() {
+    private void showInventaireActivity(Piece piece) {
         Intent intent = new Intent(getActivity(), InventaireActivity.class);
+        intent.putExtra("piece", piece);
         startActivity(intent);
     }
 
