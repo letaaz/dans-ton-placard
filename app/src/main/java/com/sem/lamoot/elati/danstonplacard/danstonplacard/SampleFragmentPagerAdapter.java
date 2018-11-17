@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -12,9 +13,11 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 4;
     private String tabTitle[]= new String[] {"Inventaire", "Listes", "Recettes", "Promotions"};
     private Context context;
+    private final FragmentManager mFragmentManager;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        this.mFragmentManager = fm;
         this.context = context;
 
     }
@@ -23,13 +26,14 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         //return PageFragment.newInstance(i + 1);
-
-        switch (i+1)
+        Toast.makeText(context, "JE SUIS DANS GETITEM", Toast.LENGTH_SHORT).show();
+        switch (i)
         {
-            case 1:
+            case 0:
                 return Pieces_liste_fragment.newInstance("Param");
-            case 2:
+            case 1:
                 return PageFragment.newInstance(i+1);
+
             default :
                 return PageFragment.newInstance(i+1);
         }

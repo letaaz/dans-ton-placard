@@ -1,5 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -68,7 +69,7 @@ public class Pieces_liste_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "KITCHEN CLICKED", Toast.LENGTH_SHORT).show();
-                showFragmentKitchen();
+                showInventaireActivity();
             }
         });
 
@@ -83,13 +84,19 @@ public class Pieces_liste_fragment extends Fragment {
 
     }
 
+    private void showInventaireActivity() {
+        Intent intent = new Intent(getActivity(), InventaireActivity.class);
+        startActivity(intent);
+    }
+
     private void showFragmentKitchen() {
 
-        Inventaire_fragment inventaire_fragment= new Inventaire_fragment();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_piece_list, inventaire_fragment,"findThisFragment")
-                .addToBackStack(null)
-                .commit();
+//        Inventaire_fragment inventaire_fragment= new Inventaire_fragment();
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.viewpager_container, inventaire_fragment)
+//                .addToBackStack(null)
+//                .commit();
+
     }
 
 

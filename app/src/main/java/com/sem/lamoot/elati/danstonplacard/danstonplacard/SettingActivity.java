@@ -20,7 +20,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class SettingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Inventaire_fragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,8 @@ public class SettingActivity extends AppCompatActivity
 
         /* content_setting xml */ /* Help : https://guides.codepath.com/android/Google-Play-Style-Tabs-using-TabLayout#sliding-tabs-layout*/
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ImageButton kitchen = (ImageButton) findViewById(R.id.kitchen_btn);
+
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), SettingActivity.this));
 
         // Pour générer les "onglets"
@@ -125,10 +127,5 @@ public class SettingActivity extends AppCompatActivity
         Uri uri = Uri.parse("http://danstonplacardapp.wordpress.com");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
