@@ -1,13 +1,13 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
 public class PageFragment extends Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";

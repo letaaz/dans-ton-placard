@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,8 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
-import android.widget.Toast;
+
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SampleFragmentPagerAdapter;
 
 public class SettingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -26,6 +27,7 @@ public class SettingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,9 +52,9 @@ public class SettingActivity extends AppCompatActivity
 
         /* content_setting xml */ /* Help : https://guides.codepath.com/android/Google-Play-Style-Tabs-using-TabLayout#sliding-tabs-layout*/
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        ImageButton kitchen = (ImageButton) findViewById(R.id.kitchen_btn);
+        //ImageButton kitchen = (ImageButton) findViewById(R.id.kitchen_btn);
 
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), SettingActivity.this));
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), this));
 
         // Pour générer les "onglets"
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);

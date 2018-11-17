@@ -3,7 +3,9 @@
     <color name="colorPrimary">#2877E8</color>
     <color name="colorPrimaryDark">#1663d0</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorTabLayoutBackground">#2877E8</color>
+    <color name="colorTabLayoutBackground">#2877e8</color>
     <color name="kitchen_background">#d09e4e</color>
     <color name="bathroom_background">#beae76</color>
+
+    <color name="empty">#f0f0f0</color>
 </resources>
