@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +50,7 @@ public class PieceFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.piece_fragment, container, false);
+        final View view = inflater.inflate(R.layout.piece_fragment, container, false);
 
         // Set recyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);

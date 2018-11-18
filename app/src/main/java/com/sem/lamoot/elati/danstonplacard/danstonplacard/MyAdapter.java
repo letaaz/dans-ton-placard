@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
@@ -37,11 +39,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        TextView v = (TextView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_liste_produits_inventaire, viewGroup, false);
-//        MyViewHolder vh = new MyViewHolder(v);
-//        return vh;
+
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.layout_liste_produits_inventaire, viewGroup, false);
+        final View view = inflater.inflate(R.layout.layout_liste_produits_inventaire, viewGroup, false);
+
+
+        ImageView removeProduct = (ImageView) view.findViewById(R.id.minus_button);
+        removeProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), "Remove product clicked", Toast.LENGTH_SHORT).show();
+                // TODO Update quantity of product in DB
+            }
+        });
+
+        ImageView addProduct = (ImageView) view.findViewById(R.id.add_button);
+        addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Add product clicked", Toast.LENGTH_SHORT).show();
+                // TODO Update quantity of product in DB
+            }
+        });
+
         return new MyViewHolder(view);
     }
 
