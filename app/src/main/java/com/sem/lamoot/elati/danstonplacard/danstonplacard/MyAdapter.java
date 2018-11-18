@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private final Produit[] mDataSet;
 

@@ -1,10 +1,12 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.widget.Toast;
+
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.PageFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.RootInventaireFragment;
 
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -24,15 +26,10 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        //return PageFragment.newInstance(i + 1);
-        Toast.makeText(context, "JE SUIS DANS GETITEM", Toast.LENGTH_SHORT).show();
         switch (i)
         {
             case 0:
-                return ListePiecesFragment.newInstance("Param");
-            case 1:
-                return PageFragment.newInstance(i+1);
-
+                return RootInventaireFragment.newInstance("PARAM");
             default :
                 return PageFragment.newInstance(i+1);
         }
@@ -43,8 +40,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
 
-    public CharSequence getPageTitle(int i)
-    {
+    public CharSequence getPageTitle(int i) {
         //return tabTitle[i];
         return null;
     }
