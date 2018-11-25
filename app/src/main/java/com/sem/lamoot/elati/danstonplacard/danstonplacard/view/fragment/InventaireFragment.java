@@ -20,11 +20,13 @@ public class InventaireFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    public static InventaireFragment inventaireFragment;
+    public static Bundle args;
 
     public static Fragment newInstance(String params) {
-        Bundle args = new Bundle();
+        args = new Bundle();
         args.putString(ARGS, params);
-        InventaireFragment inventaireFragment = new InventaireFragment();
+        inventaireFragment = new InventaireFragment();
         inventaireFragment.setArguments(args);
         return inventaireFragment;
     }
@@ -75,6 +77,8 @@ public class InventaireFragment extends Fragment {
     }
 
     private void showPieceFragment(Piece piece) {
+        args.putString("PIECE", piece.toString());
+        inventaireFragment.setArguments(args);
         FragmentTransaction trans = getFragmentManager().beginTransaction();
         trans.replace(R.id.root_frame, PieceFragment.newInstance(piece.toString()));
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

@@ -28,6 +28,8 @@ public class PieceFragment extends Fragment {
     private Context mContext = null;
     private String mParam = null;
 
+    private String mPiece = null;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -46,6 +48,7 @@ public class PieceFragment extends Fragment {
         mContext = this.getContext();
         if (getArguments() != null) {
             mParam = getArguments().getString(ARG_PIECE);
+            mPiece = getArguments().getString("PIECE");
         }
     }
 
@@ -106,6 +109,7 @@ public class PieceFragment extends Fragment {
             public void onClick(View view) {
                 // Launch the view for adding a product to the current piece
                 Toast.makeText(mContext, "Open add product form", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mPiece, Toast.LENGTH_SHORT).show();
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_frame, new AjouterProduitFragment());
