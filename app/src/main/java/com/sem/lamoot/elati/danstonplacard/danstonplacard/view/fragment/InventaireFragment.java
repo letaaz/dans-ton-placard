@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +21,18 @@ public class InventaireFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    public static InventaireFragment inventaireFragment;
-    public static Bundle args;
 
     public static Fragment newInstance(String params) {
-        args = new Bundle();
+        Bundle args = new Bundle();
         args.putString(ARGS, params);
-        inventaireFragment = new InventaireFragment();
+        InventaireFragment inventaireFragment = new InventaireFragment();
         inventaireFragment.setArguments(args);
         return inventaireFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //Log.d("PIECE :", piece);
         View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
         initImageButton(view);
         return view;
@@ -77,8 +77,6 @@ public class InventaireFragment extends Fragment {
     }
 
     private void showPieceFragment(Piece piece) {
-        args.putString("PIECE", piece.toString());
-        inventaireFragment.setArguments(args);
         FragmentTransaction trans = getFragmentManager().beginTransaction();
         trans.replace(R.id.root_frame, PieceFragment.newInstance(piece.toString()));
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

@@ -26,6 +26,10 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
         this.content = content;
     }
 
+    public String getData() {
+        return data;
+    }
+
     @Override
     protected Void doInBackground(Void... voids) {
 
@@ -54,8 +58,8 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        // TODO the product in data base
+        // TODO Save the product in data base
         //Toast.makeText(this.context, "Product saved and content number : "+this.content, Toast.LENGTH_LONG);
-        Log.d("response :","PRoduct saved");
+        Log.d("response :","Product saved");
     }
 }

@@ -3,16 +3,22 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.models.FetchData;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.activity.InventaireActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AjouterProduitFragment extends Fragment implements View.OnClickListener{
 
@@ -30,13 +36,10 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.ajouter_produit_fragment, container, false);
         ImageView imageView3 = (ImageView) view.findViewById(R.id.imageView3);
         imageView3.setOnClickListener(this);
-        // Inflate the layout for this fragment
-
-
 
         return view;
     }
@@ -75,17 +78,28 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result==null)
+            Log.d("resultt : ", null);
 
         if (result != null) {
             if (result.getContents() == null) {
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-
+                Log.d("content :", result.getContents().toString());
             } else {
-//                tvScanContent.setText(result.getContents());
-                //Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-
+                Log.d("avant", "avant");
                 FetchData process = new FetchData(result.getContents());
                 process.execute();
+                Log.d("apres", "apres");
+
+                try {
+                    JSONObject jsonDataProduct = new JSONObject(process.getData());
+                    Log.d("resultat produit:", "OK");
+                    Toast.makeText(getActivity().getApplicationContext(), "Product found", Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    Log.d("resultat produit:", "KO");
+                    Toast.makeText(getActivity().getApplicationContext(), "Product not found", Toast.LENGTH_LONG).show();
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
