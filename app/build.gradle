@@ -39,7 +39,8 @@ dependencies {
     // Dependency Zxing Library
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
     implementation 'org.json:json:20160212'
-    implementation 'com.android.volley:volley:1.0.0'
+    implementation 'com.android.volley:volley:1.1.0'
+
 
     def room_version = "1.1.1"
 
