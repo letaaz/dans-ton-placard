@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.PieceTypeConverter;
@@ -28,6 +29,7 @@ public class Produit {
 
     private float poids;
 
+    @Nullable
     @TypeConverters(DateTypeConverter.class)
     private Date dlc;
 

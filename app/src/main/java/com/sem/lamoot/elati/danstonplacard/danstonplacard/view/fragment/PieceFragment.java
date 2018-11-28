@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.MyAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
+
+import java.util.List;
 
 public class PieceFragment extends Fragment {
 
@@ -62,11 +65,6 @@ public class PieceFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        Produit tabProduits[] = {new Produit("pizza", 1, Rayon.SURGELE, Piece.CUISINE),
-                new Produit("oeufs", 1, Rayon.BIO, Piece.CUISINE),
-                new Produit("pates", 1, Rayon.BIO, Piece.CUISINE)
-        };
-
         // Retrieve list of products from ProduitDao and populate recyclerViews adapter
 //        switch (mParam) {
 //            case "CUISINE":
@@ -83,8 +81,8 @@ public class PieceFragment extends Fragment {
 //                break;
 //        }
 
-
-        mAdapter = new MyAdapter(tabProduits);
+        List<Produit> allProducts = RoomDB.getDatabase(this.getContext()).produitDao().getAllProduits();
+        mAdapter = new MyAdapter(allProducts);
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
