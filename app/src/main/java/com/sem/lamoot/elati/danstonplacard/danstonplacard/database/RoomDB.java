@@ -13,7 +13,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.Ray
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Ingredient;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Recette;
 
 @Database(entities = {Produit.class, Ingredient.class, Recette.class, ListeCourses.class}, version = 1, exportSchema = false)
@@ -25,12 +27,13 @@ public abstract class RoomDB extends RoomDatabase {
     private static volatile RoomDB INSTANCE;
     private static String DB_NAME = "danstonplacard_db";
 
-    static RoomDB getDatabase(final Context context) {
+    public static RoomDB getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (RoomDB.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            RoomDB.class, DB_NAME).build();
+                            RoomDB.class, DB_NAME).allowMainThreadQueries().build(); // TODO /!\ Remove allowMainThreadQueries only for test - can block UI for a long periode time
+                            createFakeProduct();
                 }
             }
         }
@@ -39,5 +42,17 @@ public abstract class RoomDB extends RoomDatabase {
 
     public static void destroyInstance() {
         INSTANCE = null;
+    }
+
+    public static void createFakeProduct(){
+
+        INSTANCE.produitDao().deleteAll();
+
+        Produit p1 = new Produit("pizza", 1, Rayon.SURGELE, Piece.CUISINE);
+        Produit p2 = new Produit("oeufs", 1, Rayon.BIO, Piece.CUISINE);
+        Produit p3 = new Produit("pates", 1, Rayon.BIO, Piece.CUISINE);
+        INSTANCE.produitDao().insert(p1);
+        INSTANCE.produitDao().insert(p2);
+        INSTANCE.produitDao().insert(p3);
     }
 }

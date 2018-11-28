@@ -14,6 +14,7 @@ public class DateTypeConverter {
 
     @TypeConverter
     public static long fromDate(Date date){
-        return (date == null) ? null : date.getTime();
+        //return (date == null) ? null : date.getTime(); // TODO - Revoir cette méthode car NullPointerException lancée
+        return 0;
     }
 }

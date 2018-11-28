@@ -26,4 +26,6 @@ public interface ProduitDao {
     // TODO : Delete a particular product
 
     // TODO : Update a product attributes
+    @Query("UPDATE produit SET quantite = :quantite WHERE id = :id")
+    void updateQuantityById(int id, int quantite);
 }
