@@ -27,8 +27,8 @@ public class FetchData extends AsyncTask<String, Void, String> {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line = "";
             while (line != null) {
-                line = bufferedReader.readLine();
                 data += line;
+                line = bufferedReader.readLine();
             }
 
         } catch (MalformedURLException e) {

@@ -33,7 +33,7 @@ public abstract class RoomDB extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             RoomDB.class, DB_NAME).allowMainThreadQueries().build(); // TODO /!\ Remove allowMainThreadQueries only for test - can block UI for a long periode time
-                            createFakeProduct();
+                            //createFakeProduct();
                 }
             }
         }
