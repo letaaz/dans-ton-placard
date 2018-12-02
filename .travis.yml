@@ -7,15 +7,16 @@ android:
     - tools
     - platform-tools
     - android-28
-#   - build-tools-28.0.3
+    - build-tools-28.0.2
     # additional components here
+    licenses:
+    - android-sdk-license-.+
+    - '.+'
 before_cache:
     - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
     - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 before_install:
     - yes | sdkmanager "platforms;android-28"
-licenses:
-    - android-sdk-license-.+
 #before_deploy:
 #deploy:
 cache:
