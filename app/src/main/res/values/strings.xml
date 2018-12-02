@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">DansTonPlacard</string>
+    <string name="title_activity_setting">Dans Ton Placard</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="accueil">Accueil</string>
+    <string name="blog">Blog</string>
+    <string name="notifications">Notifications</string>
+    <string name="deconnexion">Déconnexion</string>
+    <string name="parametres">Paramètres</string>
+    <string name="notez_nous">Notez-nous !</string>
+    <string name="autres">Autres</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="salle_de_bain">Salle de bain</string>
+</resources>
