@@ -1,5 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,28 +13,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.MyAdapter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 import java.util.List;
 
-public class PieceFragment extends Fragment {
+public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener {
 
     public static String ARG_PIECE = "ARG_PIECE_INVENTAIRE";
     private Context mContext = null;
     private String mParam = null;
 
+    private String mPiece = null;
+
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private ProduitAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ProduitViewModel produitViewModel;
 
     public static Fragment newInstance(String param){
         Bundle args = new Bundle();
@@ -49,6 +51,7 @@ public class PieceFragment extends Fragment {
         mContext = this.getContext();
         if (getArguments() != null) {
             mParam = getArguments().getString(ARG_PIECE);
+            mPiece = getArguments().getString("PIECE");
         }
     }
 
@@ -78,11 +81,14 @@ public class PieceFragment extends Fragment {
 //                break;
 //        }
 
-        List<Produit> allProducts = RoomDB.getDatabase(this.getContext()).produitDao().getAllProduits();
-        mAdapter = new MyAdapter(allProducts);
-        mRecyclerView.setAdapter(mAdapter);
 
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
+        produitViewModel.getAllProduits().observe(this, produits -> mAdapter.setData(produits)); //TODO Récupérer les produits en fonction de la pièce
+
+        mRecyclerView.setAdapter(mAdapter);
+        //mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +110,7 @@ public class PieceFragment extends Fragment {
             public void onClick(View view) {
                 // Launch the view for adding a product to the current piece
                 Toast.makeText(mContext, "Open add product form", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mPiece, Toast.LENGTH_SHORT).show();
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_frame, new AjouterProduitFragment());
@@ -114,5 +121,16 @@ public class PieceFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onMinusImageViewClickListener(Produit produit) {
+        if(produit.getQuantite() > 0)
+            produitViewModel.updateProduit(produit.getId(), produit.getQuantite() - 1);
+    }
+
+    @Override
+    public void onAddImageViewClickListener(Produit produit) {
+        produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
     }
 }
