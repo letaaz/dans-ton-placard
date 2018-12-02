@@ -12,6 +12,10 @@ android:
 before_cache:
     - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
     - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+before_install:
+    - yes | sdkmanager "platforms;android-28"
+licenses:
+    - android-sdk-license-.+
 #before_deploy:
 #deploy:
 cache:
