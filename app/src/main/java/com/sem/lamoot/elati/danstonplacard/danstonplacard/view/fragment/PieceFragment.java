@@ -76,6 +76,7 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
 
         produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
+        produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
 
         // Set recyclerView + Adapter - Produits indisponibles
         produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
@@ -85,6 +86,7 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
 
         produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
+        produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
 
 
         TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);

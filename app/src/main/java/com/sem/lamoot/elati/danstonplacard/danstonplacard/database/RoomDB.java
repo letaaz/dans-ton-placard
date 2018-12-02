@@ -46,8 +46,6 @@ public abstract class RoomDB extends RoomDatabase {
 
     public static void createFakeProduct(){
 
-        INSTANCE.produitDao().deleteAll();
-
         Produit p1 = new Produit("pizza", 1, Rayon.SURGELE, Piece.CUISINE);
         Produit p2 = new Produit("oeufs", 1, Rayon.BIO, Piece.CUISINE);
         Produit p3 = new Produit("pates", 1, Rayon.BIO, Piece.CUISINE);
