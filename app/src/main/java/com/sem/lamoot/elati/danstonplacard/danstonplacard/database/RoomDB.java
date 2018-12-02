@@ -51,8 +51,15 @@ public abstract class RoomDB extends RoomDatabase {
         Produit p1 = new Produit("pizza", 1, Rayon.SURGELE, Piece.CUISINE);
         Produit p2 = new Produit("oeufs", 1, Rayon.BIO, Piece.CUISINE);
         Produit p3 = new Produit("pates", 1, Rayon.BIO, Piece.CUISINE);
+        Produit p4 = new Produit("gel douche", 3, Rayon.BIO, Piece.SALLE_DE_BAIN);
+        Produit p5 = new Produit("dentifrice", 0, Rayon.BIO, Piece.SALLE_DE_BAIN);
+        Produit p6 = new Produit("déodorant", 1, Rayon.BIO, Piece.SALLE_DE_BAIN);
+
         INSTANCE.produitDao().insert(p1);
         INSTANCE.produitDao().insert(p2);
         INSTANCE.produitDao().insert(p3);
+        INSTANCE.produitDao().insert(p4);
+        INSTANCE.produitDao().insert(p5);
+        INSTANCE.produitDao().insert(p6);
     }
 }

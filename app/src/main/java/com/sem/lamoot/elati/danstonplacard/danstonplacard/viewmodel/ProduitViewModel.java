@@ -24,8 +24,9 @@ public class ProduitViewModel extends AndroidViewModel {
         this.executorService = Executors.newSingleThreadExecutor();
     }
 
-    public LiveData<List<Produit>> getAllProduits() {
-        return produitDao.findAll();
+    public LiveData<List<Produit>> getAllProduits(String piece) {
+        //return produitDao.findAll();
+        return produitDao.findProductsByPiece(piece);
     }
 
     public void saveProduct(Produit produit) {

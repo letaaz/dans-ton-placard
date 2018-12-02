@@ -43,8 +43,7 @@ public class InventaireFragment extends Fragment {
         kitchen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "KITCHEN CLICKED", Toast.LENGTH_SHORT).show();
-                showPieceFragment(Piece.CUISINE);
+                showPieceFragment("CUISINE");
             }
         });
 
@@ -52,39 +51,32 @@ public class InventaireFragment extends Fragment {
         bathroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "BATHROOM CLICKED", Toast.LENGTH_SHORT).show();
-                showPieceFragment(Piece.SALLE_DE_BAIN);
+                showPieceFragment("SALLE_DE_BAIN");
             }
         });
 
-        ImageButton basement = (ImageButton) rootView.findViewById(R.id.bathroom_btn);
+        ImageButton basement = (ImageButton) rootView.findViewById(R.id.cellar_btn);
         basement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "BASEMENT CLICKED", Toast.LENGTH_SHORT).show();
-                showPieceFragment(Piece.CAVE);
+                showPieceFragment("CAVE");
             }
         });
 
-        ImageButton dining_room = (ImageButton) rootView.findViewById(R.id.bathroom_btn);
+        ImageButton dining_room = (ImageButton) rootView.findViewById(R.id.dinner_btn);
         dining_room.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "DINING ROOM CLICKED", Toast.LENGTH_SHORT).show();
-                showPieceFragment(Piece.SALLE_A_MANGER);
+                showPieceFragment("SALLE_A_MANGER");
             }
         });
     }
 
-    private void showPieceFragment(Piece piece) {
+    private void showPieceFragment(String piece) {
         FragmentTransaction trans = getFragmentManager().beginTransaction();
-        trans.replace(R.id.root_frame, PieceFragment.newInstance(piece.toString()));
+        trans.replace(R.id.root_frame, PieceFragment.newInstance(piece));
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         trans.addToBackStack(null);
         trans.commit();
-    }
-
-    private void showFragmentBathroom() {
-        // TODO : (replace the root_frame by a Bathroom Fragment)
     }
 }

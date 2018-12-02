@@ -26,7 +26,7 @@ import java.util.List;
 
 public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener {
 
-    public static String ARG_PIECE = "ARG_PIECE_INVENTAIRE";
+    public static String ARG_PIECE = "";
     private Context mContext = null;
     private String mParam = null;
 
@@ -65,27 +65,11 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // Retrieve list of products from ProduitDao and populate recyclerViews adapter
-//        switch (mParam) {
-//            case "CUISINE":
-//                // ProduitDAO.getAllKitchenProduct()
-//                break;
-//            case "SALLE_DE_BAIN":
-//                // ProduitDAO.getAllBathroomProduct()
-//                break;
-//            case "SALLE_A_MANGER":
-//                // ProduitDAO.getAllDiningRoomProduct()
-//                break;
-//            case "CAVE":
-//                // ProduitDAO.getAllBasementProduct()
-//                break;
-//        }
-
-
+        Toast.makeText(this.getContext(), "mParam = " +mParam, Toast.LENGTH_SHORT).show();
 
         mAdapter = new ProduitAdapter(this.mContext, this, this);
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        produitViewModel.getAllProduits().observe(this, produits -> mAdapter.setData(produits)); //TODO Récupérer les produits en fonction de la pièce
+        produitViewModel.getAllProduits(mParam).observe(this, produits -> mAdapter.setData(produits)); //TODO Récupérer les produits en fonction de la pièce
 
         mRecyclerView.setAdapter(mAdapter);
         //mRecyclerView.setItemAnimator(new DefaultItemAnimator());

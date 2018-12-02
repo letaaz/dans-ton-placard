@@ -18,9 +18,6 @@ public interface ProduitDao {
     @Query("DELETE FROM produit")
     void deleteAll();
 
-    @Query("SELECT * from produit ORDER BY nom ASC")
-    List<Produit> getAllProduits();
-
     @Query("SELECT COUNT(*) from produit")
     int countProduits();
 
@@ -32,4 +29,7 @@ public interface ProduitDao {
 
     @Query("SELECT * from produit ORDER BY nom ASC")
     LiveData<List<Produit>> findAll();
+
+    @Query("SELECT * from produit WHERE piece = :piece")
+    LiveData<List<Produit>> findProductsByPiece(String piece);
 }
