@@ -25,12 +25,16 @@ public class ProduitViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Produit>> getAllProduits(String piece) {
-        //return produitDao.findAll();
         return produitDao.findProductsByPiece(piece);
     }
 
-    public void saveProduct(Produit produit) {
-        executorService.execute(() -> produitDao.insert(produit));
+    public LiveData<List<Produit>> getProduitsDisponiblesParPiece(String piece)
+    {
+        return produitDao.getProduitsDisponiblesParPiece(piece);
+    }
+    public LiveData<List<Produit>> getProduitsIndisponiblesParPiece(String piece)
+    {
+        return produitDao.getProduitsIndisponiblesParPiece(piece);
     }
 
     public void updateProduit(int id, int quantite){

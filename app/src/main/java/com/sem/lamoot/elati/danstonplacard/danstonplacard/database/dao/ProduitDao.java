@@ -32,4 +32,11 @@ public interface ProduitDao {
 
     @Query("SELECT * from produit WHERE piece = :piece")
     LiveData<List<Produit>> findProductsByPiece(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0")
+    LiveData<List<Produit>> getProduitsDisponiblesParPiece(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPiece(String piece);
+
 }

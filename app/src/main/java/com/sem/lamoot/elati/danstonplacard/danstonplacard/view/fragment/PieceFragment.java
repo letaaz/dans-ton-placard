@@ -18,11 +18,8 @@ import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
-
-import java.util.List;
 
 public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener {
 
@@ -30,12 +27,18 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
     private Context mContext = null;
     private String mParam = null;
 
-    private String mPiece = null;
+    // RecyclerView + Adapter - produits disponibles
+    private RecyclerView produitsDisponiblesRecyclerView;
+    private ProduitAdapter produitsDisponiblesAdapter;
+    private RecyclerView.LayoutManager produitsDisponiblesLayoutManager;
 
-    private RecyclerView mRecyclerView;
-    private ProduitAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+
+    // RecyclerView + Adapter - produits indisponibles
+    private RecyclerView produitsIndisponiblesRecyclerView;
+    private ProduitAdapter produitsIndisponiblesAdapter;
+    private RecyclerView.LayoutManager produitsIndisponiblesLayoutManager;
     private ProduitViewModel produitViewModel;
+    private ProduitViewModel produitViewModel2;
 
     public static Fragment newInstance(String param){
         Bundle args = new Bundle();
@@ -51,35 +54,45 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
         mContext = this.getContext();
         if (getArguments() != null) {
             mParam = getArguments().getString(ARG_PIECE);
-            mPiece = getArguments().getString("PIECE");
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
-
-        // Set recyclerView
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
         Toast.makeText(this.getContext(), "mParam = " +mParam, Toast.LENGTH_SHORT).show();
 
-        mAdapter = new ProduitAdapter(this.mContext, this, this);
-        produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        produitViewModel.getAllProduits(mParam).observe(this, produits -> mAdapter.setData(produits)); //TODO Récupérer les produits en fonction de la pièce
 
-        mRecyclerView.setAdapter(mAdapter);
-        //mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        // Récupération des produits disponibles
+        produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
+        produitViewModel.getProduitsDisponiblesParPiece(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+        produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+
+        // Set recyclerView + Adapter - Produits disponibles
+        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
+        produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
+
+        produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
+
+        // Set recyclerView + Adapter - Produits indisponibles
+        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
+        produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
+
+        produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
+
 
         TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int visibilite = ((mRecyclerView.getVisibility() == View.INVISIBLE) ? View.VISIBLE : View.INVISIBLE);
-                mRecyclerView.setVisibility(visibilite);
+                int visibilite = ((produitsDisponiblesRecyclerView.getVisibility() == View.INVISIBLE) ? View.VISIBLE : View.INVISIBLE);
+                produitsDisponiblesRecyclerView.setVisibility(visibilite);
             }
         });
 
@@ -94,8 +107,6 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
             public void onClick(View view) {
                 // Launch the view for adding a product to the current piece
                 Toast.makeText(mContext, "Open add product form", Toast.LENGTH_SHORT).show();
-                Toast.makeText(mContext, mPiece, Toast.LENGTH_SHORT).show();
-
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_frame, new AjouterProduitFragment());
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
