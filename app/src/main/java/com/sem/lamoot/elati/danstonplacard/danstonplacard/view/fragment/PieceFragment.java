@@ -26,6 +26,7 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
     public static String ARG_PIECE = "";
     private Context mContext = null;
     private String mParam = null;
+    private String mPiece = null;
 
     // RecyclerView + Adapter - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
@@ -39,6 +40,7 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
     private RecyclerView.LayoutManager produitsIndisponiblesLayoutManager;
     private ProduitViewModel produitViewModel;
     private ProduitViewModel produitViewModel2;
+
 
     public static Fragment newInstance(String param){
         Bundle args = new Bundle();
@@ -54,6 +56,7 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
         mContext = this.getContext();
         if (getArguments() != null) {
             mParam = getArguments().getString(ARG_PIECE);
+            mPiece = getArguments().getString("PIECE");
         }
     }
 
@@ -109,6 +112,8 @@ public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusIma
             public void onClick(View view) {
                 // Launch the view for adding a product to the current piece
                 Toast.makeText(mContext, "Open add product form", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mPiece, Toast.LENGTH_SHORT).show();
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_frame, new AjouterProduitFragment());
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
