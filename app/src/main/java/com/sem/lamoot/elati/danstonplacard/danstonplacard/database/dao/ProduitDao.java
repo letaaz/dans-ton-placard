@@ -39,4 +39,6 @@ public interface ProduitDao {
     @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0")
     LiveData<List<Produit>> getProduitsIndisponiblesParPiece(String piece);
 
+    @Query("SELECT * from produit WHERE id = :produitId")
+    LiveData<Produit> findProduct(int produitId);
 }
