@@ -43,18 +43,25 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         void onAddImageViewClickListener(Produit produit);
     }
 
+    public interface OnItemClickListener {
+        void onItemClickListener(Produit produit);
+    }
+
     private List<Produit> data;
     private Context context;
     private LayoutInflater layoutInflater;
     private OnMinusImageViewClickListener onMinusImageViewClickListener;
     private OnAddImageViewClickListener onAddImageViewClickListener;
+    private OnItemClickListener onItemClickListener;
 
 
-    public ProduitAdapter(Context context, OnMinusImageViewClickListener listener, OnAddImageViewClickListener addListener){
+    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener,
+                          OnItemClickListener itemListener){
         this.data = new ArrayList<>();
         this.context = context;
-        this.onMinusImageViewClickListener = listener;
+        this.onMinusImageViewClickListener = minusListener;
         this.onAddImageViewClickListener = addListener;
+        this.onItemClickListener = itemListener;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -144,6 +151,10 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             imageProduit = (ImageView) itemView.findViewById(R.id.id_product_image);
             retirerUnProduit = (ImageView) itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = (ImageView) itemView.findViewById(R.id.add_button);
+            itemView.setOnClickListener( v -> {
+                if (onItemClickListener != null)
+                    onItemClickListener.onItemClickListener(data.get(getAdapterPosition()));
+            });
         }
 
         public void bind(Produit produit) {
