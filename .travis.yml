@@ -46,5 +46,3 @@ before_install:
 # - ./gradlew dependencies || true # DON'T ADD unless you are getting "Install missing components using SDK manager"
 #Source: https://medium.com/@oldergod/constraint-layout-and-circleci-travis-d50342696d2
 
-script:
-  - ./gradlew clean test build
