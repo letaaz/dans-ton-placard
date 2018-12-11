@@ -29,6 +29,8 @@ public class Produit {
 
     private float poids;
 
+    private String codeBarre;
+
     @Nullable
     @TypeConverters(DateTypeConverter.class)
     private Date dlc;
@@ -44,10 +46,11 @@ public class Produit {
     private Piece piece;
 
 
-    public Produit(@NonNull String nom, @NonNull int quantite, float poids, Date dlc, @NonNull Rayon rayon, float prix, @NonNull Piece piece) {
+    public Produit(@NonNull String nom, String codeBarre, @NonNull int quantite, float poids, Date dlc, @NonNull Rayon rayon, float prix, @NonNull Piece piece) {
         this.nom = nom;
         this.quantite = quantite;
         this.poids = poids;
+        this.codeBarre = codeBarre;
         this.dlc = dlc;
         this.rayon = rayon;
         this.prix = prix;
@@ -89,6 +92,15 @@ public class Produit {
 
     public void setQuantite(@NonNull int quantite) {
         this.quantite = quantite;
+    }
+
+
+    public String getCodeBarre() {
+        return codeBarre;
+    }
+
+    public void setCodeBarre(String codeBarre) {
+        this.codeBarre = codeBarre;
     }
 
     public float getPoids() {

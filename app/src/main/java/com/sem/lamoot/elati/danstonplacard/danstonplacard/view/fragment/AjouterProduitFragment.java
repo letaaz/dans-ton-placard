@@ -14,10 +14,11 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.models.FetchData;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class AjouterProduitFragment extends Fragment implements View.OnClickListener{
@@ -87,8 +89,9 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 String data_product = "";
 
                 try {
-                    data_product = new FetchData().execute(result.getContents()).get();
+                    data_product = new FetchData(getActivity().getApplicationContext(), result.getContents()).execute(result.getContents()).get();
                     Log.d("dtp", data_product);
+
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -96,34 +99,6 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 }
 
                 Log.d("dtp", "apres");
-
-                try {
-                    JSONObject jsonDataProduct = new JSONObject(data_product);
-                    JSONObject productJSONObject = jsonDataProduct.getJSONObject("product");
-                    String product_name = productJSONObject.getString("product_name_fr");
-                    float product_weight = productJSONObject.getInt("product_quantity");
-                    Rayon product_rayon = Rayon.BIO;
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-                    String dateInString = "31-08-2022";
-                    Date product_date = sdf.parse(dateInString);
-
-                    Produit product = new Produit(product_name, 1, product_weight, product_date, product_rayon, 0, Piece.CUISINE);
-
-                    // TODO Ajoute produit
-                    RoomDB.getDatabase(this.getContext()).produitDao().insert(product);
-
-                    Log.d("dtp", "PRODUIT DISPO OK");
-                    //Toast.makeText(getActivity().getApplicationContext(), "Product found : "+jsonDataProduct.getString("product_name_fr"), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity().getApplicationContext(), "Product found : "+product_name+" Quantity : "+product_weight+", Date : "+product_date.toString()+", Rayon : "+product_rayon.toString(), Toast.LENGTH_LONG).show();
-
-                } catch (JSONException e) {
-                    Log.d("dtp", "PRODUIT INDISPO KO");
-                    Toast.makeText(getActivity().getApplicationContext(), "Product not found : "+result.getContents(), Toast.LENGTH_LONG).show();
-                } /*catch (ParseException e) {
-                    e.printStackTrace();
-                }*/ catch (ParseException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
