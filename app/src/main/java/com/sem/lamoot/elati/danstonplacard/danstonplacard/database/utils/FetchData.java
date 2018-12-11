@@ -29,15 +29,32 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
     private Context context;
     private String contents;
+    private Piece piece;
 
-    public FetchData(Context context, String contents) {
+    public FetchData(Context context, String contents, String piece) {
         this.context = context;
         this.contents = contents;
+
+        switch(piece){
+            case "CUISINE":
+                this.piece = Piece.CUISINE;
+                break;
+            case "SALLE_DE_BAIN":
+                this.piece = Piece.SALLE_DE_BAIN;
+                break;
+            case "CAVE":
+                this.piece = Piece.CAVE;
+                break;
+            case "SALLE_A_MANGER":
+                this.piece = Piece.SALLE_A_MANGER;
+                break;
+        }
     }
 
     @Override
     protected String doInBackground(String... params) {
         String data = "";
+
 
         try {
             Log.d("dtp", "https://fr.openfoodfacts.org/api/v0/produit/"+ params[0] +".json");
@@ -64,6 +81,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
 
+        Toast.makeText(this.context, this.piece.toString(), Toast.LENGTH_LONG).show();
 
         JSONObject jsonDataProduct = null;
         try {
@@ -107,14 +125,14 @@ public class FetchData extends AsyncTask<String, Void, String> {
         // TODO Ajoute produit si produit inexistant sinon mise à jour du produit
         ProduitDao produitDao = RoomDB.getDatabase(this.context).produitDao();
 
-        List<Produit> products = produitDao.findProductByBarcode(this.contents, Piece.CUISINE.toString());
+        List<Produit> products = produitDao.findProductByBarcode(this.contents, this.piece.toString());
 
         if(!products.isEmpty()){
             Produit product_found = products.get(0);
             produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite()+1);
         }
         else{
-            Produit product = new Produit(product_name, this.contents,1, product_weight, product_date, product_rayon, 0, Piece.CUISINE);
+            Produit product = new Produit(product_name, this.contents,1, product_weight, product_date, product_rayon, 0, piece);
             produitDao.insert(product);
         }
 

@@ -1,5 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,13 +33,29 @@ import java.util.concurrent.ExecutionException;
 public class AjouterProduitFragment extends Fragment implements View.OnClickListener{
 
     public static String ARGS = "";
+    private Context mContext = null;
+    private String mPiece = null;
+
 
     public static Fragment newInstance(String params) {
         Bundle args = new Bundle();
         args.putString(ARGS, params);
+        args.putString("PIECE", params);
         AjouterProduitFragment ajouterProduitFragment = new AjouterProduitFragment();
         ajouterProduitFragment.setArguments(args);
         return ajouterProduitFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = this.getContext();
+        if (getArguments() != null) {
+            mPiece = getArguments().getString("PIECE");
+        }
+
+        Toast.makeText(mContext, "Piece courante : "+mPiece, Toast.LENGTH_LONG).show();
+        Log.d("dtp", "Piece courante : "+ mPiece);
     }
 
 
@@ -55,6 +72,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+
         Log.d("dtp", "onclickImageview3");
         //Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
 
@@ -89,7 +107,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 String data_product = "";
 
                 try {
-                    data_product = new FetchData(getActivity().getApplicationContext(), result.getContents()).execute(result.getContents()).get();
+                    data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), mPiece).execute(result.getContents()).get();
                     Log.d("dtp", data_product);
 
                 } catch (ExecutionException e) {
