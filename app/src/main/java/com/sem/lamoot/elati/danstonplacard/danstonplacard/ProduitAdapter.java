@@ -1,15 +1,21 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.util.ArrayList;
@@ -53,7 +59,39 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     @Override
     public void onBindViewHolder(@NonNull final ProduitViewHolder produitViewHolder, final int i) {
 
+        String alertMsg = this.context.getResources().getString(R.string.msgAlertDialogSupprimerProduit);
+        String title = this.context.getResources().getString(R.string.titleAlterDialogSupprimerProduit);
+        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimerProduit);
+        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimerProduit);
+        ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
+
         produitViewHolder.bind(data.get(i));
+
+        produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                alertDialog.setTitle(title);
+
+                alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
+                alertDialog.setNegativeButton(negativeButtonTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        produitDao.deleteProductById(data.get(i).getId());
+                    }
+                });
+
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -76,6 +114,8 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             data = newData;
         }
     }
+
+
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder{
 

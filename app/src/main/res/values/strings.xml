@@ -15,6 +15,11 @@
     <string name="notez_nous">Notez-nous !</string>
     <string name="autres">Autres</string>
 
+    <string name="titleAlterDialogSupprimerProduit">Suppression du produit</string>
+    <string name="msgAlertDialogSupprimerProduit">Êtes-vous sûr de vouloir supprimer le produit suivant de votre inventaire :</string>
+    <string name="positiveButtonAlertDialogSupprimerProduit">Supprimer</string>
+    <string name="negativeButtonAlertDialogSupprimerProduit">Conserver</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cuisine">Cuisine</string>
     <string name="salle_de_bain">Salle de bain</string>
