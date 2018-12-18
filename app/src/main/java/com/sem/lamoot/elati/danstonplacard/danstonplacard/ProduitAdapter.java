@@ -57,7 +57,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProduitViewHolder produitViewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ProduitViewHolder produitViewHolder, int i) {
 
         String alertMsg = this.context.getResources().getString(R.string.msgAlertDialogSupprimerProduit);
         String title = this.context.getResources().getString(R.string.titleAlterDialogSupprimerProduit);
