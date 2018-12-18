@@ -65,7 +65,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimerProduit);
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
 
-        produitViewHolder.bind(data.get(i));
+        produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
 
         produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -83,7 +83,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        produitDao.deleteProductById(data.get(i).getId());
+                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
                     }
                 });
 
