@@ -17,10 +17,10 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_margin="5dp"
-        android:background="@color/kitchen_background"
+        android:backgroundTint="@color/colorBackgroundPiece"
         android:contentDescription="@string/cuisine"
         android:cropToPadding="false"
+        android:elevation="10dp"
         android:padding="15dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_kitchen" />
@@ -32,9 +32,9 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_margin="5dp"
-        android:background="@color/bathroom_background"
+        android:backgroundTint="@color/colorBackgroundPiece"
         android:contentDescription="@string/salle_de_bain"
+        android:elevation="10dp"
         android:padding="15dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_shower" />
@@ -46,7 +46,9 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_margin="5dp"
+        android:backgroundTint="@color/colorBackgroundPiece"
+        android:contentDescription="dinner_btn"
+        android:elevation="10dp"
         android:padding="15dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_chair" />
@@ -58,7 +60,9 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_margin="5dp"
+        android:backgroundTint="@color/colorBackgroundPiece"
+        android:contentDescription="cellar_btn"
+        android:elevation="10dp"
         android:padding="15dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_brickwall" />
@@ -70,7 +74,8 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_margin="5dp"
+        android:backgroundTint="@color/colorBackgroundPiece"
+        android:elevation="10dp"
         android:padding="15dp"
         app:srcCompat="@mipmap/ic_launcher" />
 
@@ -81,7 +86,8 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
-        android:layout_margin="5dp"
+        android:backgroundTint="@color/colorBackgroundPiece"
+        android:elevation="10dp"
         android:padding="15dp"
         app:srcCompat="@mipmap/ic_launcher" />
 
