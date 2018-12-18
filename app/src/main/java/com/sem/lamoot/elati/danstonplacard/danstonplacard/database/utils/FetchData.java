@@ -101,6 +101,21 @@ public class FetchData extends AsyncTask<String, Void, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        String product_brand = null;
+        try{
+            product_brand = productJSONObject.getString("brands");
+        }catch (JSONException e){
+
+        }
+
+        String product_urlImage = null;
+        try{
+            product_urlImage = productJSONObject.getString("image_url");
+        }catch(JSONException e){
+
+        }
+
         float product_weight = 0;
         try {
             product_weight = productJSONObject.getInt("product_quantity");
@@ -116,7 +131,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         if(product_name!=null){
             Log.d("dtp", "PRODUIT DISPO OK");
             //Toast.makeText(getActivity().getApplicationContext(), "Product found : "+jsonDataProduct.getString("product_name_fr"), Toast.LENGTH_LONG).show();
-            Toast.makeText(this.context, "Product found : "+product_name+" Quantity : "+product_weight+", Date : "+product_date.toString()+", Rayon : "+product_rayon.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this.context, "Product found : "+product_name+" Quantity : "+product_weight+", Date : "+product_date.toString()+", Rayon : "+product_rayon.toString()+", urlImage : "+product_urlImage, Toast.LENGTH_LONG).show();
         }
         else{
             Log.d("dtp", "PRODUIT INDISPO KO");
@@ -132,7 +147,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
             produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite()+1);
         }
         else{
-            Produit product = new Produit(product_name, this.contents,1, product_weight, product_date, product_rayon, 0, piece);
+            Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage,1, product_weight, product_date, product_rayon, 0, piece);
             produitDao.insert(product);
         }
 
