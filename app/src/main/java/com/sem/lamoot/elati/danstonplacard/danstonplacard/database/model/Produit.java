@@ -31,6 +31,10 @@ public class Produit {
 
     private String codeBarre;
 
+    private String marque;
+
+    private String urlImage;
+
     @Nullable
     @TypeConverters(DateTypeConverter.class)
     private Date dlc;
@@ -46,7 +50,7 @@ public class Produit {
     private Piece piece;
 
 
-    public Produit(@NonNull String nom, String codeBarre, @NonNull int quantite, float poids, Date dlc, @NonNull Rayon rayon, float prix, @NonNull Piece piece) {
+    public Produit(@NonNull String nom, String codeBarre, String marque, String urlImage,@NonNull int quantite, float poids, Date dlc, @NonNull Rayon rayon, float prix, @NonNull Piece piece) {
         this.nom = nom;
         this.quantite = quantite;
         this.poids = poids;
@@ -55,6 +59,8 @@ public class Produit {
         this.rayon = rayon;
         this.prix = prix;
         this.piece = piece;
+        this.urlImage = urlImage;
+        this.marque = marque;
     }
 
     @Ignore
@@ -143,5 +149,21 @@ public class Produit {
 
     public void setPiece(@NonNull Piece piece) {
         this.piece = piece;
+    }
+
+    public String getMarque() {
+        return marque;
+    }
+
+    public void setMarque(String marque) {
+        this.marque = marque;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }
