@@ -2,6 +2,7 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -44,5 +45,9 @@ public interface ProduitDao {
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0")
     LiveData<List<Produit>> getProduitsIndisponiblesParPiece(String piece);
+
+    @Query("DELETE from produit WHERE id = :id")
+    void deleteProductById(int id);
+
 
 }
