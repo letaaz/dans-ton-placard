@@ -53,28 +53,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String data = "";
-
-
-        try {
-            Log.d("dtp", "https://fr.openfoodfacts.org/api/v0/produit/"+ params[0] +".json");
-
-            URL url = new URL("https://fr.openfoodfacts.org/api/v0/produit/" + params[0] + ".json");
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            while (line != null) {
-                data += line;
-                line = bufferedReader.readLine();
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-
-        }
-        return data;
+        return getJsonFile(params[0], 0);
     }
 
     @Override
@@ -82,6 +61,13 @@ public class FetchData extends AsyncTask<String, Void, String> {
         super.onPostExecute(data);
 
         Toast.makeText(this.context, this.piece.toString(), Toast.LENGTH_LONG).show();
+
+        if(data.equals(""))
+        {
+            Log.d("dtp", "PRODUIT INDISPO KO");
+            Toast.makeText(this.context, "Product not found : "+this.contents, Toast.LENGTH_LONG).show();
+            return;
+        }
 
         JSONObject jsonDataProduct = null;
         try {
@@ -159,5 +145,52 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         Log.d("dtp","Product saved");
 
+    }
+
+    /**
+     * apiNumber 0 => OpenFoodFacts / apiNumber 2 => OpenBeautyFacts / apiNumber 3 => OpenProductsFacts
+     * @param scancode
+     * @param apiNumber
+     */
+    private String getJsonFile(String scancode, int apiNumber)
+    {
+        String urlLink = "";
+        switch (apiNumber)
+        {
+            case 0:
+                urlLink = "https://fr.openfoodfacts.org/api/v0/produit/" + scancode + ".json";
+                break;
+            case 1 :
+                urlLink = "https://fr.openbeautyfacts.org/api/v0/produit/"+ scancode +".json";
+                break;
+            case 2:
+                urlLink = "https://fr.openproductsfacts.org/api/v0/produit/"+ scancode +".json";
+                break;
+            default:
+                return "";
+        }
+
+        String data = "";
+        boolean is_available = true;
+        try {
+
+            URL url = new URL(urlLink);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while (line != null) {
+                data += line;
+                if(line.contains("product not found")){
+                    return getJsonFile(scancode, apiNumber+1);
+                }
+                line = bufferedReader.readLine();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+
+        }
+        return data;
     }
 }
