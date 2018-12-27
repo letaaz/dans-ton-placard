@@ -182,7 +182,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     }
 
 
-    public class AsyncTaskLoadImage extends AsyncTask<String, String, Bitmap>{
+    public static class AsyncTaskLoadImage extends AsyncTask<String, String, Bitmap>{
 
         private final static String TAG = "AsyncTaskLoadImage";
         private ImageView imageView;

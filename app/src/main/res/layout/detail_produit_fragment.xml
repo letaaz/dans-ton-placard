@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/produit_prix_label" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/produit_image"
         android:layout_width="105dp"
         android:layout_height="92dp"
         android:layout_marginStart="58dp"
@@ -86,10 +86,10 @@
         android:layout_marginEnd="18dp"
         android:text="TextView"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintBottom_toBottomOf="@+id/produit_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+        app:layout_constraintStart_toEndOf="@+id/produit_image"
+        app:layout_constraintTop_toTopOf="@+id/produit_image" />
 
     <EditText
         android:id="@+id/produit_quantité"
@@ -176,5 +176,5 @@
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/produit_image" />
 </android.support.constraint.ConstraintLayout>

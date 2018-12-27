@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
@@ -44,6 +46,7 @@ public class DetailProduitFragment extends Fragment {
     private String mPiece = null;
 
     // View
+    ImageView produitImage;
     TextView produitNom, produitPoids;
     EditText produitQuantite, produitPrix, produitDlc;
     Spinner produitPiece, produitRayon;
@@ -82,6 +85,7 @@ public class DetailProduitFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.detail_produit_fragment, container, false);
 
+        produitImage = view.findViewById(R.id.produit_image);
         produitNom = view.findViewById(R.id.produit_nom);
         produitPoids = view.findViewById(R.id.produit_poids);
         produitPiece = view.findViewById(R.id.produit_piece);
@@ -121,6 +125,7 @@ public class DetailProduitFragment extends Fragment {
     }
 
     private void updateFields(Produit produit){
+        new ProduitAdapter.AsyncTaskLoadImage(produitImage).execute(produit.getUrlImage());
         produitNom.setText(produit.getNom());
         produitPoids.setText(produit.getPoids() + " g");
         int piece = produit.getPiece().ordinal();
