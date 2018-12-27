@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
-public class PieceFragment extends Fragment
-        implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener,
-                    ProduitAdapter.OnItemClickListener {
+public class PieceFragment extends Fragment implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener {
 
     public static String ARG_PIECE = "";
     private Context mContext = null;
@@ -76,7 +73,7 @@ public class PieceFragment extends Fragment
         produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
 
         // Set recyclerView + Adapter - Produits disponibles
-        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
+        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
         produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
         produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
@@ -86,7 +83,7 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
 
         // Set recyclerView + Adapter - Produits indisponibles
-        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
+        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
         produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
         produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
@@ -138,16 +135,5 @@ public class PieceFragment extends Fragment
     @Override
     public void onAddImageViewClickListener(Produit produit) {
         produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
-    }
-
-    @Override
-    public void onItemClickListener(Produit produit) {
-//        Toast.makeText(mContext, "Listener for product clicked", Toast.LENGTH_SHORT).show();
-        // Launch the view for product's detail
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.root_frame, DetailProduitFragment.newInstance(produit.getId() + ""));
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }
