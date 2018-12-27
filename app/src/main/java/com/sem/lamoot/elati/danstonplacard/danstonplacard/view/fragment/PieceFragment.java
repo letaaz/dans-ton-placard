@@ -104,10 +104,6 @@ public class PieceFragment extends Fragment
             }
         });
 
-
-        //TODO onClickListener for the recyclerView item
-        // Launch a detailed view of the clicked product
-
         // Listener for the FAB
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
         add_fab.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +140,8 @@ public class PieceFragment extends Fragment
 //        Toast.makeText(mContext, "Listener for product clicked", Toast.LENGTH_SHORT).show();
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.root_frame, DetailProduitFragment.newInstance(produit.getId() + ""));
+        String[] params = new String[]{produit.getId()+"", mParam};
+        transaction.replace(R.id.root_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
         transaction.commit();

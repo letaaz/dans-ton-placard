@@ -4,42 +4,54 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.DetailProduitViewModel;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 
 import io.reactivex.annotations.NonNull;
 
 public class DetailProduitFragment extends Fragment {
 
     final static String ARG_PROD = "";
+    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyy");
     private DetailProduitViewModel detailProduitViewModel = null;
 
     Context mContext;
     private String mParam = null;
-  //  private String mPiece = null;
+    private Produit mProduct;
+    private String mPiece = null;
 
     // View
-    TextView produitNom, produitQuantite, produitPrix, produitDlc;
-    Spinner produitPiece;
+    TextView produitNom, produitPoids;
+    EditText produitQuantite, produitPrix, produitDlc;
+    Spinner produitPiece, produitRayon;
     Button saveBtn;
 
-    public static Fragment newInstance(String param){
+    public static Fragment newInstance(String ...params){
         Bundle args = new Bundle();
-        args.putString(ARG_PROD, param);
+        args.putStringArray(ARG_PROD, params);
         DetailProduitFragment detailProduitFragment = new DetailProduitFragment();
         detailProduitFragment.setArguments(args);
         return detailProduitFragment;
@@ -50,12 +62,20 @@ public class DetailProduitFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = this.getContext();
         if (getArguments() != null) {
-            mParam = getArguments().getString(ARG_PROD);
-      //      mPiece = getArguments().getString("PIECE");
+            String[] args =  getArguments().getStringArray(ARG_PROD);
+            mParam = args[0];
+            mPiece = args[1];
         }
         detailProduitViewModel = ViewModelProviders.of(this).get(DetailProduitViewModel.class);
         detailProduitViewModel.getProduit(Integer.parseInt(mParam))
-                .observe(this, this::updateFields);
+                .observe(this, result -> {
+                    if (result != null) {
+                        mProduct = result;
+                        updateFields(result);
+                    } else {
+                        // Handle exception here
+                    }
+                });
     }
 
     @Override
@@ -63,7 +83,9 @@ public class DetailProduitFragment extends Fragment {
         final View view = inflater.inflate(R.layout.detail_produit_fragment, container, false);
 
         produitNom = view.findViewById(R.id.produit_nom);
+        produitPoids = view.findViewById(R.id.produit_poids);
         produitPiece = view.findViewById(R.id.produit_piece);
+        produitRayon = view.findViewById(R.id.produit_rayon);
         produitQuantite = view.findViewById(R.id.produit_quantité);
         produitPrix = view.findViewById(R.id.produit_prix);
         produitDlc = view.findViewById(R.id.produit_dlc);
@@ -72,7 +94,26 @@ public class DetailProduitFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "A venir...", Toast.LENGTH_SHORT).show();
+                String pieceItemName = getResources().getStringArray(R.array.pieces)[produitPiece.getSelectedItemPosition()];
+                Piece piece = Piece.getPiece(pieceItemName);
+                String rayonItemName = getResources().getStringArray(R.array.rayons)[produitRayon.getSelectedItemPosition()];
+                Rayon rayon = Rayon.getRayon(rayonItemName);
+                if (detailProduitViewModel.validateForm(produitQuantite.getText().toString(), produitPrix.getText().toString(),
+                        produitDlc.getText().toString())) {
+                    mProduct.setPiece(piece);
+                    mProduct.setRayon(rayon);
+                    mProduct.setQuantite(Integer.parseInt(produitQuantite.getText().toString()));
+                    mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
+                    try {
+                        mProduct.setDlc(DATE_FORMAT.parse(produitDlc.getText().toString()));
+                    } catch (ParseException e) {
+                        // Should never be reached
+                    }
+                    detailProduitViewModel.updateProduct(mProduct);
+                    getFragmentManager().popBackStack();
+                }
+                else
+                    Toast.makeText(mContext, "Formulaire incorrect", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -81,21 +122,14 @@ public class DetailProduitFragment extends Fragment {
 
     private void updateFields(Produit produit){
         produitNom.setText(produit.getNom());
-        int piece = getItemPositionInSpinner(produit.getPiece().name());
+        produitPoids.setText(produit.getPoids() + " g");
+        int piece = produit.getPiece().ordinal();
         produitPiece.setSelection(piece);
+        int rayon = produit.getRayon().ordinal();
+        produitRayon.setSelection(rayon);
         produitQuantite.setText(produit.getQuantite() + "");
-        produitPrix.setText(produit.getPrix() + " €");
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
-        produitDlc.setText(dateFormat.format(produit.getDlc()));
+        produitPrix.setText(produit.getPrix() + "");
+        produitDlc.setText(DATE_FORMAT.format(produit.getDlc()));
     }
 
-    private int getItemPositionInSpinner(String item){
-        SpinnerAdapter mSpinnerAdapter = produitPiece.getAdapter();
-        for (int i=0; i < mSpinnerAdapter.getCount(); i++) {
-            if (mSpinnerAdapter.getItem(i).equals(item)) {
-                return i;
-            }
-        }
-        return 0;
-    }
 }

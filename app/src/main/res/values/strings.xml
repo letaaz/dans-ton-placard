@@ -26,4 +26,11 @@
         <item name="garage">Garage</item>
         <item name="salle_a_manger">Salle à manger</item>
     </string-array>
+
+    <string-array name="rayons">
+        <item name="surgele">Surgelés</item>
+        <item name="bio">Bio</item>
+        <item name="fruits">Fruits</item>
+        <item name="legumes">Légumes</item>
+    </string-array>
 </resources>

@@ -25,12 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:text="Pièce :"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/produit_poids" />
 
     <TextView
         android:id="@+id/produit_quantite_label"
@@ -42,7 +42,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/produit_piece_label" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/produit_prix_label"
@@ -91,30 +91,34 @@
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
-    <TextView
+    <EditText
         android:id="@+id/produit_quantité"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:inputType="number"
         android:text="TextView"
         app:layout_constraintBaseline_toBaselineOf="@+id/produit_quantite_label"
         app:layout_constraintStart_toEndOf="@+id/produit_quantite_label" />
 
-    <TextView
+    <EditText
         android:id="@+id/produit_prix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:inputType="numberDecimal"
         android:text="TextView"
         app:layout_constraintBaseline_toBaselineOf="@+id/produit_prix_label"
         app:layout_constraintStart_toEndOf="@+id/produit_prix_label" />
 
-    <TextView
+    <EditText
         android:id="@+id/produit_dlc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="TextView"
+        android:inputType="date"
+        android:hint="Exp. DD/MM/YYYY"
         app:layout_constraintBaseline_toBaselineOf="@+id/produit_dlc_label"
         app:layout_constraintStart_toEndOf="@+id/produit_dlc_label" />
 
@@ -129,4 +133,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/produit_piece_label"
         app:layout_constraintTop_toTopOf="@+id/produit_piece_label" />
+
+    <TextView
+        android:id="@+id/produit_prix_unit_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="€"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/produit_prix"
+        app:layout_constraintStart_toEndOf="@+id/produit_prix" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Rayon :"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/produit_piece_label" />
+
+    <Spinner
+        android:id="@+id/produit_rayon"
+        android:layout_width="281dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:entries="@array/rayons"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/produit_poids"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 </android.support.constraint.ConstraintLayout>
