@@ -29,6 +29,12 @@ public class Produit {
 
     private float poids;
 
+    private String codeBarre;
+
+    private String marque;
+
+    private String urlImage;
+
     @Nullable
     @TypeConverters(DateTypeConverter.class)
     private Date dlc;
@@ -44,14 +50,17 @@ public class Produit {
     private Piece piece;
 
 
-    public Produit(@NonNull String nom, @NonNull int quantite, float poids, Date dlc, @NonNull Rayon rayon, float prix, @NonNull Piece piece) {
+    public Produit(@NonNull String nom, String codeBarre, String marque, String urlImage,@NonNull int quantite, float poids, Date dlc, @NonNull Rayon rayon, float prix, @NonNull Piece piece) {
         this.nom = nom;
         this.quantite = quantite;
         this.poids = poids;
+        this.codeBarre = codeBarre;
         this.dlc = dlc;
         this.rayon = rayon;
         this.prix = prix;
         this.piece = piece;
+        this.urlImage = urlImage;
+        this.marque = marque;
     }
 
     @Ignore
@@ -89,6 +98,15 @@ public class Produit {
 
     public void setQuantite(@NonNull int quantite) {
         this.quantite = quantite;
+    }
+
+
+    public String getCodeBarre() {
+        return codeBarre;
+    }
+
+    public void setCodeBarre(String codeBarre) {
+        this.codeBarre = codeBarre;
     }
 
     public float getPoids() {
@@ -132,12 +150,28 @@ public class Produit {
     public void setPiece(@NonNull Piece piece) {
         this.piece = piece;
     }
-
+  
     @NonNull
     @Override
     public String toString() {
         return "Produit : { " + nom + " ; qt = " + quantite + " ; poids = "
             + poids + " ; dlc = " + dlc +" ; rayon = " + rayon + " ; piece = " + piece
             + " ; prix = " + prix + " }";
+    }
+
+    public String getMarque() {
+        return marque;
+    }
+
+    public void setMarque(String marque) {
+        this.marque = marque;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

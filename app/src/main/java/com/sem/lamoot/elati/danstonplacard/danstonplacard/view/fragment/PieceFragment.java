@@ -48,6 +48,7 @@ public class PieceFragment extends Fragment
     public static Fragment newInstance(String param){
         Bundle args = new Bundle();
         args.putString(ARG_PIECE, param);
+        args.putString("PIECE", param);
         PieceFragment pieceFragment = new PieceFragment();
         pieceFragment.setArguments(args);
         return pieceFragment;
@@ -111,10 +112,10 @@ public class PieceFragment extends Fragment
             public void onClick(View view) {
                 // Launch the view for adding a product to the current piece
                 Toast.makeText(mContext, "Open add product form", Toast.LENGTH_SHORT).show();
-                Toast.makeText(mContext, mPiece, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mPiece, Toast.LENGTH_LONG).show();
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.root_frame, new AjouterProduitFragment());
+                transaction.replace(R.id.root_frame, AjouterProduitFragment.newInstance(mPiece));
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();

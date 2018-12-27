@@ -16,6 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="@color/colorTabLayoutBackground"
+        app:tabIndicatorFullWidth="true"
         app:tabMode="fixed" />
     <!--app:tabBackground="@color/colorTabLayoutBackground"-->
 
