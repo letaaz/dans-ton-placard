@@ -80,6 +80,9 @@ public class FetchData extends AsyncTask<String, Void, String> {
             productJSONObject = jsonDataProduct.getJSONObject("product");
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.d("dtp", "PRODUIT INDISPO KO");
+            Toast.makeText(this.context, "PRODUIT INDISPONIBLE : "+this.contents, Toast.LENGTH_LONG).show();
+            return;
         }
         String product_name = null;
         try {
@@ -94,7 +97,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }catch (JSONException e){
 
         }
-
         String product_urlImage = null;
         try{
             product_urlImage = productJSONObject.getString("image_url");
@@ -116,7 +118,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         if(product_name!=null){
             Log.d("dtp", "PRODUIT DISPO OK");
-            //Toast.makeText(getActivity().getApplicationContext(), "Product found : "+jsonDataProduct.getString("product_name_fr"), Toast.LENGTH_LONG).show();
             Toast.makeText(this.context, "Product found : "+product_name+" Quantity : "+product_weight+", Date : "+product_date.toString()+", Rayon : "+product_rayon.toString()+", urlImage : "+product_urlImage, Toast.LENGTH_LONG).show();
         }
         else{
