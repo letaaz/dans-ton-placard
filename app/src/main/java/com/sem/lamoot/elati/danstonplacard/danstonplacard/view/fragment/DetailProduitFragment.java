@@ -1,56 +1,64 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.DetailProduitViewModel;
+import com.travijuu.numberpicker.library.NumberPicker;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import io.reactivex.annotations.NonNull;
 
 public class DetailProduitFragment extends Fragment {
 
     final static String ARG_PROD = "";
-    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyy");
+    public final static int DATE_PICKER_REQUEST_CODE = 1;
     private DetailProduitViewModel detailProduitViewModel = null;
 
     Context mContext;
     private String mParam = null;
     private Produit mProduct;
+    private Date dlc;
     private String mPiece = null;
 
     // View
     ImageView produitImage;
     TextView produitNom, produitPoids;
-    EditText produitQuantite, produitPrix, produitDlc;
+    EditText produitPrix;
+    NumberPicker produitQuantite;
     Spinner produitPiece, produitRayon;
-    Button saveBtn;
+    Button saveBtn, produitDlc;
+
+    ArrayAdapter piecesAdapter, rayonsAdapter;
 
     public static Fragment newInstance(String ...params){
         Bundle args = new Bundle();
@@ -89,36 +97,35 @@ public class DetailProduitFragment extends Fragment {
         produitNom = view.findViewById(R.id.produit_nom);
         produitPoids = view.findViewById(R.id.produit_poids);
         produitPiece = view.findViewById(R.id.produit_piece);
+        piecesAdapter = ArrayAdapter.createFromResource(mContext, R.array.pieces, R.layout.spinner_item);
+        piecesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        produitPiece.setAdapter(piecesAdapter);
         produitRayon = view.findViewById(R.id.produit_rayon);
+        rayonsAdapter = ArrayAdapter.createFromResource(mContext, R.array.rayons, R.layout.spinner_item);
+        rayonsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        produitRayon.setAdapter(rayonsAdapter);
         produitQuantite = view.findViewById(R.id.produit_quantité);
         produitPrix = view.findViewById(R.id.produit_prix);
         produitDlc = view.findViewById(R.id.produit_dlc);
+        produitDlc.setOnClickListener(this::showDatePicker);
 
         saveBtn = view.findViewById(R.id.sauvegarde_product_btn);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String pieceItemName = getResources().getStringArray(R.array.pieces)[produitPiece.getSelectedItemPosition()];
-                Piece piece = Piece.getPiece(pieceItemName);
-                String rayonItemName = getResources().getStringArray(R.array.rayons)[produitRayon.getSelectedItemPosition()];
-                Rayon rayon = Rayon.getRayon(rayonItemName);
-                if (detailProduitViewModel.validateForm(produitQuantite.getText().toString(), produitPrix.getText().toString(),
-                        produitDlc.getText().toString())) {
-                    mProduct.setPiece(piece);
-                    mProduct.setRayon(rayon);
-                    mProduct.setQuantite(Integer.parseInt(produitQuantite.getText().toString()));
-                    mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
-                    try {
-                        mProduct.setDlc(DATE_FORMAT.parse(produitDlc.getText().toString()));
-                    } catch (ParseException e) {
-                        // Should never be reached
-                    }
-                    detailProduitViewModel.updateProduct(mProduct);
-                    getFragmentManager().popBackStack();
-                }
-                else
-                    Toast.makeText(mContext, "Formulaire incorrect", Toast.LENGTH_SHORT).show();
-            }
+        saveBtn.setOnClickListener(view1 -> {
+            String pieceItemName = getResources().getStringArray(R.array.pieces)[produitPiece.getSelectedItemPosition()];
+            Piece piece = Piece.getPiece(pieceItemName);
+            String rayonItemName = getResources().getStringArray(R.array.rayons)[produitRayon.getSelectedItemPosition()];
+            Rayon rayon = Rayon.getRayon(rayonItemName);
+            // Form controls ?
+                mProduct.setPiece(piece);
+                mProduct.setRayon(rayon);
+                mProduct.setQuantite(produitQuantite.getValue());
+                mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
+                mProduct.setDlc(dlc);
+                Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
+                detailProduitViewModel.updateProduct(mProduct);
+                getFragmentManager().popBackStack();
+           // else
+             //   Toast.makeText(mContext, "Formulaire incorrect", Toast.LENGTH_SHORT).show();
         });
 
         return view;
@@ -132,9 +139,38 @@ public class DetailProduitFragment extends Fragment {
         produitPiece.setSelection(piece);
         int rayon = produit.getRayon().ordinal();
         produitRayon.setSelection(rayon);
-        produitQuantite.setText(produit.getQuantite() + "");
+        produitQuantite.setValue(produit.getQuantite());
         produitPrix.setText(produit.getPrix() + "");
-        produitDlc.setText(DATE_FORMAT.format(produit.getDlc()));
+        Log.d("DETAIL_PRODUCT", "loading product with dlc :=" + produit.getDlc().toString());
+        dlc = produit.getDlc();
+        produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(produit.getDlc()));
+    }
+
+    public void showDatePicker(View v) {
+        DialogFragment newFragment = new MyDatePickerFragment();
+        newFragment.setTargetFragment(this, DATE_PICKER_REQUEST_CODE);
+        newFragment.show(getFragmentManager(), "date picker");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DATE_PICKER_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK)
+                if (data.getExtras().containsKey(MyDatePickerFragment.SELECTED_DATE)) {
+                    try {
+                        Log.d("DETAIL_PRODUCT", "data retrieved := " + data.getExtras().getString(MyDatePickerFragment.SELECTED_DATE));
+                        String picked = data.getExtras().getString(MyDatePickerFragment.SELECTED_DATE);
+                        dlc = DateTypeConverter.DATE_FORMATTER.parse(picked);
+                        Log.d("DETAIL_PRODUCT", "dlc is not null := " + dlc.toString());
+                        produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(dlc));
+                    } catch (ParseException e) { // date parsing didn't work
+                        Toast.makeText(getActivity(), "Impossible de convertir la date", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        }
     }
 
 }
