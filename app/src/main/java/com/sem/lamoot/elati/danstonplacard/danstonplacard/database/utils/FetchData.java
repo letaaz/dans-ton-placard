@@ -10,6 +10,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDa
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.RayonCategories;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,6 +112,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }catch (JSONException e){
 
         }
+
         String product_urlImage = null;
         try{
             product_urlImage = productJSONObject.getString("image_url");
@@ -125,7 +127,21 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         }
 
-        Rayon product_rayon = Rayon.BIO;
+        // Définition d'un rayon du produit scannée
+        Rayon product_rayon = null;
+        if(product_urlImage.contains("beauty")){
+            product_rayon = Rayon.BEAUTE;
+        }
+        else if(){
+            product_rayon = Rayon.DIVERS;
+        }
+        else{
+            RayonCategories rayonCategories = RayonCategories.getInstance();
+            product_rayon = rayonCategories.findRayonByCategory(product_categories);
+        }
+
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
         Date product_date = new Date();
 
