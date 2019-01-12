@@ -129,7 +129,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         // Définition d'un rayon du produit scannée
         Rayon product_rayon = null;
-        if(product_urlImage.contains("beauty")){
+        if(product_urlImage.contains()){
             product_rayon = Rayon.BEAUTE;
         }
         else if(){
