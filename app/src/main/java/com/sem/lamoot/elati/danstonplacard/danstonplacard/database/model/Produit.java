@@ -1,6 +1,5 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -72,6 +71,7 @@ public class Produit {
         this.piece = piece;
     }
 
+    @Ignore
     public Produit(){}
 
     @NonNull
@@ -150,6 +150,14 @@ public class Produit {
 
     public void setPiece(@NonNull Piece piece) {
         this.piece = piece;
+    }
+  
+    @NonNull
+    @Override
+    public String toString() {
+        return "Produit : { " + nom + " ; qt = " + quantite + " ; poids = "
+            + poids + " ; dlc = " + dlc +" ; rayon = " + rayon + " ; piece = " + piece
+            + " ; prix = " + prix + " }";
     }
 
     public String getMarque() {

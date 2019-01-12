@@ -47,7 +47,6 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
             super(context, textViewResourceId, objects);
             this.context = context;
             produitsDefautsList = objects;
-            Log.d(tag, "Search List -> journalEntryList := " + produitsDefautsList.toString());
         }
 
         @Override
