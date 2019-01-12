@@ -35,20 +35,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         this.context = context;
         this.contents = contents;
 
-        switch(piece){
-            case "CUISINE":
-                this.piece = Piece.CUISINE;
-                break;
-            case "SALLE_DE_BAIN":
-                this.piece = Piece.SALLE_DE_BAIN;
-                break;
-            case "CAVE":
-                this.piece = Piece.CAVE;
-                break;
-            case "SALLE_A_MANGER":
-                this.piece = Piece.SALLE_A_MANGER;
-                break;
-        }
+        this.piece = PieceConverter.stringToPiece(piece);
     }
 
     @Override

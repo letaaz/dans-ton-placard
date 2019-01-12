@@ -72,6 +72,7 @@ public class Produit {
         this.piece = piece;
     }
 
+    public Produit(){}
 
     @NonNull
     public int getId() {

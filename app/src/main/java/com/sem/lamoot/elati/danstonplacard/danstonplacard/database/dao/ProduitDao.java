@@ -33,6 +33,9 @@ public interface ProduitDao {
     @Query("SELECT * from produit WHERE codeBarre = :barcode and piece = :piece")
     List<Produit> findProductByBarcode(String barcode, String piece);
 
+    @Query("SELECT * from produit WHERE nom = :nom and piece = :piece")
+    Produit findProductByNom(String nom, String piece);
+
 
     @Query("SELECT * from produit ORDER BY nom ASC")
     LiveData<List<Produit>> findAll();
