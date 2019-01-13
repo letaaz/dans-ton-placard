@@ -69,6 +69,7 @@ public class Produit {
         this.quantite = quantite;
         this.rayon = rayon;
         this.piece = piece;
+        this.dlc = new Date();
     }
 
     @Ignore
