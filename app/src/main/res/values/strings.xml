@@ -23,6 +23,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cuisine">Cuisine</string>
     <string name="salle_de_bain">Salle de bain</string>
+    <string name="app_label">Dans ton placard</string>
+    <string name="search_hint">Chercher un produit</string>
+
+    <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
+    <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
+    <string name="voir">Voir</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

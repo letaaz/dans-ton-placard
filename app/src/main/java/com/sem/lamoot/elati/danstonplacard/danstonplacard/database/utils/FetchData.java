@@ -22,83 +22,56 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class FetchData extends AsyncTask<String, Void, String> {
 
-    private Context context;
+    private Context mContext;
     private String contents;
     private Piece piece;
 
     public FetchData(Context context, String contents, String piece) {
-        this.context = context;
+        this.mContext = context;
         this.contents = contents;
 
-        switch(piece){
-            case "CUISINE":
-                this.piece = Piece.CUISINE;
-                break;
-            case "SALLE_DE_BAIN":
-                this.piece = Piece.SALLE_DE_BAIN;
-                break;
-            case "CAVE":
-                this.piece = Piece.CAVE;
-                break;
-            case "SALLE_A_MANGER":
-                this.piece = Piece.SALLE_A_MANGER;
-                break;
-        }
+        this.piece = Piece.getPiece(piece);
     }
 
     @Override
     protected String doInBackground(String... params) {
-        String data = "";
-
-
-        try {
-            Log.d("dtp", "https://fr.openfoodfacts.org/api/v0/produit/"+ params[0] +".json");
-
-            URL url = new URL("https://fr.openfoodfacts.org/api/v0/produit/" + params[0] + ".json");
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            while (line != null) {
-                data += line;
-                line = bufferedReader.readLine();
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-
-        }
-        return data;
+        return getJsonFile(params[0], 0);
     }
 
     @Override
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
 
-        Toast.makeText(this.context, this.piece.toString(), Toast.LENGTH_LONG).show();
+        if(data.isEmpty())
+        {
+            Log.d("dtp", "PRODUIT NOT FOUND");
+            Toast.makeText(this.mContext, "Product not found : " + this.contents, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         JSONObject jsonDataProduct = null;
         try {
             jsonDataProduct = new JSONObject(data);
         } catch (JSONException e) {
+            Log.d("dtp", "IMPOSSIBLE TO CREATE JSON OBJECT FROM DATA");
             e.printStackTrace();
         }
-        JSONObject productJSONObject = null;
+
+        JSONObject productJSONObject;
         try {
             productJSONObject = jsonDataProduct.getJSONObject("product");
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("dtp", "PRODUIT INDISPO KO");
-            Toast.makeText(this.context, "PRODUIT INDISPONIBLE : "+this.contents, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "IMPOSSIBLE TO CREATE JSON OBJECT FROM PRODUCT");
+            Toast.makeText(this.mContext, "PRODUIT INDISPONIBLE : " + this.contents, Toast.LENGTH_SHORT).show();
             return;
         }
+
         String product_name = null;
         try {
             product_name = productJSONObject.getString("product_name_fr");
@@ -127,6 +100,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         }
 
+
         String product_categories = null;
         String[] categories = null;
         try{
@@ -149,39 +123,76 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
 
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+
         Date product_date = new Date();
 
 
         if(product_name!=null){
-            Log.d("dtp", "PRODUIT DISPO OK");
-            Toast.makeText(this.context, "Product found : "+product_name+" Quantity : "+product_weight+", Date : "+product_date.toString()+", Rayon : "+product_rayon.toString()+", urlImage : "+product_urlImage, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "PRODUCT FOUND OK");
+            Toast.makeText(this.mContext, "Product found : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
         }
         else{
-            Log.d("dtp", "PRODUIT INDISPO KO");
-            Toast.makeText(this.context, "Product not found : "+this.contents, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "PRODUIT NOT FOUND KO");
+            Toast.makeText(this.mContext, "Product not found : " + this.contents, Toast.LENGTH_SHORT).show();
         }
-        // TODO Ajoute produit si produit inexistant sinon mise à jour du produit
-        ProduitDao produitDao = RoomDB.getDatabase(this.context).produitDao();
 
+        ProduitDao produitDao = RoomDB.getDatabase(this.mContext).produitDao();
         List<Produit> products = produitDao.findProductByBarcode(this.contents, this.piece.toString());
 
         if(!products.isEmpty()){
             Produit product_found = products.get(0);
             produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite()+1);
+            Log.d("dtp","PRODUCT QUANTITY UPDATED BY 1");
         }
         else{
             Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage,1, product_weight, product_date, product_rayon, 0, piece);
             produitDao.insert(product);
+            Log.d("dtp","PRODUCT INSERTED");
+        }
+    }
+
+    /**
+     * apiNumber 0 => OpenFoodFacts / apiNumber 2 => OpenBeautyFacts / apiNumber 3 => OpenProductsFacts
+     * @param scancode
+     * @param apiNumber
+     */
+    private String getJsonFile(String scancode, int apiNumber)
+    {
+        String urlLink = "";
+        switch (apiNumber)
+        {
+            case 0:
+                urlLink = "https://fr.openfoodfacts.org/api/v0/produit/" + scancode + ".json";
+                break;
+            case 1 :
+                urlLink = "https://fr.openbeautyfacts.org/api/v0/produit/"+ scancode +".json";
+                break;
+            case 2:
+                urlLink = "https://fr.openproductsfacts.org/api/v0/produit/"+ scancode +".json";
+                break;
+            default:
+                return "";
         }
 
+        String data = "";
+        try {
+            URL url = new URL(urlLink);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while (line != null) {
+                data += line;
+                if(line.contains("product not found")){
+                    return getJsonFile(scancode, apiNumber+1);
+                }
+                line = bufferedReader.readLine();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
 
-
-
-        // TODO Save the product in data base
-        //Toast.makeText(this.context, "Product saved and content number : "+this.content, Toast.LENGTH_LONG);
-
-        Log.d("dtp","Product saved");
-
+        }
+        return data;
     }
 }

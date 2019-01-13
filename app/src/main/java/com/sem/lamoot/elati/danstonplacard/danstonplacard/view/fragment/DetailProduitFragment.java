@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -21,7 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.ProduitAdapter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
@@ -30,11 +32,11 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.DetailProduitViewModel;
 import com.travijuu.numberpicker.library.NumberPicker;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import io.reactivex.annotations.NonNull;
 
@@ -84,7 +86,7 @@ public class DetailProduitFragment extends Fragment {
                         mProduct = result;
                         updateFields(result);
                     } else {
-                        // Handle exception here
+                        Log.d("DETAIL_PRODUCT", "ERROR WHILE RETRIEVING PRODUCT FROM DATABASE ID := " + mParam);
                     }
                 });
     }
@@ -116,23 +118,48 @@ public class DetailProduitFragment extends Fragment {
             String rayonItemName = getResources().getStringArray(R.array.rayons)[produitRayon.getSelectedItemPosition()];
             Rayon rayon = Rayon.getRayon(rayonItemName);
             // Form controls ?
-                mProduct.setPiece(piece);
-                mProduct.setRayon(rayon);
-                mProduct.setQuantite(produitQuantite.getValue());
-                mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
-                mProduct.setDlc(dlc);
-                Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
-                detailProduitViewModel.updateProduct(mProduct);
-                getFragmentManager().popBackStack();
-           // else
-             //   Toast.makeText(mContext, "Formulaire incorrect", Toast.LENGTH_SHORT).show();
+            mProduct.setPiece(piece);
+            mProduct.setRayon(rayon);
+            mProduct.setQuantite(produitQuantite.getValue());
+            mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
+            mProduct.setDlc(dlc);
+            Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
+            detailProduitViewModel.updateProduct(mProduct);
+            getFragmentManager().popBackStack();
         });
 
         return view;
     }
 
     private void updateFields(Produit produit){
-        new ProduitAdapter.AsyncTaskLoadImage(produitImage).execute(produit.getUrlImage());
+
+        if(produit.getUrlImage().isEmpty()){
+            produitImage.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_barcode));
+        }
+        else{
+            if(produit.getUrlImage().contains("http"))
+            {
+                try {
+                    Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
+                    produitImage.setImageBitmap(bitmap);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                InputStream is;
+                try {
+                    is = getContext().getAssets().open("icons_products/"+produit.getUrlImage());
+                    Drawable draw = Drawable.createFromStream(is, null);
+                    produitImage.setImageDrawable(draw);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
         produitNom.setText(produit.getNom());
         produitPoids.setText(produit.getPoids() + " g");
         int piece = produit.getPiece().ordinal();
@@ -141,7 +168,6 @@ public class DetailProduitFragment extends Fragment {
         produitRayon.setSelection(rayon);
         produitQuantite.setValue(produit.getQuantite());
         produitPrix.setText(produit.getPrix() + "");
-        Log.d("DETAIL_PRODUCT", "loading product with dlc :=" + produit.getDlc().toString());
         dlc = produit.getDlc();
         produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(produit.getDlc()));
     }
@@ -152,7 +178,6 @@ public class DetailProduitFragment extends Fragment {
         newFragment.show(getFragmentManager(), "date picker");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -164,9 +189,9 @@ public class DetailProduitFragment extends Fragment {
                         Log.d("DETAIL_PRODUCT", "data retrieved := " + data.getExtras().getString(MyDatePickerFragment.SELECTED_DATE));
                         String picked = data.getExtras().getString(MyDatePickerFragment.SELECTED_DATE);
                         dlc = DateTypeConverter.DATE_FORMATTER.parse(picked);
-                        Log.d("DETAIL_PRODUCT", "dlc is not null := " + dlc.toString());
+                        Log.d("DETAIL_PRODUCT", "date parsing worked := " + dlc.toString());
                         produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(dlc));
-                    } catch (ParseException e) { // date parsing didn't work
+                    } catch (ParseException e) {
                         Toast.makeText(getActivity(), "Impossible de convertir la date", Toast.LENGTH_SHORT).show();
                     }
                 }
