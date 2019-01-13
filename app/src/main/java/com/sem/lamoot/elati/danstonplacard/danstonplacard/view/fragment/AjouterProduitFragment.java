@@ -93,6 +93,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), "CLIKEED", Toast.LENGTH_LONG);
+
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
                 if(produit == null)
                 {
@@ -100,6 +102,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     produitDao.insert(newProduit);
                     Toast.makeText(view.getContext(), "Le produit a été ajouté à l'inventaire.", Toast.LENGTH_LONG);
+                    getActivity().onBackPressed();
+
                 }
                 else
                 {
