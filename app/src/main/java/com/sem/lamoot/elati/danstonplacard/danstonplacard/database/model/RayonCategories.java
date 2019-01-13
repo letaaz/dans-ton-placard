@@ -1,5 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,56 +17,54 @@ public class RayonCategories {
 
 
     private RayonCategories() {
-        List<String> categories = new ArrayList<String>();
 
         // BIO
-        categories.add("Bières bio");
-        categories.add("Oeufs-labellises-biologiques");
-        categories.add("Laits demi-écrémés biologiques");
-        categories.add("Tisanes-bio");
-        categories.add("Bio");
-        categories.add("Aliments d'origine végétale");
-        categories.add("Infusion-bio");
-        categories.add("Legumes-bio");
-        categories.add("Vin rouge bio");
-        categories.add("Fromages-bio");
-        categories.add("Poissons-bio");
-        categories.add("Saumons-fumes-bio");
-        categories.add("Riz-bio");
-        categories.add("Boulghours-bio");
-        categories.add("Boulgour-bio");
+        List<String> categoriesBio = new ArrayList<String>();
+        categoriesBio.add("Bières bio");
+        categoriesBio.add("Oeufs-labellises-biologiques");
+        categoriesBio.add("Laits demi-écrémés biologiques");
+        categoriesBio.add("Tisanes-bio");
+        categoriesBio.add("Bio");
+        categoriesBio.add("Infusion-bio");
+        categoriesBio.add("Legumes-bio");
+        categoriesBio.add("Vin rouge bio");
+        categoriesBio.add("Fromages-bio");
+        categoriesBio.add("Poissons-bio");
+        categoriesBio.add("Saumons-fumes-bio");
+        categoriesBio.add("Riz-bio");
+        categoriesBio.add("Boulghours-bio");
+        categoriesBio.add("Boulgour-bio");
 
-        listRayonCategories.put(categories, Rayon.BIO);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesBio, Rayon.BIO);
 
 
         // SURGELE
-        categories.add("Surgelés");
-        categories.add("Plats préparés surgelés");
-        categories.add("Aliments à base de plantes surgelés");
-        categories.add("Légumes surgelés");
-        categories.add("Gâteaux et pâtisseries surgelés");
-        categories.add("Poissons surgelés");
-        categories.add("Steaks surgelés");
-        categories.add("Steaks hachés de bœuf surgelés");
-        categories.add("Entrées et snacks surgelés");
-        categories.add("Mélanges d'aliments à base de plantes surgelés");
-        categories.add("Fruits surgelés");
-        categories.add("Mélanges de légumes surgelés");
-        categories.add("Ravioli surgelés");
-        categories.add("Brocolis en fleurettes surgelés");
+        List<String> categoriesSurgele = new ArrayList<String>();
+        categoriesSurgele.add("Surgelés");
+        categoriesSurgele.add("Plats préparés surgelés");
+        categoriesSurgele.add("Aliments à base de plantes surgelés");
+        categoriesSurgele.add("Légumes surgelés");
+        categoriesSurgele.add("Gâteaux et pâtisseries surgelés");
+        categoriesSurgele.add("Poissons surgelés");
+        categoriesSurgele.add("Steaks surgelés");
+        categoriesSurgele.add("Steaks hachés de bœuf surgelés");
+        categoriesSurgele.add("Entrées et snacks surgelés");
+        categoriesSurgele.add("Mélanges d'aliments à base de plantes surgelés");
+        categoriesSurgele.add("Fruits surgelés");
+        categoriesSurgele.add("Mélanges de légumes surgelés");
+        categoriesSurgele.add("Ravioli surgelés");
+        categoriesSurgele.add("Brocolis en fleurettes surgelés");
 
-        listRayonCategories.put(categories, Rayon.SURGELE);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesSurgele, Rayon.SURGELE);
 
 
         // FRUITS_LEGUMES
-        categories.add("Fruits");
-        categories.add("Fruits et produits dérivés");
-        categories.add("Légumes et dérivés");
+        List<String> categoriesFruitsLegumes = new ArrayList<String>();
+        categoriesFruitsLegumes.add("Fruits");
+        categoriesFruitsLegumes.add("Fruits et produits dérivés");
+        categoriesFruitsLegumes.add("Légumes et dérivés");
 
-        listRayonCategories.put(categories, Rayon.FRUITS_LEGUMES);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesFruitsLegumes, Rayon.FRUITS_LEGUMES);
 
 
 /*
@@ -79,171 +79,188 @@ public class RayonCategories {
 
 
         //BOISSONS
-        categories.add("Boissons");
-        categories.add("");
+        List<String> categoriesBoissons = new ArrayList<String>();
+        categoriesBoissons.add("Boissons");
+        categoriesBoissons.add("Eaux");
 
-        listRayonCategories.put(categories, Rayon.BOISSONS);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesBoissons, Rayon.BOISSONS);
 
 
         //BOULANGERIE_PATISSERIE
-        categories.add("Boulangerie");
-        categories.add("Pains");
-        categories.add("Viennoiseries");
-        categories.add("Pains de mie");
-        categories.add("Viennoiseries");
-        categories.add("Pains précuits");
-        categories.add("Viennoiseries-et-brioches");
-        categories.add("Gâteaux");
-        categories.add("Pains au lait");
-        categories.add("Galettes");
+        List<String> categoriesBoulangeriePatisserie = new ArrayList<String>();
+        categoriesBoulangeriePatisserie.add("Boulangerie");
+        categoriesBoulangeriePatisserie.add("Pains");
+        categoriesBoulangeriePatisserie.add("Viennoiseries");
+        categoriesBoulangeriePatisserie.add("Pains de mie");
+        categoriesBoulangeriePatisserie.add("Viennoiseries");
+        categoriesBoulangeriePatisserie.add("Pains précuits");
+        categoriesBoulangeriePatisserie.add("Viennoiseries-et-brioches");
+        categoriesBoulangeriePatisserie.add("Gâteaux");
+        categoriesBoulangeriePatisserie.add("Pains au lait");
+        categoriesBoulangeriePatisserie.add("Galettes");
 
 
-        listRayonCategories.put(categories, Rayon.BOULANGERIE_PATISSERIE);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesBoulangeriePatisserie, Rayon.BOULANGERIE_PATISSERIE);
 
 
         //VIANDES
-        categories.add("Viandes");
-        categories.add("Boucherie");
-        categories.add("Saucisses");
-        categories.add("Préparations de viande hachées fraîches");
-        categories.add("Farces");
-        categories.add("Viande-grille");
-        categories.add("Volailles");
-        categories.add("Farces");
-        categories.add("Viande-grille");
+        List<String> categoriesViandes = new ArrayList<String>();
+        categoriesViandes.add("Viandes");
+        categoriesViandes.add("Boucherie");
+        categoriesViandes.add("Saucisses");
+        categoriesViandes.add("Préparations de viande hachées fraîches");
+        categoriesViandes.add("Farces");
+        categoriesViandes.add("Viande-grille");
+        categoriesViandes.add("Volailles");
+        categoriesViandes.add("Farces");
+        categoriesViandes.add("Viande-grille");
 
-        listRayonCategories.put(categories, Rayon.VIANDES);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesViandes, Rayon.VIANDES);
+
 
         //POISSONS_CRUSTACES
-        categories.add("Poissons");
-        categories.add("Crevettes");
-        categories.add("Moules");
-        categories.add("Coquillages");
-        categories.add("Crustaces-en-conserve");
-        categories.add("Plats-a-base-de-crustaces");
-        categories.add("Soupes de poissons");
-        categories.add("Sushi");
-        categories.add("Sushi and Maki");
+        List<String> categoriesPoissons = new ArrayList<String>();
+        categoriesPoissons.add("Poissons");
+        categoriesPoissons.add("Crevettes");
+        categoriesPoissons.add("Moules");
+        categoriesPoissons.add("Coquillages");
+        categoriesPoissons.add("Crustaces-en-conserve");
+        categoriesPoissons.add("Plats-a-base-de-crustaces");
+        categoriesPoissons.add("Soupes de poissons");
+        categoriesPoissons.add("Sushi");
+        categoriesPoissons.add("Sushi and Maki");
 
-        listRayonCategories.put(categories, Rayon.POISSONS_CRUSTACES);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesPoissons, Rayon.POISSONS_CRUSTACES);
 
 
         //CREMERIE
-        categories.add("Laits laitiers");
-        categories.add("Boissons lactées laitiers fermentés");
-        categories.add("Laits");
-        categories.add("Oeufs-labellises-biologiques");
-        categories.add("Oeufs-labellises");
-        categories.add("Cremes-aux-oeufs");
-        categories.add("Beurres");
-        categories.add("Margarines");
-        categories.add("Boissons végétales");
+        List<String> categoriesCremerie = new ArrayList<String>();
+        categoriesCremerie.add("Laits laitiers");
+        categoriesCremerie.add("Produits laitiers");
+        categoriesCremerie.add("Boissons lactées laitiers fermentés");
+        categoriesCremerie.add("Laits");
+        categoriesCremerie.add("Oeufs-labellises-biologiques");
+        categoriesCremerie.add("Oeufs-labellises");
+        categoriesCremerie.add("Cremes-aux-oeufs");
+        categoriesCremerie.add("Beurres");
+        categoriesCremerie.add("Margarines");
+        categoriesCremerie.add("Boissons végétales");
 
-        listRayonCategories.put(categories, Rayon.CREMERIE);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesCremerie, Rayon.CREMERIE);
 
 
         //YAOURTS_DESSERTS
-        categories.add("Yaourts");
-        categories.add("Gateaux-de-riz-sur-lit-de-caramel");
-        categories.add("Yaourts au lait de chèvre");
-        categories.add("Crèmes dessert");
-        categories.add("Oeufs-labellises");
-        categories.add("Cremes-aux-oeufs");
-        categories.add("Beurres");
-        categories.add("Margarines");
-        categories.add("Boissons végétales");
-        categories.add("Compotes");
+        List<String> categoriesYaourtsDesserts = new ArrayList<String>();
+        categoriesYaourtsDesserts.add("Yaourts");
+        categoriesYaourtsDesserts.add("Gateaux-de-riz-sur-lit-de-caramel");
+        categoriesYaourtsDesserts.add("Yaourts au lait de chèvre");
+        categoriesYaourtsDesserts.add("Crèmes dessert");
+        categoriesYaourtsDesserts.add("Oeufs-labellises");
+        categoriesYaourtsDesserts.add("Cremes-aux-oeufs");
+        categoriesYaourtsDesserts.add("Beurres");
+        categoriesYaourtsDesserts.add("Margarines");
+        categoriesYaourtsDesserts.add("Boissons végétales");
+        categoriesYaourtsDesserts.add("Compotes");
 
-        listRayonCategories.put(categories, Rayon.YAOURTS_DESSERTS);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesYaourtsDesserts, Rayon.YAOURTS_DESSERTS);
 
 
         //EPICERIE_SUCREE
-        categories.add("Cafés");
-        categories.add("Thés");
-        categories.add("Infusions");
-        categories.add("Boissons chaudes");
-        categories.add("Boissons végétales");
-        categories.add("Laits en poudre");
-        categories.add("Laits concentrés");
-        categories.add("Céréales et dérivés");
-        categories.add("Confitures et marmelades");
-        categories.add("Miels");
-        categories.add("Pâtes à tartiner");
-        categories.add("Biscuits et gâteaux");
-        categories.add("Confiseries");
-        categories.add("Snacks sucrés");
+        List<String> categoriesEpicerieSucree = new ArrayList<String>();
+        categoriesEpicerieSucree.add("Cafés");
+        categoriesEpicerieSucree.add("Thés");
+        categoriesEpicerieSucree.add("Infusions");
+        categoriesEpicerieSucree.add("Boissons chaudes");
+        categoriesEpicerieSucree.add("Boissons végétales");
+        categoriesEpicerieSucree.add("Laits en poudre");
+        categoriesEpicerieSucree.add("Laits concentrés");
+        categoriesEpicerieSucree.add("Céréales et dérivés");
+        categoriesEpicerieSucree.add("Confitures et marmelades");
+        categoriesEpicerieSucree.add("Miels");
+        categoriesEpicerieSucree.add("Pâtes à tartiner");
+        categoriesEpicerieSucree.add("Biscuits et gâteaux");
+        categoriesEpicerieSucree.add("Confiseries");
+        categoriesEpicerieSucree.add("Snacks sucrés");
 
-        listRayonCategories.put(categories, Rayon.EPICERIE_SUCREE);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesEpicerieSucree, Rayon.EPICERIE_SUCREE);
 
 
         //EPICERIE_SALEE
-        categories.add("Fruits secs");
-        categories.add("Légumes secs");
-        categories.add("Mélanges de fruits secs");
-        categories.add("Cacahuètes");
-        categories.add("Apéritif");
-        categories.add("Saucissons");
-        categories.add("Conserves");
-        categories.add("Plats préparés");
-        categories.add("Foies gras");
-        categories.add("Soupes");
-        categories.add("Pâtes alimentaires");
-        categories.add("Riz");
-        categories.add("Purées");
-        categories.add("Couscous");
-        categories.add("Semoules de blé");
-        categories.add("Semoules de céréales");
-        categories.add("Blés");
-        categories.add("Légumes secs");
-        categories.add("Sauces pour pâtes");
-        categories.add("Huiles");
-        categories.add("Vinaigres");
-        categories.add("Sauces crudités");
-        categories.add("Sels");
-        categories.add("Poivres");
-        categories.add("Herbes aromatiques");
-        categories.add("Mélanges d'épices");
-        categories.add("Epices");
-        categories.add("Cornichons");
-        categories.add("Olives");
-        categories.add("Condiments");
-        categories.add("Ketchup");
-        categories.add("Mayonnaises");
-        categories.add("Sauces tomate");
-        categories.add("Aides culinaires");
-        categories.add("Bouillons");
+        List<String> categoriesEpicerieSalee = new ArrayList<String>();
+        categoriesEpicerieSalee.add("Fruits secs");
+        categoriesEpicerieSalee.add("Légumes secs");
+        categoriesEpicerieSalee.add("Mélanges de fruits secs");
+        categoriesEpicerieSalee.add("Cacahuètes");
+        categoriesEpicerieSalee.add("Apéritif");
+        categoriesEpicerieSalee.add("Saucissons");
+        categoriesEpicerieSalee.add("Conserves");
+        categoriesEpicerieSalee.add("Plats préparés");
+        categoriesEpicerieSalee.add("Foies gras");
+        categoriesEpicerieSalee.add("Soupes");
+        categoriesEpicerieSalee.add("Pâtes alimentaires");
+        categoriesEpicerieSalee.add("Riz");
+        categoriesEpicerieSalee.add("Purées");
+        categoriesEpicerieSalee.add("Couscous");
+        categoriesEpicerieSalee.add("Semoules de blé");
+        categoriesEpicerieSalee.add("Semoules de céréales");
+        categoriesEpicerieSalee.add("Blés");
+        categoriesEpicerieSalee.add("Légumes secs");
+        categoriesEpicerieSalee.add("Sauces pour pâtes");
+        categoriesEpicerieSalee.add("Huiles");
+        categoriesEpicerieSalee.add("Vinaigres");
+        categoriesEpicerieSalee.add("Sauces crudités");
+        categoriesEpicerieSalee.add("Sels");
+        categoriesEpicerieSalee.add("Poivres");
+        categoriesEpicerieSalee.add("Herbes aromatiques");
+        categoriesEpicerieSalee.add("Mélanges d'épices");
+        categoriesEpicerieSalee.add("Epices");
+        categoriesEpicerieSalee.add("Cornichons");
+        categoriesEpicerieSalee.add("Olives");
+        categoriesEpicerieSalee.add("Condiments");
+        categoriesEpicerieSalee.add("Ketchup");
+        categoriesEpicerieSalee.add("Mayonnaises");
+        categoriesEpicerieSalee.add("Sauces tomate");
+        categoriesEpicerieSalee.add("Aides culinaires");
+        categoriesEpicerieSalee.add("Bouillons");
 
-        listRayonCategories.put(categories, Rayon.EPICERIE_SALEE);
-        listRayonCategories.clear();
+        this.listRayonCategories.put(categoriesEpicerieSalee, Rayon.EPICERIE_SALEE);
     }
 
 
     public static RayonCategories getInstance() {
+
         return INSTANCE;
     }
 
 
-    public Rayon findRayonByCategory(List<String> categories) {
+    public Rayon findRayonByCategory(String[] categories) {
+        Rayon rayon = Rayon.DIVERS;
+
+        Log.d("dtp", "Length of categories : "+categories.length);
         for (String categorie : categories) {
+            Log.d("dtp", "Categorie : "+categorie);
+            Log.d("dtp", "this.getKeys() : "+this.getKeys().size());
             for (List<String> cats : this.getKeys()) {
+                Log.d("dtp", "Length of cats : "+cats.size());
+                Log.d("dtp", "cats.contains(categorie) ? "+categorie+" : "+cats.contains(categorie));
+
                 if (cats.contains(categorie)) {
-                    return this.listRayonCategories.get(cats);
+                    Log.d("dtp", "Rayon trouvé !");
+                    rayon = this.listRayonCategories.get(cats);
+                    Log.d("dtp", "Rayon of product is : "+rayon.toString());
+                    return rayon;
                 }
             }
         }
-        return Rayon.DIVERS;
+
+        return rayon;
     }
 
     private List<List<String>> getKeys () {
         List<List<String>> keys = new ArrayList<List<String>>();
+        Log.d("dtp", "Length of listRayonCategories : "+this.listRayonCategories.size());
         for (List<String> key : this.listRayonCategories.keySet()) {
+            Log.d("dtp", "list of categories : "+key.toString());
             keys.add(key);
         }
         return keys;

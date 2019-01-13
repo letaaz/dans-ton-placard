@@ -127,17 +127,24 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         }
 
+        String product_categories = null;
+        String[] categories = null;
+        try{
+            product_categories = productJSONObject.getString("categories");
+            categories = product_categories.split(", ");
+            Log.d("dtp", "Categoriie : "+categories[0]);
+        }catch(JSONException e){
+
+        }
+
         // Définition d'un rayon du produit scannée
         Rayon product_rayon = null;
-        if(product_urlImage.contains()){
+        if(product_urlImage.contains("beauty")){
             product_rayon = Rayon.BEAUTE;
-        }
-        else if(){
-            product_rayon = Rayon.DIVERS;
         }
         else{
             RayonCategories rayonCategories = RayonCategories.getInstance();
-            product_rayon = rayonCategories.findRayonByCategory(product_categories);
+            product_rayon = rayonCategories.findRayonByCategory(categories);
         }
 
 
