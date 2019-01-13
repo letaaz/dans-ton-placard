@@ -32,7 +32,6 @@ public class InventaireFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Log.d("PIECE :", piece);
         View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
         initImageButton(view);
         return view;

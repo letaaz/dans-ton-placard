@@ -13,14 +13,13 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 4;
     private String tabTitle[]= new String[] {"Inventaire", "Listes", "Recettes", "Promotions"};
-    private Context context;
+    private Context mContext;
     private final FragmentManager mFragmentManager;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.mFragmentManager = fm;
-        this.context = context;
-
+        this.mContext = context;
     }
 
 
@@ -41,7 +40,6 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     public CharSequence getPageTitle(int i) {
-        //return tabTitle[i];
-        return null;
+        return null; // This will not print the page title in the tab bar
     }
 }
