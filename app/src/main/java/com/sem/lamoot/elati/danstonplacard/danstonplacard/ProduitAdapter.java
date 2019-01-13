@@ -3,6 +3,7 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitViewHolder> {
 
@@ -159,13 +161,40 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         public void bind(Produit produit) {
             if (produit != null) {
-                nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
+
+                if(produit.getMarque() != null)
+                    nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
+                else
+                    nom_produit.setText(produit.getNom());
+
                 quantite.setText("Quantité : " + String.valueOf(produit.getQuantite()));
                 id_produit.setText(String.valueOf(produit.getId()));
 
-                new AsyncTaskLoadImage(imageProduit).execute(produit.getUrlImage());
-
-
+                if(produit.getUrlImage() != null) {
+                    if(produit.getUrlImage().contains("http")) {
+                        try {
+                            Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
+                            imageProduit.setImageBitmap(bitmap);
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                        }
+                    }
+                    else{
+                        try {
+                            InputStream is = context.getAssets().open("icons_products/"+produit.getUrlImage());
+                            Drawable draw = Drawable.createFromStream(is, null);
+                            imageProduit.setImageDrawable(draw);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                else
+                    imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
 
                 retirerUnProduit.setOnClickListener(v -> {
                     if (onMinusImageViewClickListener != null)
@@ -180,35 +209,6 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         }
 
     }
-
-
-    public static class AsyncTaskLoadImage extends AsyncTask<String, String, Bitmap>{
-
-        private final static String TAG = "AsyncTaskLoadImage";
-        private ImageView imageView;
-
-        public AsyncTaskLoadImage(ImageView imageView){
-            this.imageView = imageView;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            Bitmap bitmap = null;
-            try{
-                URL url = new URL(params[0]);
-                bitmap = BitmapFactory.decodeStream((InputStream)url.getContent());
-            }catch (IOException e){
-                Log.e(TAG, e.getMessage());
-            }
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap){
-            imageView.setImageBitmap(bitmap);
-        }
-    }
-
 
     public class ProduitDiffCallback extends DiffUtil.Callback{
 
