@@ -1,36 +1,28 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -88,30 +80,17 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
 
-        produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-                alertDialog.setTitle(title);
+        produitViewHolder.itemView.setOnLongClickListener(v -> {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+            alertDialog.setTitle(title);
 
-                alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
-                alertDialog.setNegativeButton(negativeButtonTxt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
-                    }
-                });
+            alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
+            alertDialog.setNegativeButton(negativeButtonTxt, (dialog, which) -> dialog.cancel());
+            alertDialog.setPositiveButton(positiveButtonTxt, (dialog, which) -> produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId()));
 
-                AlertDialog dialog = alertDialog.create();
-                dialog.show();
-                return true;
-            }
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+            return true;
         });
     }
 
@@ -141,19 +120,21 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         private TextView nom_produit, quantite, id_produit;
         private ImageView imageProduit, retirerUnProduit, ajouterUnProduit;
-
+        private View item_produit;
 
         public ProduitViewHolder(View itemView) {
             super(itemView);
 
-            nom_produit = (TextView) itemView.findViewById(R.id.produit);
-            quantite = (TextView) itemView.findViewById(R.id.quantite_produit_textview);
-            id_produit = (TextView) itemView.findViewById(R.id.id_product_txt);
+            nom_produit = itemView.findViewById(R.id.produit);
+            quantite = itemView.findViewById(R.id.quantite_produit_textview);
+            id_produit = itemView.findViewById(R.id.id_product_txt);
 
-            imageProduit = (ImageView) itemView.findViewById(R.id.id_product_image);
-            retirerUnProduit = (ImageView) itemView.findViewById(R.id.minus_button);
-            ajouterUnProduit = (ImageView) itemView.findViewById(R.id.add_button);
-            itemView.setOnClickListener( v -> {
+            imageProduit = itemView.findViewById(R.id.id_product_image);
+            retirerUnProduit = itemView.findViewById(R.id.minus_button);
+            ajouterUnProduit = itemView.findViewById(R.id.add_button);
+
+            item_produit = itemView.findViewById(R.id.item_product);
+            item_produit.setOnClickListener( v -> {
                 if (onItemClickListener != null)
                     onItemClickListener.onItemClickListener(data.get(getAdapterPosition()));
             });
@@ -175,10 +156,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                         try {
                             Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
                             imageProduit.setImageBitmap(bitmap);
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                        } catch (InterruptedException e) {
+                        } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
                             imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
                         }

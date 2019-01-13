@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -12,22 +12,24 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
-        private static final String tag = "SearchItemArrayAdapter";
-        private ProduitDefaut produit;
-        private TextView nomProduit;
-        private ImageView iconeProduit;
-        private Context context;
+    private static final String TAG = "SearchItemArrayAdapter";
 
-        private List<ProduitDefaut> dataListAllItems;
-        private List<ProduitDefaut> produitsDefautsList;
+    private ProduitDefaut produit;
+    private TextView nomProduit;
+    private ImageView iconeProduit;
+    private Context context;
 
-
+    private List<ProduitDefaut> dataListAllItems;
+    private List<ProduitDefaut> produitsDefautsList;
 
     private ListFilter listFilter = new ListFilter();
 
@@ -54,7 +56,7 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
         public ProduitDefaut getItem(int position)
         {
             ProduitDefaut produit = this.produitsDefautsList.get(position);
-            Log.d(tag, "*-> Retrieving JournalEntry @ position: " + String.valueOf(position) + " : " +  produit.toString());
+            Log.d(TAG, "*-> Retrieving JournalEntry @ position: " + String.valueOf(position) + " : " +  produit.toString());
             return produit;
         }
 
@@ -77,13 +79,13 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
             // Get a reference to ImageView holder
             iconeProduit = (ImageView) row.findViewById(R.id.iconeProduit);
 
-            if("".equals(produit.getUrl_image()))
+            if(produit.getUrl_image().isEmpty())
             {
                 iconeProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
 
             }
             else {
-                InputStream is = null;
+                InputStream is;
                 try {
                     is = context.getAssets().open("icons_products/"+produit.getUrl_image());
                     Drawable draw = Drawable.createFromStream(is, null);
@@ -111,7 +113,7 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
             FilterResults results = new FilterResults();
             if (dataListAllItems == null) {
                 synchronized (lock) {
-                    dataListAllItems = new ArrayList<ProduitDefaut>(produitsDefautsList);
+                    dataListAllItems = new ArrayList<>(produitsDefautsList);
                 }
             }
 
@@ -123,7 +125,7 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
             } else {
                 final String searchStrLowerCase = prefix.toString().toLowerCase();
 
-                ArrayList<ProduitDefaut> matchValues = new ArrayList<ProduitDefaut>();
+                ArrayList<ProduitDefaut> matchValues = new ArrayList<>();
 
                 for (ProduitDefaut dataItem : dataListAllItems) {
                     if (dataItem.getNom().toLowerCase().startsWith(searchStrLowerCase)) {

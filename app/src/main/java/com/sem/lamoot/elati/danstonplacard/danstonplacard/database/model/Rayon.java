@@ -3,21 +3,18 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 public enum Rayon {
     SURGELE, BIO, FRUITS, LEGUMES, AUTRES;
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public static Rayon getRayon(String rayon) {
-        if (rayon.equals("SURGELE") || rayon.equals("Surgelés"))
-            return SURGELE;
-        if (rayon.equals("BIO") || rayon.equals("Bio"))
-            return BIO;
-        if (rayon.equals("FRUITS") || rayon.equals("Fruits"))
-            return FRUITS;
-        if (rayon.equals("LEGUMES") | rayon.equals("Légumes"))
-            return LEGUMES;
-        else
-            return null;
+        switch (rayon) {
+            case "SURGELE": case "Surgelés":
+                return SURGELE;
+            case "BIO": case "Bio":
+                return BIO;
+            case "FRUITS": case "Fruits":
+                return FRUITS;
+            case "LEGUMES": case "Légumes":
+                return LEGUMES;
+            default:
+                return BIO;
+        }
     }
 }

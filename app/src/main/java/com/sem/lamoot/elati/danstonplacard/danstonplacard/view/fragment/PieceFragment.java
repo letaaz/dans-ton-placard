@@ -10,14 +10,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.ProduitAdapter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
@@ -67,8 +66,6 @@ public class PieceFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
-        Toast.makeText(this.getContext(), "mParam = " +mParam, Toast.LENGTH_SHORT).show();
-
 
         // Récupération des produits disponibles
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
@@ -135,7 +132,6 @@ public class PieceFragment extends Fragment
 
     @Override
     public void onItemClickListener(Produit produit) {
-//        Toast.makeText(mContext, "Listener for product clicked", Toast.LENGTH_SHORT).show();
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         String[] params = new String[]{produit.getId()+"", mParam};

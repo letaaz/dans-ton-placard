@@ -21,21 +21,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class FetchData extends AsyncTask<String, Void, String> {
 
-    private Context context;
+    private Context mContext;
     private String contents;
     private Piece piece;
 
     public FetchData(Context context, String contents, String piece) {
-        this.context = context;
+        this.mContext = context;
         this.contents = contents;
 
-        this.piece = PieceConverter.stringToPiece(piece);
+        this.piece = Piece.getPiece(piece);
     }
 
     @Override
@@ -47,12 +46,10 @@ public class FetchData extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
 
-        Toast.makeText(this.context, this.piece.toString(), Toast.LENGTH_LONG).show();
-
-        if(data.equals(""))
+        if(data.isEmpty())
         {
-            Log.d("dtp", "PRODUIT INDISPO KO");
-            Toast.makeText(this.context, "Product not found : "+this.contents, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "PRODUIT NOT FOUND");
+            Toast.makeText(this.mContext, "Product not found : " + this.contents, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -60,17 +57,20 @@ public class FetchData extends AsyncTask<String, Void, String> {
         try {
             jsonDataProduct = new JSONObject(data);
         } catch (JSONException e) {
+            Log.d("dtp", "IMPOSSIBLE TO CREATE JSON OBJECT FROM DATA");
             e.printStackTrace();
         }
-        JSONObject productJSONObject = null;
+
+        JSONObject productJSONObject;
         try {
             productJSONObject = jsonDataProduct.getJSONObject("product");
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("dtp", "PRODUIT INDISPO KO");
-            Toast.makeText(this.context, "PRODUIT INDISPONIBLE : "+this.contents, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "IMPOSSIBLE TO CREATE JSON OBJECT FROM PRODUCT");
+            Toast.makeText(this.mContext, "PRODUIT INDISPONIBLE : " + this.contents, Toast.LENGTH_SHORT).show();
             return;
         }
+
         String product_name = null;
         try {
             product_name = productJSONObject.getString("product_name_fr");
@@ -99,40 +99,31 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }
 
         Rayon product_rayon = Rayon.BIO;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
         Date product_date = new Date();
 
 
         if(product_name!=null){
-            Log.d("dtp", "PRODUIT DISPO OK");
-            Toast.makeText(this.context, "Product found : "+product_name+" Quantity : "+product_weight+", Date : "+product_date.toString()+", Rayon : "+product_rayon.toString()+", urlImage : "+product_urlImage, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "PRODUCT FOUND OK");
+            Toast.makeText(this.mContext, "Product found : " + product_name, Toast.LENGTH_SHORT).show();
         }
         else{
-            Log.d("dtp", "PRODUIT INDISPO KO");
-            Toast.makeText(this.context, "Product not found : "+this.contents, Toast.LENGTH_LONG).show();
+            Log.d("dtp", "PRODUIT NOT FOUND KO");
+            Toast.makeText(this.mContext, "Product not found : " + this.contents, Toast.LENGTH_SHORT).show();
         }
-        // TODO Ajoute produit si produit inexistant sinon mise à jour du produit
-        ProduitDao produitDao = RoomDB.getDatabase(this.context).produitDao();
 
+        ProduitDao produitDao = RoomDB.getDatabase(this.mContext).produitDao();
         List<Produit> products = produitDao.findProductByBarcode(this.contents, this.piece.toString());
 
         if(!products.isEmpty()){
             Produit product_found = products.get(0);
             produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite()+1);
+            Log.d("dtp","PRODUCT QUANTITY UPDATED BY 1");
         }
         else{
             Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage,1, product_weight, product_date, product_rayon, 0, piece);
             produitDao.insert(product);
+            Log.d("dtp","PRODUCT INSERTED");
         }
-
-
-
-
-        // TODO Save the product in data base
-        //Toast.makeText(this.context, "Product saved and content number : "+this.content, Toast.LENGTH_LONG);
-
-        Log.d("dtp","Product saved");
-
     }
 
     /**
@@ -159,9 +150,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }
 
         String data = "";
-        boolean is_available = true;
         try {
-
             URL url = new URL(urlLink);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();

@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
 public class ProduitDefaut
 {

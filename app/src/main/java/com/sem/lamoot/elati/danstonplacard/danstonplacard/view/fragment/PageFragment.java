@@ -10,12 +10,10 @@ import android.widget.TextView;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
 public class PageFragment extends Fragment{
+
     public static final String ARG_PAGE = "ARG_PAGE";
-
     private int mPage;
-
     private View view;
-
 
     public static PageFragment newInstance(int page) {
         Bundle args = new Bundle();

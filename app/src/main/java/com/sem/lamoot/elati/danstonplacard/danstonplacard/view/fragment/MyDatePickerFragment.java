@@ -31,11 +31,9 @@ public class MyDatePickerFragment extends DialogFragment {
                     String date  = view.getDayOfMonth() +
                             "/" + (view.getMonth() + 1) +
                             "/" + view.getYear();
-                    Toast.makeText(getActivity(), "selected date is " +  date, Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putString(SELECTED_DATE, date);
                     Intent intent = new Intent().putExtras(bundle);
-
                     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                 };
 }
