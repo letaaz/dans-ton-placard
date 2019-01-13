@@ -171,16 +171,26 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 id_produit.setText(String.valueOf(produit.getId()));
 
                 if(produit.getUrlImage() != null) {
-                    try {
-                        Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-
-                        imageProduit.setImageBitmap(bitmap);
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                        imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                    if(produit.getUrlImage().contains("http")) {
+                        try {
+                            Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
+                            imageProduit.setImageBitmap(bitmap);
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                        }
+                    }
+                    else{
+                        try {
+                            InputStream is = context.getAssets().open("icons_products/"+produit.getUrlImage());
+                            Drawable draw = Drawable.createFromStream(is, null);
+                            imageProduit.setImageDrawable(draw);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 else

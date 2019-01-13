@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -32,6 +33,8 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.DetailProduitViewModel;
 import com.travijuu.numberpicker.library.NumberPicker;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -135,14 +138,35 @@ public class DetailProduitFragment extends Fragment {
     }
 
     private void updateFields(Produit produit){
-        try {
-            Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-            produitImage.setImageBitmap(bitmap);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        if("".equals(produit.getUrlImage())){
+            produitImage.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_barcode));
         }
+        else{
+            if(produit.getUrlImage().contains("http"))
+            {
+                try {
+                    Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
+                    produitImage.setImageBitmap(bitmap);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                InputStream is = null;
+                try {
+                    is = getContext().getAssets().open("icons_products/"+produit.getUrlImage());
+                    Drawable draw = Drawable.createFromStream(is, null);
+                    produitImage.setImageDrawable(draw);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
         produitNom.setText(produit.getNom());
         produitPoids.setText(produit.getPoids() + " g");

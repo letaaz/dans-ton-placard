@@ -1,8 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +14,8 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
         private static final String tag = "SearchItemArrayAdapter";
@@ -88,16 +83,13 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
 
             }
             else {
-                Bitmap bitmap = null;
+                InputStream is = null;
                 try {
-                    bitmap = new AsyncTaskLoadImage().execute(produit.getUrl_image()).get();
-                    iconeProduit.setImageBitmap(bitmap);
+                    is = context.getAssets().open("icons_products/"+produit.getUrl_image());
+                    Drawable draw = Drawable.createFromStream(is, null);
+                    iconeProduit.setImageDrawable(draw);
 
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                    iconeProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-
-                } catch (InterruptedException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     iconeProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
                 }
