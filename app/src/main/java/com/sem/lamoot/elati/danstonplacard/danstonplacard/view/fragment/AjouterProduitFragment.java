@@ -1,14 +1,17 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -101,14 +104,28 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.FRUITS, PieceConverter.stringToPiece(mPiece));
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     produitDao.insert(newProduit);
-                    Toast.makeText(view.getContext(), "Le produit a été ajouté à l'inventaire.", Toast.LENGTH_LONG);
-                    getActivity().onBackPressed();
 
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.msg_produit_ajoute, Snackbar.LENGTH_LONG);
+                    snackbar.setAction(R.string.voir, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getActivity().onBackPressed();
+                        }
+                    });
+                    snackbar.show();
                 }
                 else
                 {
                     produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
-                    Toast.makeText(view.getContext(), "Un produit supplémentaire a été ajouté à l'inventaire", Toast.LENGTH_LONG);
+
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.msg_produit_miseajour, Snackbar.LENGTH_LONG);
+                    snackbar.setAction(R.string.voir, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getActivity().onBackPressed();
+                        }
+                    });
+                    snackbar.show();
                 }
             }
         });
