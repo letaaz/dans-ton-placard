@@ -8,15 +8,18 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -105,27 +108,14 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     produitDao.insert(newProduit);
 
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.msg_produit_ajoute, Snackbar.LENGTH_LONG);
-                    snackbar.setAction(R.string.voir, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getActivity().onBackPressed();
-                        }
-                    });
-                    snackbar.show();
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_ajoute);
                 }
                 else
                 {
                     produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
-
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.msg_produit_miseajour, Snackbar.LENGTH_LONG);
-                    snackbar.setAction(R.string.voir, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getActivity().onBackPressed();
-                        }
-                    });
-                    snackbar.show();
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_miseajour);
                 }
             }
         });
@@ -137,12 +127,15 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 if(produit == null) {
                     Produit newProduit = new Produit(actv.getText().toString(), 1, Rayon.AUTRES, piece); //nom quantité rayon piece
                     produitDao.insert(newProduit);
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_ajoute);
                 }
                 else
                 {
                     produitDao.updateQuantityById(produit.getId(), produit.getQuantite()+1);
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_miseajour);
                 }
-                Toast.makeText(v.getContext(), "Produit ajouté à l'inventaire.", Toast.LENGTH_LONG);
             }
         });
         return view;
@@ -241,4 +234,21 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         return produits;
     }
 
+    public void hideKeyboard()
+    {
+        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
+    }
+
+    public void showSnackBar(int msg)
+    {
+        Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.voir, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        snackbar.show();
+    }
 }

@@ -27,7 +27,7 @@
     <string name="search_hint">Chercher un produit</string>
 
     <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
-    <string name="msg_produit_miseajour">La quantité du produit a été mise dans l\'inventaire.</string>
+    <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
     <string name="voir">Voir</string>
 
     <string-array name="pieces">
