@@ -31,7 +31,7 @@
     <string name="voir">Voir</string>
 
     <string-array name="pieces">
-        <item name="cuisine">Cuisine</item>
+        <item name="cuisine">Cuisine</item>git
         <item name="salle_de_bain">Salle de bain</item>
         <item name="cave">Cave</item>
         <item name="garage">Garage</item>
