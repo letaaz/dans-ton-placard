@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
@@ -23,7 +22,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewM
 
 public class PieceFragment extends Fragment
         implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener,
-                    ProduitAdapter.OnItemClickListener {
+        ProduitAdapter.OnProductItemClickListener {
 
     public static String ARG_PIECE = "";
     private Context mContext = null;
@@ -93,12 +92,21 @@ public class PieceFragment extends Fragment
         produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
 
 
-        TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
-        btn.setOnClickListener(new View.OnClickListener() {
+        TextView btn_hide_show_available_product = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
+        btn_hide_show_available_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int visibilite = ((produitsDisponiblesRecyclerView.getVisibility() == View.INVISIBLE) ? View.VISIBLE : View.INVISIBLE);
+                int visibilite = ((produitsDisponiblesRecyclerView.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
                 produitsDisponiblesRecyclerView.setVisibility(visibilite);
+            }
+        });
+
+        TextView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
+        btn_hide_show_unavailable_product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int visibilite = ((produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
+                produitsIndisponiblesRecyclerView.setVisibility(visibilite);
             }
         });
 
@@ -131,7 +139,7 @@ public class PieceFragment extends Fragment
     }
 
     @Override
-    public void onItemClickListener(Produit produit) {
+    public void onProductItemClickListener(Produit produit) {
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         String[] params = new String[]{produit.getId()+"", mParam};

@@ -37,8 +37,8 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         void onAddImageViewClickListener(Produit produit);
     }
 
-    public interface OnItemClickListener {
-        void onItemClickListener(Produit produit);
+    public interface OnProductItemClickListener {
+        void onProductItemClickListener(Produit produit);
     }
 
     private List<Produit> data;
@@ -46,16 +46,16 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     private LayoutInflater layoutInflater;
     private OnMinusImageViewClickListener onMinusImageViewClickListener;
     private OnAddImageViewClickListener onAddImageViewClickListener;
-    private OnItemClickListener onItemClickListener;
+    private OnProductItemClickListener onProductItemClickListener;
 
 
     public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener,
-                          OnItemClickListener itemListener){
+                          OnProductItemClickListener itemListener){
         this.data = new ArrayList<>();
         this.context = context;
         this.onMinusImageViewClickListener = minusListener;
         this.onAddImageViewClickListener = addListener;
-        this.onItemClickListener = itemListener;
+        this.onProductItemClickListener = itemListener;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -79,20 +79,32 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
+        produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                alertDialog.setTitle(title);
 
-        produitViewHolder.itemView.setOnLongClickListener(v -> {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-            alertDialog.setTitle(title);
-
-            alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
-            alertDialog.setNegativeButton(negativeButtonTxt, (dialog, which) -> dialog.cancel());
-            alertDialog.setPositiveButton(positiveButtonTxt, (dialog, which) -> produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId()));
-
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
-            return true;
+                alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
+                alertDialog.setNegativeButton(negativeButtonTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
+                    }
+                });
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+                return true;
+            }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -133,10 +145,14 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             retirerUnProduit = itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
-            item_produit = itemView.findViewById(R.id.item_product);
-            item_produit.setOnClickListener( v -> {
-                if (onItemClickListener != null)
-                    onItemClickListener.onItemClickListener(data.get(getAdapterPosition()));
+
+            //item_produit = itemView.findViewById(R.id.item_product);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onProductItemClickListener != null)
+                        onProductItemClickListener.onProductItemClickListener(data.get(getAdapterPosition()));
+                }
             });
         }
 
