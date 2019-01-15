@@ -10,6 +10,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDa
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.RayonCategories;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +85,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }catch (JSONException e){
 
         }
+
         String product_urlImage = null;
         try{
             product_urlImage = productJSONObject.getString("image_url");
@@ -98,13 +100,32 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         }
 
-        Rayon product_rayon = Rayon.BIO;
+
+        String product_categories = null;
+        String[] categories = null;
+        try{
+            product_categories = productJSONObject.getString("categories");
+
+            categories = product_categories.split(",");
+            Log.d("dtp", "categories with or without spaces : length="+categories.length+ " / data : "+categories[0]);
+        }catch(JSONException e){
+
+        }
+
+        // Définition d'un rayon du produit scannée
+        RayonCategories rayonCategories = RayonCategories.getInstance();
+        Rayon product_rayon = rayonCategories.findRayonByCategory(categories);
+
+
+
+
+
         Date product_date = new Date();
 
 
         if(product_name!=null){
             Log.d("dtp", "PRODUCT FOUND OK");
-            Toast.makeText(this.mContext, "Product found : " + product_name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Product found : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
         }
         else{
             Log.d("dtp", "PRODUIT NOT FOUND KO");

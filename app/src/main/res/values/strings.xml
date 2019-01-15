@@ -38,7 +38,7 @@
     <string name="label_prix_ab">Prix :</string>
 
     <string-array name="pieces">
-        <item name="cuisine">Cuisine</item>
+        <item name="cuisine">Cuisine</item>git
         <item name="salle_de_bain">Salle de bain</item>
         <item name="cave">Cave</item>
         <item name="garage">Garage</item>
@@ -48,7 +48,17 @@
     <string-array name="rayons">
         <item name="surgele">Surgelés</item>
         <item name="bio">Bio</item>
-        <item name="fruits">Fruits</item>
-        <item name="legumes">Légumes</item>
+        <item name="fruits_legumes">Fruits et Légumes</item>
+        <item name="boissons">Boissons</item>
+        <item name="boulangerie_patisserie">Boulangerie et Patisserie</item>
+        <item name="cremerie">Crèmerie</item>
+        <item name="yaourts_desserts">Yaourts et Desserts</item>
+        <item name="fromages">Fromages</item>
+        <item name="viandes">Viandes</item>
+        <item name="poissons_crustaces">Poissons et Crustaces</item>
+        <item name="epicerie_sucree">Épicerie sucrée</item>
+        <item name="epicerie_salee">Épicerie salée</item>
+        <item name="hygienes_beautes">Hygiènes et Beautés</item>
+        <item name="divers">Divers</item>
     </string-array>
 </resources>
