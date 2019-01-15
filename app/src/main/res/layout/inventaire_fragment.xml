@@ -8,7 +8,7 @@
     android:columnCount="2"
     android:rowCount="4"
     android:visibility="visible"
-    tools:context=".view.fragment.RootInventaireFragment">
+    tools:context=".view.fragment.inventaire.RootInventaireFragment">
 
     <ImageButton
         android:id="@+id/kitchen_btn"

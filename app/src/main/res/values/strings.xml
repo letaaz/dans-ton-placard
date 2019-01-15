@@ -17,8 +17,8 @@
 
     <string name="titleAlterDialogSupprimerProduit">Suppression du produit</string>
     <string name="msgAlertDialogSupprimerProduit">Êtes-vous sûr de vouloir supprimer le produit suivant de votre inventaire :</string>
-    <string name="positiveButtonAlertDialogSupprimerProduit">Supprimer</string>
-    <string name="negativeButtonAlertDialogSupprimerProduit">Conserver</string>
+    <string name="positiveButtonAlertDialogSupprimer">Supprimer</string>
+    <string name="negativeButtonAlertDialogSupprimer">Conserver</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cuisine">Cuisine</string>
@@ -29,6 +29,10 @@
     <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
     <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
     <string name="voir">Voir</string>
+    <string name="ldc_disponibles_label">Listes de courses disponibles</string>
+    <string name="history_ldc_label">Historique des listes de courses</string>
+    <string name="msgAlertDialogSupprimerLdc">Êtes-vous sûr de vouloir supprimer la liste de courses suivante :</string>
+    <string name="titleAlertDialogSupprimerLdc">Suppression de la liste de courses</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

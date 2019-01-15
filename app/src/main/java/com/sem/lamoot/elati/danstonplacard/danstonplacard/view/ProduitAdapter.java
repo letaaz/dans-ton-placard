@@ -74,8 +74,8 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         String alertMsg = this.context.getResources().getString(R.string.msgAlertDialogSupprimerProduit);
         String title = this.context.getResources().getString(R.string.titleAlterDialogSupprimerProduit);
-        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimerProduit);
-        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimerProduit);
+        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
+        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));

@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterProduitFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.DetailProduitFragment;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 public class PieceFragment extends Fragment
@@ -117,7 +119,7 @@ public class PieceFragment extends Fragment
             public void onClick(View view) {
                 // Launch the view for adding a product to the current piece
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.root_frame, AjouterProduitFragment.newInstance(mPiece));
+                transaction.replace(R.id.root_inventaire_frame, AjouterProduitFragment.newInstance(mPiece));
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -143,7 +145,7 @@ public class PieceFragment extends Fragment
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         String[] params = new String[]{produit.getId()+"", mParam};
-        transaction.replace(R.id.root_frame, DetailProduitFragment.newInstance(params));
+        transaction.replace(R.id.root_inventaire_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
         transaction.commit();

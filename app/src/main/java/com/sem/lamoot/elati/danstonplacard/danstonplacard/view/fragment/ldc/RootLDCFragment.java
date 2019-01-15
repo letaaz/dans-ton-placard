@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,29 +10,14 @@ import android.view.ViewGroup;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link RootInventaireFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RootInventaireFragment extends Fragment {
+public class RootLDCFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param Parameter 1.
-     * @return A new instance of fragment RootInventaireFragment.
-     */
-    public static RootInventaireFragment newInstance(String param) {
+    public static Fragment newInstance(String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PAGE, param);
-        RootInventaireFragment fragment = new RootInventaireFragment();
+        RootLDCFragment fragment = new RootLDCFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,11 +33,10 @@ public class RootInventaireFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.root_fragment, container, false);
+        View view = inflater.inflate(R.layout.root_ldc_fragment, container, false);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.root_frame, new InventaireFragment());
+        transaction.replace(R.id.root_ldc_frame, LDCFragment.newInstance("PARAM"));
         transaction.commit();
         return view;
     }
-
 }
