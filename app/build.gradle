@@ -71,6 +71,9 @@ dependencies {
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
     implementation 'com.github.travijuu:numberpicker:1.0.7'
 
+    // Animations
+    implementation 'com.github.mancj:SlideUp-Android:2.2.8'
+
 }
 
 ext {

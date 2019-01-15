@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
 import android.app.AlertDialog;
 import android.content.Context;
