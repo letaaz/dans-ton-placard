@@ -73,6 +73,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         ImageView imageView3 = (ImageView) view.findViewById(R.id.imageView3);
         imageView3.setOnClickListener(this);
 
+        Log.i("dtp", "AJOUTPRODUCT MPIECE = " + mPiece);
+
         ImageView button_add = (ImageView) view.findViewById(R.id.button_add);
 
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(),"products_FR_fr.json");

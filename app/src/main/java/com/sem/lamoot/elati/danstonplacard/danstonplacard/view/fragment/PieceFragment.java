@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,10 @@ public class PieceFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
+
+
+        Log.i("dtp", "PIECEFRAG MPARAM = "  + mParam);
+        Log.i("dtp", "PIECEFRAG MPIECE = "  + mPiece);
 
         // Récupération des produits disponibles
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
