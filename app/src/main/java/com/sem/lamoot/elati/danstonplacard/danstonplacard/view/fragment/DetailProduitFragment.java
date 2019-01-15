@@ -133,7 +133,8 @@ public class DetailProduitFragment extends Fragment {
 
     private void updateFields(Produit produit){
 
-        if(produit.getUrlImage().isEmpty()){
+
+        if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
             produitImage.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_barcode));
         }
         else{

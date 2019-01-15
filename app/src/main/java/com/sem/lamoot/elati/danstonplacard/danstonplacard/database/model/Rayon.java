@@ -5,7 +5,7 @@ public enum Rayon {
 
     SURGELE, BIO, FRUITS_LEGUMES, BOISSONS, BOULANGERIE_PATISSERIE,
     CREMERIE, YAOURTS_DESSERTS, FROMAGES, VIANDES, POISSONS_CRUSTACES, EPICERIE_SUCREE, EPICERIE_SALEE,
-    BEAUTE, DIVERS;
+    HYGIENES_BEAUTES, DIVERS;
 
 
     @Override
@@ -39,8 +39,8 @@ public enum Rayon {
                 return EPICERIE_SUCREE;
             case "EPICERIE SALEE": case "Épicerie salée":
                 return EPICERIE_SALEE;
-            case "BEAUTE": case "Beauté":
-                return BEAUTE;
+            case "HYGIENES_BEAUTES": case "Hygiènes et beautés":
+                return HYGIENES_BEAUTES;
             default:
                 return DIVERS;
         }

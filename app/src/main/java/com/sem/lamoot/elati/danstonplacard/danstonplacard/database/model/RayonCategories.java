@@ -170,6 +170,7 @@ public class RayonCategories {
         categoriesEpicerieSucree.add("Cafés");
         categoriesEpicerieSucree.add("Thés");
         categoriesEpicerieSucree.add("Infusions");
+        categoriesEpicerieSucree.add("Sucres");
         categoriesEpicerieSucree.add("Boissons chaudes");
         categoriesEpicerieSucree.add("Boissons végétales");
         categoriesEpicerieSucree.add("Laits en poudre");
@@ -224,6 +225,13 @@ public class RayonCategories {
         categoriesEpicerieSalee.add("Bouillons");
 
         this.listRayonCategories.put(categoriesEpicerieSalee, Rayon.EPICERIE_SALEE);
+
+        //HYGIENES_BEAUTES
+        List<String> categoriesHygienesBeautes = new ArrayList<String>();
+        categoriesHygienesBeautes.add("Hygiène");
+        categoriesHygienesBeautes.add("Cheveux");
+
+        this.listRayonCategories.put(categoriesHygienesBeautes, Rayon.HYGIENES_BEAUTES);
     }
 
 
@@ -244,7 +252,7 @@ public class RayonCategories {
                 Log.d("dtp", "Length of cats : "+cats.size());
                 Log.d("dtp", "cats.contains(categorie) ? "+categorie+" : "+cats.contains(categorie));
 
-                if (cats.contains(categorie)) {
+                if (cats.contains(categorie.trim())) {
                     Log.d("dtp", "Rayon trouvé !");
                     rayon = this.listRayonCategories.get(cats);
                     Log.d("dtp", "Rayon of product is : "+rayon.toString());
