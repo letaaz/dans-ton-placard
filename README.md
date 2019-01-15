@@ -1,5 +1,7 @@
 # Dans ton placard
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec5c5d1a7618413a96f3d6bde22a9e76)](https://app.codacy.com/app/Dans-ton-placard/dans-ton-placard?utm_source=github.com&utm_medium=referral&utm_content=letaaz/dans-ton-placard&utm_campaign=Badge_Grade_Dashboard)
+
 This project aim is to deepen our knowledge in mobile development. We chosed to create an application in relation to housekeeping. Keeping track of our food/products stock at home is already a tedious task but also geting all items we put on our shopping list is another one.  *Dans ton placard* goal's is to bring the level of headlock to 0 by an ergonomic user interface. 
 
 
