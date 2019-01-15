@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,22 +14,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCoursesDefaut;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
+    public interface OnItemClickListener {
+        void onItemClickListener(ListeCoursesDefaut ldcDefaut);
+    }
+
     private Context mContext;
     private LayoutInflater mInflater;
     private List<ListeCoursesDefaut> data;
+    private OnItemClickListener itemClickListener;
 
-    public LDCAdapter (Context context) {
+    public LDCAdapter (Context context, OnItemClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -48,6 +52,13 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
         String negativeButtonTxt = mContext.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
 
         ldcViewHolder.bind(data.get(i));
+        ldcViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null)
+                    itemClickListener.onItemClickListener(data.get(i));
+            }
+        });
 
         ldcViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -71,13 +82,6 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
                 AlertDialog dialog = alertDialog.create();
                 dialog.show();
                 return true;
-            }
-        });
-
-        ldcViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "Clické", Toast.LENGTH_SHORT).show();
             }
         });
     }

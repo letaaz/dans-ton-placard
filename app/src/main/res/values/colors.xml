@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#1663d0</color>
     <color name="colorAccent">#f8d81b4d</color>
     <color name="colorTabLayoutBackground">#2877e8</color>
+    <color name="colorPrimaryText">#1E2D3E</color>
 
 
     <color name="colorBackgroundPiece">#C9B086</color>
@@ -18,5 +19,5 @@
     <color name="black">#000</color>
     <color name="white">#fff</color>
     <color name="lightGray">#99d1cccc</color>
-    <color name="darkGray">#605f5f</color>
+    <color name="darkGray">#35383B</color>
 </resources>

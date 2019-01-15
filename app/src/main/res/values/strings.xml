@@ -33,6 +33,9 @@
     <string name="history_ldc_label">Historique des listes de courses</string>
     <string name="msgAlertDialogSupprimerLdc">Êtes-vous sûr de vouloir supprimer la liste de courses suivante :</string>
     <string name="titleAlertDialogSupprimerLdc">Suppression de la liste de courses</string>
+    <string name="archiver_ldc">Archiver</string>
+    <string name="label_quantité_ab">Qté :</string>
+    <string name="label_prix_ab">Prix :</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

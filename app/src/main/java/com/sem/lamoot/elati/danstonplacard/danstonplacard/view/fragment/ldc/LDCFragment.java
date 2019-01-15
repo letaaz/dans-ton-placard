@@ -3,6 +3,7 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +14,9 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.LDCAdapter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCoursesDefaut;
 
-public class LDCFragment extends Fragment {
+public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListener {
 
     public static String ARGS = "ARGUMENTS_LDC_FRAG";
     private Context mContext;
@@ -40,9 +41,11 @@ public class LDCFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ldc_fragment, container, false);
 
+        // ViewModel : retrieve from DB
+
         // RecyclerView LDC
         ldcDisponiblesRecyclerView = view.findViewById(R.id.ldc_list_recyclerview);
-        LDCAdapter ldcAdapter = new LDCAdapter(mContext);
+        LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
         ldcAdapter.setData(LDCAdapter.generateLDC());
         ldcDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ldcDisponiblesRecyclerView.setAdapter(ldcAdapter);
@@ -53,7 +56,7 @@ public class LDCFragment extends Fragment {
 
         // RecyclerView hist LDC
         historyLdcRecyclerView = view.findViewById(R.id.history_ldc_recyclerview);
-        LDCAdapter historyAdapter = new LDCAdapter(mContext);
+        LDCAdapter historyAdapter = new LDCAdapter(mContext, this);
         historyAdapter.setData(LDCAdapter.generateLDC2());
         historyLdcRecyclerView.setItemAnimator(new DefaultItemAnimator());
         historyLdcRecyclerView.setAdapter(historyAdapter);
@@ -97,4 +100,13 @@ public class LDCFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onItemClickListener(ListeCoursesDefaut ldcDefaut) {
+        // Launch the view for product's detail
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(ldcDefaut.getId()));
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }
