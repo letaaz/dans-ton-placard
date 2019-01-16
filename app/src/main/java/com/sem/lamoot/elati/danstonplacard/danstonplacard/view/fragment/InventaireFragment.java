@@ -57,13 +57,13 @@ public class InventaireFragment extends Fragment {
     public List<PieceIcone> getDrawablesIntPieces()
     {
         List<PieceIcone> pieces = new ArrayList<>();
-        pieces.add(new PieceIcone(R.drawable.cuisine, Piece.CUISINE));
-        pieces.add(new PieceIcone(R.drawable.salledebain, Piece.SALLE_DE_BAIN));
-        pieces.add(new PieceIcone(R.drawable.sejour, Piece.SALLE_A_MANGER));
-        pieces.add(new PieceIcone(R.drawable.cave, Piece.CAVE));
-        pieces.add(new PieceIcone(R.drawable.chambre, Piece.CHAMBRE));
-        pieces.add(new PieceIcone(R.drawable.garage, Piece.GARAGE));
-        pieces.add(new PieceIcone(R.drawable.divers, Piece.DIVERS));
+        pieces.add(new PieceIcone(R.drawable.home_cuisine, Piece.CUISINE));
+        pieces.add(new PieceIcone(R.drawable.home_salledebain, Piece.SALLE_DE_BAIN));
+        pieces.add(new PieceIcone(R.drawable.home_sejour, Piece.SALLE_A_MANGER));
+        pieces.add(new PieceIcone(R.drawable.home_cave, Piece.CAVE));
+        pieces.add(new PieceIcone(R.drawable.home_chambre, Piece.CHAMBRE));
+        pieces.add(new PieceIcone(R.drawable.home_garage, Piece.GARAGE));
+        pieces.add(new PieceIcone(R.drawable.home_divers, Piece.DIVERS));
 
         return pieces;
     }
@@ -73,40 +73,6 @@ public class InventaireFragment extends Fragment {
         AdapterForRecyclerViewPieces adapterForRecyclerViewPieces = new AdapterForRecyclerViewPieces(this.getContext(), pieces);
         recyclerView.setAdapter(adapterForRecyclerViewPieces);
     }
-
-//    private void initImageButton(View rootView) {
-//        ImageButton kitchen = (ImageButton) rootView.findViewById(R.id.kitchen_btn);
-//        kitchen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPieceFragment("CUISINE");
-//            }
-//        });
-//
-//        ImageButton bathroom = (ImageButton) rootView.findViewById(R.id.bathroom_btn);
-//        bathroom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPieceFragment("SALLE_DE_BAIN");
-//            }
-//        });
-//
-//        ImageButton basement = (ImageButton) rootView.findViewById(R.id.cellar_btn);
-//        basement.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPieceFragment("CAVE");
-//            }
-//        });
-//
-//        ImageButton dining_room = (ImageButton) rootView.findViewById(R.id.dinner_btn);
-//        dining_room.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPieceFragment("SALLE_A_MANGER");
-//            }
-//        });
-//    }
 
     private void showPieceFragment(String piece) {
         FragmentTransaction trans = getFragmentManager().beginTransaction();

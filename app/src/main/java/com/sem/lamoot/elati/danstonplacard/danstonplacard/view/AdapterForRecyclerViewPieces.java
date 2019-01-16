@@ -44,9 +44,7 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
             @Override
             public void onClick(View view) {
 
-                Log.i("dtp", "CLICKED");
                 String piece = Piece.pieceToString(mPiecesIntDrawables.get(position).getPiece());
-                Log.i("dtp",piece);
 
                 FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();

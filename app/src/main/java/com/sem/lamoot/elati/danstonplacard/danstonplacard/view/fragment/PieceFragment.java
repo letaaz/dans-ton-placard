@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
@@ -68,13 +70,12 @@ public class PieceFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
 
-
-        Log.i("dtp", "PIECEFRAG MPARAM = "  + mParam);
-        Log.i("dtp", "PIECEFRAG MPIECE = "  + mPiece);
+        ProduitDao produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
 
         // Récupération des produits disponibles
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
         produitViewModel.getProduitsDisponiblesParPiece(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+
         produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
 
         // Set recyclerView + Adapter - Produits disponibles
