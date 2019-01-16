@@ -83,6 +83,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         try{
             product_brand = productJSONObject.getString("brands");
         }catch (JSONException e){
+            e.printStackTrace();
 
         }
 
@@ -90,6 +91,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         try{
             product_urlImage = productJSONObject.getString("image_url");
         }catch(JSONException e){
+            e.printStackTrace();
 
         }
 
@@ -97,6 +99,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         try {
             product_weight = productJSONObject.getInt("product_quantity");
         } catch (JSONException e) {
+            e.printStackTrace();
 
         }
 
@@ -109,27 +112,28 @@ public class FetchData extends AsyncTask<String, Void, String> {
             categories = product_categories.split(",");
             Log.d("dtp", "categories with or without spaces : length="+categories.length+ " / data : "+categories[0]);
         }catch(JSONException e){
+            e.printStackTrace();
 
         }
 
         // Définition d'un rayon du produit scannée
         RayonCategories rayonCategories = RayonCategories.getInstance();
-        Rayon product_rayon = rayonCategories.findRayonByCategory(categories);
-
-
-
-
+        Rayon product_rayon = Rayon.DIVERS;
+        if(categories != null) {
+            product_rayon = rayonCategories.findRayonByCategory(categories);
+        }
 
         Date product_date = new Date();
 
 
         if(product_name!=null){
             Log.d("dtp", "PRODUCT FOUND OK");
-            Toast.makeText(this.mContext, "Product found : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
         }
         else{
             Log.d("dtp", "PRODUIT NOT FOUND KO");
-            Toast.makeText(this.mContext, "Product not found : " + this.contents, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_SHORT).show();
+            return;
         }
 
         ProduitDao produitDao = RoomDB.getDatabase(this.mContext).produitDao();
