@@ -2,6 +2,7 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
     private Context mContext;
     private String contents;
     private Piece piece;
+    private String scancode;
 
     public FetchData(Context context, String contents, String piece) {
         this.mContext = context;
@@ -40,6 +42,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+        scancode = params[0];
         return getJsonFile(params[0], 0);
     }
 
@@ -47,39 +50,51 @@ public class FetchData extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
 
-        if(data.isEmpty())
+
+        Log.i("dtp", "data : " + data);
+        Log.i("dtp", "afterdata");
+
+        if("".equals(data))
         {
-            Log.d("dtp", "PRODUIT NOT FOUND");
-            Toast.makeText(this.mContext, "Product not found : " + this.contents, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
             return;
         }
 
         JSONObject jsonDataProduct = null;
+        JSONObject productJSONObject = null;
+        String product_name = null;
+        String product_brand = null;
+        String product_urlImage = null;
+        float product_weight = 0;
+        String product_categories;
+        String[] categories = null;
+        RayonCategories rayonCategories = RayonCategories.getInstance();
+        Rayon product_rayon = Rayon.DIVERS;
+        Date product_date = new Date();
+
         try {
             jsonDataProduct = new JSONObject(data);
         } catch (JSONException e) {
-            Log.d("dtp", "IMPOSSIBLE TO CREATE JSON OBJECT FROM DATA");
             e.printStackTrace();
         }
 
-        JSONObject productJSONObject;
+        // Get données du produit scanné
         try {
             productJSONObject = jsonDataProduct.getJSONObject("product");
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("dtp", "IMPOSSIBLE TO CREATE JSON OBJECT FROM PRODUCT");
-            Toast.makeText(this.mContext, "PRODUIT INDISPONIBLE : " + this.contents, Toast.LENGTH_SHORT).show();
-            return;
         }
 
-        String product_name = null;
+        // Set le nom du produit
         try {
             product_name = productJSONObject.getString("product_name_fr");
         } catch (JSONException e) {
             e.printStackTrace();
+            Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
+            return;
         }
 
-        String product_brand = null;
+        // Set la marque du produit
         try{
             product_brand = productJSONObject.getString("brands");
         }catch (JSONException e){
@@ -87,7 +102,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         }
 
-        String product_urlImage = null;
+        // Set l'url de l'image du produit
         try{
             product_urlImage = productJSONObject.getString("image_url");
         }catch(JSONException e){
@@ -95,7 +110,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         }
 
-        float product_weight = 0;
+        // Set le poids du produit
         try {
             product_weight = productJSONObject.getInt("product_quantity");
         } catch (JSONException e) {
@@ -104,41 +119,26 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }
 
 
-        String product_categories = null;
-        String[] categories = null;
+        // Set le rayon du produit
         try{
             product_categories = productJSONObject.getString("categories");
-
             categories = product_categories.split(",");
-            Log.d("dtp", "categories with or without spaces : length="+categories.length+ " / data : "+categories[0]);
+
+            if(categories != null) {
+                // Définition d'un rayon du produit scannée
+                product_rayon = rayonCategories.findRayonByCategory(categories);
+            }
+
         }catch(JSONException e){
             e.printStackTrace();
-
         }
 
-        // Définition d'un rayon du produit scannée
-        RayonCategories rayonCategories = RayonCategories.getInstance();
-        Rayon product_rayon = Rayon.DIVERS;
-        if(categories != null) {
-            product_rayon = rayonCategories.findRayonByCategory(categories);
-        }
-
-        Date product_date = new Date();
-
-
-        if(product_name!=null){
-            Log.d("dtp", "PRODUCT FOUND OK");
-            Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Log.d("dtp", "PRODUIT NOT FOUND KO");
-            Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
 
         ProduitDao produitDao = RoomDB.getDatabase(this.mContext).produitDao();
         List<Produit> products = produitDao.findProductByBarcode(this.contents, this.piece.toString());
 
+        // Update du produit si il est déjà enregistré - sinon on l'ajoute à la base
         if(!products.isEmpty()){
             Produit product_found = products.get(0);
             produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite()+1);
@@ -174,6 +174,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
                 return "";
         }
 
+        Log.i("dtp", "urlLink = " + urlLink);
         String data = "";
         try {
             URL url = new URL(urlLink);
@@ -191,7 +192,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
         return data;
     }
