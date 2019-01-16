@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,26 +17,28 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.LdcProduitDefaut;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterProduitFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
 public class DetailLDCFragment extends Fragment {
 
     final static String ARG_LDC = "ARG_LDC";
-    private Integer mLdc;
+    private int idLDC;
     private Context mContext;
 
     private RecyclerView ldcProductRecyclerview, historyListRecyclerView;
     private ImageButton btnEditLdc, btnRecycleLdc;
     private RelativeLayout ldcLabel;
+
+    private ListeCoursesDao listeCoursesDao;
 
     public static Fragment newInstance(int id) {
         Bundle args = new Bundle();
@@ -51,7 +53,7 @@ public class DetailLDCFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = this.getContext();
         if (getArguments() != null) {
-            mLdc = getArguments().getInt(ARG_LDC);
+            idLDC = getArguments().getInt(ARG_LDC);
         }
     }
 
@@ -59,11 +61,30 @@ public class DetailLDCFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_ldc_fragment, container, false);
 
+
+        this.listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
+        ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
+        float prix_total = 0;
+        for(Produit produit : listeCourses.getProduitsPris())
+        {
+            prix_total += produit.getPrix();
+        }
+        for(Produit produit : listeCourses.getProduitsAPrendre())
+        {
+            prix_total += produit.getPrix();
+        }
+
         ldcLabel = view.findViewById(R.id.ldc_label);
+        TextView ldc_name_detail = view.findViewById(R.id.ldc_name_detail);
+        ldc_name_detail.setText(listeCourses.getNom());
+
+        TextView price_product_right = view.findViewById(R.id.price_product_right);
+        price_product_right.setText(Float.toString(prix_total) + " €");
+
 
         ldcProductRecyclerview = view.findViewById(R.id.ldc_product_list_recyclerview);
         LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext);
-        ldcProductAdapter.setData(generateProduct());
+        ldcProductAdapter.setData(listeCourses.getProduitsAPrendre());
         ldcProductRecyclerview.setAdapter(ldcProductAdapter);
         RecyclerView.LayoutManager ldcProductLayoutManager = new LinearLayoutManager(mContext);
         ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
@@ -73,7 +94,7 @@ public class DetailLDCFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(mLdc));
+                transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(idLDC));
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -98,14 +119,15 @@ public class DetailLDCFragment extends Fragment {
                 ConstraintLayout peekLayout = ldcBottomControl.findViewById(R.id.bottom_sheet_control);
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     arrow_down.setVisibility(View.VISIBLE);
-                    peekLayout.setBackgroundColor(Color.DKGRAY);
+                    //peekLayout.setBackgroundColor(Color.DKGRAY);
+                    peekLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
                     ldcProductRecyclerview.setVisibility(View.GONE);
                     arrow_up.setVisibility(View.GONE);
                     ldcLabel.setVisibility(View.GONE);
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     arrow_up.setVisibility(View.VISIBLE);
                     ldcLabel.setVisibility(View.VISIBLE);
-                    peekLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+                    peekLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
                     ldcProductRecyclerview.setVisibility(View.VISIBLE);
                     arrow_down.setVisibility(View.GONE);
                 }
@@ -117,32 +139,11 @@ public class DetailLDCFragment extends Fragment {
 
         historyListRecyclerView = ldcBottomControl.findViewById(R.id.bottom_sheet_content_ldc_history_recyclerview);
         LDCProductAdapter historyAdapter = new LDCProductAdapter(mContext);
-        historyAdapter.setData(generateProduct2());
+        historyAdapter.setData(listeCourses.getProduitsPris());
         historyListRecyclerView.setAdapter(historyAdapter);
         RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(mContext);
         historyListRecyclerView.setLayoutManager(historyLayoutManager);
 
         return view;
     }
-
-    private List<LdcProduitDefaut> generateProduct2() {
-        List<LdcProduitDefaut> prods = new ArrayList<>();
-        prods.add(new LdcProduitDefaut("Thon Caumartin", 5.4f, 2));
-        prods.add(new LdcProduitDefaut("Oeufs - Demigros de chez Auchan Villeneuve d'Ascq Market", 3.3f, 1));
-
-        return prods;
-    }
-
-    private List<LdcProduitDefaut> generateProduct() {
-        List<LdcProduitDefaut> prods = new ArrayList<>();
-        prods.add(new LdcProduitDefaut("Viande de chèvre", 5.4f, 2));
-        prods.add(new LdcProduitDefaut("Beurre St Michel", 1.35f, 3));
-        prods.add(new LdcProduitDefaut("Oeufs - Demigros de chez Auchan Villeneuve d'Ascq Market", 3.3f, 1));
-        prods.add(new LdcProduitDefaut("Shampoing Gel Douche AXE Sensation", 3.4f, 15));
-        prods.add(new LdcProduitDefaut("Fromage Emmental Entremont", 2.4f, 2));
-        prods.add(new LdcProduitDefaut("500g Saumon fumé Piquet", 12.4f, 1));
-        return prods;
-    }
-
-
 }

@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.ProduitTypeConverter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,14 @@ public class ListeCourses {
 
     @TypeConverters(ProduitTypeConverter.class)
     private List<Produit> produitsAPrendre;
+
+    public ListeCourses(String nom) {
+        this.nom = nom;
+        this.dateCreation = new Date();
+        this.etat = 0;
+        this.produitsAPrendre = new ArrayList<Produit>();
+        this.produitsPris = new ArrayList<Produit>();
+    }
 
     public int getId() {
         return id;

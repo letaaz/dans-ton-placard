@@ -1,5 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,16 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCoursesDefaut;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
+
+import java.util.List;
 
 public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListener {
 
@@ -25,6 +36,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     private RecyclerView ldcDisponiblesRecyclerView, historyLdcRecyclerView;
     private ImageButton btn_hide_show_ldc, btn_hide_show_history;
     private FloatingActionButton btn_create_ldc_fab;
+    private ListeCoursesDao listeCoursesDao = null;
+    private ProduitDao produitDao = null;
+    private ListeCoursesViewModel listeCoursesViewModel;
+
 
     public static Fragment newInstance(String params) {
         Bundle args = new Bundle();
@@ -43,13 +58,18 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ldc_fragment, container, false);
+        listeCoursesDao = RoomDB.getDatabase(getContext()).listeCoursesDao();
+        produitDao = RoomDB.getDatabase(getContext()).produitDao();
+        listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
-        // ViewModel : retrieve from DB
+
+        LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
+        listeCoursesViewModel.getListesCoursesDisponibles().observe(this, ldc_disponibles -> ldcAdapter.setData(ldc_disponibles));
+
 
         // RecyclerView LDC
         ldcDisponiblesRecyclerView = view.findViewById(R.id.ldc_list_recyclerview);
-        LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
-        ldcAdapter.setData(LDCAdapter.generateLDC());
+        ldcDisponiblesRecyclerView.setNestedScrollingEnabled(false);
         ldcDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         ldcDisponiblesRecyclerView.setAdapter(ldcAdapter);
 
@@ -60,7 +80,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         // RecyclerView hist LDC
         historyLdcRecyclerView = view.findViewById(R.id.history_ldc_recyclerview);
         LDCAdapter historyAdapter = new LDCAdapter(mContext, this);
-        historyAdapter.setData(LDCAdapter.generateLDC2());
+
+        listeCoursesViewModel.getListesCoursesArchivees().observe(this, ldc_archivees -> ldcAdapter.setData(ldc_archivees));
+
+
         historyLdcRecyclerView.setItemAnimator(new DefaultItemAnimator());
         historyLdcRecyclerView.setAdapter(historyAdapter);
 
@@ -115,9 +138,19 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         return view;
     }
 
+
+
+
     @Override
-    public void onItemClickListener(ListeCoursesDefaut ldcDefaut) {
-        // Launch the view for product's detail
+    public void onItemClickListener(ListeCourses ldcDefaut) {
+        if(ldcDefaut.getId() == 1) // Liste automatique - Récupération des produits indisponibles
+        {
+            List<Produit> produits = produitDao.getAllProduitsIndisponibles();
+            ldcDefaut.setProduitsAPrendre(produits);
+            listeCoursesDao.updateListe(ldcDefaut);
+        }
+
+        // Launch the view for liste de course  detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(ldcDefaut.getId()));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

@@ -82,15 +82,15 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="3dp"
-            android:layout_toLeftOf="@id/price_product_left"
+            android:layout_toLeftOf="@id/price_product_right"
             android:background="@color/transparent_background"
             android:src="@drawable/ldc_view_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/price_product_left"
+            app:layout_constraintEnd_toStartOf="@+id/price_product_right"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/price_product_left"
+            android:id="@+id/price_product_right"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_below="@id/view_show_history"

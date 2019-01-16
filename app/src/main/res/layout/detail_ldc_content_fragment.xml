@@ -15,16 +15,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/ldc_name"
+            android:id="@+id/ldc_name_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:text="La liste de Patrick "
+            android:text="Liste de courses"
             android:textColor="@color/primaryTextColor"
-            android:textSize="28sp" />
+            android:textSize="22sp" />
 
         <ImageButton
             android:id="@+id/btn_edit_ldc"
@@ -52,7 +52,8 @@
         android:id="@+id/ldc_product_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"

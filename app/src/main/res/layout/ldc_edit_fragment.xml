@@ -20,7 +20,8 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:text="La liste de Patrick "
+            android:singleLine="true"
+            android:text="Ma nouvelle liste de course"
             android:textColor="@color/primaryTextColor"
             android:textSize="23sp" />
 
@@ -41,9 +42,8 @@
         android:id="@+id/ldc_product_edit_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:scrollbars="vertical"
         android:visibility="visible"

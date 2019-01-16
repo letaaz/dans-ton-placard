@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="insideOverlay"
@@ -20,58 +20,80 @@
                 android:id="@+id/section_ldc_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp">
+                android:layout_margin="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/ldc_disponibles_label"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
                     android:duplicateParentState="true"
-                    style="@style/ListLabelStyle"/>
+                    android:text="@string/ldc_disponibles_label"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/btn_expand_ldc_list"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:duplicateParentState="true"
-                    android:src="@drawable/collapse_arrow_gray"
-                    android:background="@color/transparent_background"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/transparent_background"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/collapse_arrow_gray" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/darkGray"/>
+                    android:background="@color/darkGray" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ldc_list_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:scrollbars="vertical"
-                android:visibility="visible" />
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/section_history_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+                app:layout_constraintVertical_bias="0.055" />
 
             <RelativeLayout
                 android:id="@+id/section_history_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp">
+                android:layout_margin="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ldc_list_recyclerview">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/history_ldc_label"
+                    android:layout_marginLeft="8dp"
                     android:duplicateParentState="true"
-                    style="@style/ListLabelStyle"/>
+                    android:text="@string/history_ldc_label"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/btn_expand_history_list"
@@ -96,16 +118,20 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/history_ldc_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:scrollbars="vertical"
-                android:visibility="visible" />
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/section_history_list"/>
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/ajout_ldc_fab"

@@ -36,6 +36,7 @@
     <string name="archiver_ldc">Archiver</string>
     <string name="label_quantité_ab">Qté :</string>
     <string name="label_prix_ab">Prix :</string>
+    <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>git

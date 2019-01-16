@@ -133,7 +133,7 @@ public class AjouterProduitLDCFragment extends Fragment implements View.OnClickL
                 Log.d("dtp", result.getContents());
                 String data_product = "";
                 try {
-                    data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), "CUISINE").execute(result.getContents()).get();
+                    data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), "CUISINE", mLdc).execute(result.getContents()).get();
                     Log.d("dtp", data_product);
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
