@@ -1,94 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_piece_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnCount="2"
-    android:rowCount="4"
-    android:visibility="visible"
-    tools:context=".view.fragment.RootInventaireFragment">
+    android:background="@color/gridViewBackground">
 
-    <ImageButton
-        android:id="@+id/kitchen_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:backgroundTint="@color/colorBackgroundPiece"
-        android:contentDescription="@string/cuisine"
-        android:cropToPadding="false"
-        android:elevation="10dp"
-        android:padding="15dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_kitchen" />
-
-    <ImageButton
-        android:id="@+id/bathroom_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:backgroundTint="@color/colorBackgroundPiece"
-        android:contentDescription="@string/salle_de_bain"
-        android:elevation="10dp"
-        android:padding="15dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_shower" />
-
-    <ImageButton
-        android:id="@+id/dinner_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:backgroundTint="@color/colorBackgroundPiece"
-        android:contentDescription="dinner_btn"
-        android:elevation="10dp"
-        android:padding="15dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_chair" />
-
-    <ImageButton
-        android:id="@+id/cellar_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:backgroundTint="@color/colorBackgroundPiece"
-        android:contentDescription="cellar_btn"
-        android:elevation="10dp"
-        android:padding="15dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_brickwall" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:backgroundTint="@color/colorBackgroundPiece"
-        android:elevation="10dp"
-        android:padding="15dp"
-        app:srcCompat="@mipmap/ic_launcher" />
-
-    <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:backgroundTint="@color/colorBackgroundPiece"
-        android:elevation="10dp"
-        android:padding="15dp"
-        app:srcCompat="@mipmap/ic_launcher" />
-
-</GridLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/piece_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -28,6 +28,11 @@ public class ProduitViewModel extends AndroidViewModel {
         return produitDao.findProductsByPiece(piece);
     }
 
+    public LiveData<List<Produit>> getAllProduits()
+    {
+        return produitDao.findAll();
+    }
+
     public LiveData<List<Produit>> getProduitsDisponiblesParPiece(String piece)
     {
         return produitDao.getProduitsDisponiblesParPiece(piece);

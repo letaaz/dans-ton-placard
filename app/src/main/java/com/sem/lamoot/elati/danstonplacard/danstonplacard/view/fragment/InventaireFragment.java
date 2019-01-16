@@ -3,17 +3,19 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.PieceIcone;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.PieceFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.AdapterForRecyclerViewPieces;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InventaireFragment extends Fragment {
 
@@ -32,43 +34,44 @@ public class InventaireFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
-        initImageButton(view);
+        final View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
+
+        this.setRecyclerViewPiece(view);
+
+        //initImageButton(view);
         return view;
     }
 
-    private void initImageButton(View rootView) {
-        ImageButton kitchen = (ImageButton) rootView.findViewById(R.id.kitchen_btn);
-        kitchen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPieceFragment("CUISINE");
-            }
-        });
+    private void setRecyclerViewPiece(View view)
+    {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.piece_recyclerview);
+        GridLayoutManager mGrid = new GridLayoutManager(this.getActivity(), 2);
+        recyclerView.setLayoutManager(mGrid);
 
-        ImageButton bathroom = (ImageButton) rootView.findViewById(R.id.bathroom_btn);
-        bathroom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPieceFragment("SALLE_DE_BAIN");
-            }
-        });
+        List<PieceIcone> pieces = this.getDrawablesIntPieces();
 
-        ImageButton basement = (ImageButton) rootView.findViewById(R.id.cellar_btn);
-        basement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPieceFragment("CAVE");
-            }
-        });
+        this.setAdapterToRecyclerViewPieces(recyclerView, pieces);
 
-        ImageButton dining_room = (ImageButton) rootView.findViewById(R.id.dinner_btn);
-        dining_room.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPieceFragment("SALLE_A_MANGER");
-            }
-        });
+    }
+
+    public List<PieceIcone> getDrawablesIntPieces()
+    {
+        List<PieceIcone> pieces = new ArrayList<>();
+        pieces.add(new PieceIcone(R.drawable.home_cuisine, Piece.CUISINE));
+        pieces.add(new PieceIcone(R.drawable.home_salledebain, Piece.SALLE_DE_BAIN));
+        pieces.add(new PieceIcone(R.drawable.home_sejour, Piece.SALLE_A_MANGER));
+        pieces.add(new PieceIcone(R.drawable.home_cave, Piece.CAVE));
+        pieces.add(new PieceIcone(R.drawable.home_chambre, Piece.CHAMBRE));
+        pieces.add(new PieceIcone(R.drawable.home_garage, Piece.GARAGE));
+        pieces.add(new PieceIcone(R.drawable.home_divers, Piece.DIVERS));
+
+        return pieces;
+    }
+
+    public void setAdapterToRecyclerViewPieces(RecyclerView recyclerView, List<PieceIcone> pieces)
+    {
+        AdapterForRecyclerViewPieces adapterForRecyclerViewPieces = new AdapterForRecyclerViewPieces(this.getContext(), pieces);
+        recyclerView.setAdapter(adapterForRecyclerViewPieces);
     }
 
     private void showPieceFragment(String piece) {

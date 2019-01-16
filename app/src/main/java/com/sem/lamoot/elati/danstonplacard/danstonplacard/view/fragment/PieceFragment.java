@@ -10,12 +10,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
@@ -44,6 +47,8 @@ public class PieceFragment extends Fragment
     private ProduitViewModel produitViewModel2;
 
 
+    private View view;
+
     public static Fragment newInstance(String param){
         Bundle args = new Bundle();
         args.putString(ARG_PIECE, param);
@@ -67,31 +72,11 @@ public class PieceFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
 
-        // Récupération des produits disponibles
+        this.view = view;
+
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        produitViewModel.getProduitsDisponiblesParPiece(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
-        produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
-
-        // Set recyclerView + Adapter - Produits disponibles
-        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
-        produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
-        produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
-
-        produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
-        produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
-        produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
-
-        // Set recyclerView + Adapter - Produits indisponibles
-        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
-        produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
-        produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
-
-        produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
-        produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
-        produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
-
+        setProduitsDisponibles(produitViewModel);
+        setProduitsIndisponibles(produitViewModel);
 
         TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +103,43 @@ public class PieceFragment extends Fragment
 
         return view;
     }
+
+
+    private void setProduitsDisponibles(ProduitViewModel produitViewModel) {
+        produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+
+        setRecyclerViewProduitsDisponibles();
+    }
+
+    private void setRecyclerViewProduitsDisponibles() {
+        // Set recyclerView + Adapter - Produits disponibles
+        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
+        produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
+        produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
+
+        produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
+        produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private void setProduitsIndisponibles(ProduitViewModel produitViewModel) {
+        produitViewModel.getProduitsDisponiblesParPiece(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+        setRecyclerViewProduitsIndisponibles();
+    }
+
+    private void setRecyclerViewProduitsIndisponibles() {
+        // Set recyclerView + Adapter - Produits indisponibles
+        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
+        produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
+        produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
+
+        produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
+        produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
+    }
+
 
     @Override
     public void onMinusImageViewClickListener(Produit produit) {
