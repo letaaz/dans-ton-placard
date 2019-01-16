@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.LdcProduitDefaut;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterProduitFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,16 +72,19 @@ public class DetailLDCFragment extends Fragment {
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Edition...", Toast.LENGTH_SHORT).show();
-                // Launch edit ldc fragment
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(mLdc));
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         btnRecycleLdc = view.findViewById(R.id.btn_archive_ldc);
         btnRecycleLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Archive...", Toast.LENGTH_SHORT).show();
                 // Set archive field to 1
+                getFragmentManager().popBackStack();
             }
         });
 

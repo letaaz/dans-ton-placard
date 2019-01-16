@@ -49,13 +49,11 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     private OnProductItemClickListener onProductItemClickListener;
 
 
-    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener,
-                          OnProductItemClickListener itemListener){
+    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener){
         this.data = new ArrayList<>();
         this.context = context;
         this.onMinusImageViewClickListener = minusListener;
         this.onAddImageViewClickListener = addListener;
-        this.onProductItemClickListener = itemListener;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -127,12 +125,14 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         }
     }
 
+    public void setOnProductItemClickListener(OnProductItemClickListener onProductItemClickListener) {
+        this.onProductItemClickListener = onProductItemClickListener;
+    }
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
         private TextView nom_produit, quantite, id_produit;
-        private ImageView imageProduit, retirerUnProduit, ajouterUnProduit;
-        private View item_produit;
+        private ImageView imageProduit, retirerUnProduit, ajouterUnProduit, iconAlert;
 
         public ProduitViewHolder(View itemView) {
             super(itemView);
@@ -145,8 +145,8 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             retirerUnProduit = itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
+            iconAlert = itemView.findViewById(R.id.alert_icon);
 
-            //item_produit = itemView.findViewById(R.id.item_product);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

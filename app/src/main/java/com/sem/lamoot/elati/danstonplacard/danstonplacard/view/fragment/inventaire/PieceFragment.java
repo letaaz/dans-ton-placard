@@ -73,7 +73,8 @@ public class PieceFragment extends Fragment
         produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
 
         // Set recyclerView + Adapter - Produits disponibles
-        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
+        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitsDisponiblesAdapter.setOnProductItemClickListener(this);
         produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
         produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
@@ -83,7 +84,8 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
 
         // Set recyclerView + Adapter - Produits indisponibles
-        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, this);
+        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitsIndisponiblesAdapter.setOnProductItemClickListener(this);
         produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
         produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);

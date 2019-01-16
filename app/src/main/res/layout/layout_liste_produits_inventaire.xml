@@ -80,6 +80,17 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/alert_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/minus_button"
+                android:layout_marginEnd="3dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/alert_red" />
+
+            <ImageView
                 android:id="@+id/add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
