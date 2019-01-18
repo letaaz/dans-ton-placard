@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="45dp">
 
     <RelativeLayout
         android:id="@+id/ldc_label"
@@ -30,9 +30,9 @@
             android:id="@+id/btn_edit_ldc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/btn_archive_ldc"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
+            android:layout_toLeftOf="@id/btn_archive_ldc"
             android:background="@color/transparent_background"
             android:src="@drawable/edit_24" />
 
@@ -40,12 +40,12 @@
             android:id="@+id/btn_archive_ldc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/recycle_gray"
-            android:background="@color/transparent_background"
-            android:text="@string/archiver_ldc"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:background="@color/transparent_background"
+            android:src="@drawable/recycle_gray"
+            android:text="@string/archiver_ldc" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
