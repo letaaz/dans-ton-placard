@@ -79,17 +79,21 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
     }
 
     @Override
     public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "nb backstack = " + this.getSupportFragmentManager().getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if(tab_position != 0)
+        else if(tab_position != 0 && this.getSupportFragmentManager().getBackStackEntryCount() == 0)
         {
             tabLayout.getTabAt(0).select();
+
         }
         else {
             super.onBackPressed();
