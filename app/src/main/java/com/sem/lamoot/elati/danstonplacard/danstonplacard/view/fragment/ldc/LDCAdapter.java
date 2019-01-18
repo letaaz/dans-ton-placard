@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCour
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,8 +114,19 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
     public int getItemCount() { return data.size(); }
 
     public void setData(List<ListeCourses> newData) {
-        this.data = newData;
-    }
+
+        if(data != null)
+        {
+            LDCDiffCallback produitDiffCallback = new LDCDiffCallback(data, newData);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(produitDiffCallback);
+
+            data.clear();
+            data.addAll(newData);
+            diffResult.dispatchUpdatesTo(this);
+        }
+        else{
+            data = newData;
+        }    }
 
     public class LDCViewHolder extends RecyclerView.ViewHolder {
 
@@ -126,10 +139,40 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
         }
 
         public void bind(ListeCourses value){
-            if (value.getNom().equals("Dans ton placard"))
+            if (value.getNom().equals("Liste automatique"))
                 itemView.setBackgroundColor(Color.LTGRAY);
             ldcName.setText(value.getNom());
         }
+    }
 
+
+    public class LDCDiffCallback extends DiffUtil.Callback{
+
+        private final List<ListeCourses> oldLDC, newLDC;
+
+        LDCDiffCallback(List<ListeCourses> oldLDC, List<ListeCourses> newLDC) {
+            this.oldLDC = oldLDC;
+            this.newLDC = newLDC;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldLDC.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newLDC.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int i, int i1) {
+            return oldLDC.get(i).getId() == newLDC.get(i1).getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(int i, int i1) {
+            return newLDC.get(i).equals(newLDC.get(i1));
+        }
     }
 }

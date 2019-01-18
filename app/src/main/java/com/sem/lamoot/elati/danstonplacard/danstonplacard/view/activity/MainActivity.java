@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "nb backstack = " + this.getSupportFragmentManager().getBackStackEntryCount(), Toast.LENGTH_SHORT).show();
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
@@ -58,6 +59,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ldc_fragment, container, false);
+
         listeCoursesDao = RoomDB.getDatabase(getContext()).listeCoursesDao();
         produitDao = RoomDB.getDatabase(getContext()).produitDao();
         listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
@@ -135,11 +137,9 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                 }
             }
         });
+
         return view;
     }
-
-
-
 
     @Override
     public void onItemClickListener(ListeCourses ldcDefaut) {
@@ -157,4 +157,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+
 }
