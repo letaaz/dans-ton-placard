@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Ingredient;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.util.List;
 
@@ -42,4 +43,13 @@ public interface ListeCoursesDao {
 
     @Query("SELECT * FROM liste_de_courses WHERE etat = 0")
     LiveData<List<ListeCourses>> getAllListesCoursesDisponibles();
+
+    @Query("SELECT * FROM liste_de_courses WHERE id = :idLDC")
+    LiveData<ListeCourses> getListeCoursesByIdLD(int idLDC);
+
+//
+//    @Query("SELECT produitsAPrendre FROM liste_de_courses WHERE id = :idLDC")
+//    LiveData<List<Produit>> getProduitsAPrendreByIdLDC(int idLDC);
+
+
 }

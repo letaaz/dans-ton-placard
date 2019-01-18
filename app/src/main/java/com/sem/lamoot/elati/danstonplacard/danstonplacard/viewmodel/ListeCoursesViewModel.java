@@ -34,4 +34,14 @@ public class ListeCoursesViewModel extends AndroidViewModel {
     {
         return listeCoursesDao.getAllListesCoursesArchivees();
     }
+
+    public LiveData<ListeCourses> getListeCoursesByIdLD(int idLDC)
+    {
+        return listeCoursesDao.getListeCoursesByIdLD(idLDC);
+    }
+
+//    public LiveData<List<Produit>> getProduitsAPrendreByIdLDC(int idLDC)
+//    {
+//        return listeCoursesDao.getProduitsAPrendreByIdLDC(idLDC);
+//    }
 }

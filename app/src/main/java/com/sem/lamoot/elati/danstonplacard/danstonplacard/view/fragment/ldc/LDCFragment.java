@@ -40,6 +40,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     private ListeCoursesDao listeCoursesDao = null;
     private ProduitDao produitDao = null;
     private ListeCoursesViewModel listeCoursesViewModel;
+    private View view;
 
 
     public static Fragment newInstance(String params) {
@@ -58,40 +59,16 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.ldc_fragment, container, false);
+        this.view = inflater.inflate(R.layout.ldc_fragment, container, false);
 
         listeCoursesDao = RoomDB.getDatabase(getContext()).listeCoursesDao();
         produitDao = RoomDB.getDatabase(getContext()).produitDao();
         listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
-
-        LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
-        listeCoursesViewModel.getListesCoursesDisponibles().observe(this, ldc_disponibles -> ldcAdapter.setData(ldc_disponibles));
-
-
-        // RecyclerView LDC
-        ldcDisponiblesRecyclerView = view.findViewById(R.id.ldc_list_recyclerview);
-        ldcDisponiblesRecyclerView.setNestedScrollingEnabled(false);
-        ldcDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        ldcDisponiblesRecyclerView.setAdapter(ldcAdapter);
-
-        RecyclerView.LayoutManager ldcLayoutManager = new LinearLayoutManager(getActivity());
-        ldcDisponiblesRecyclerView.setLayoutManager(ldcLayoutManager);
-        ldcDisponiblesRecyclerView.setNestedScrollingEnabled(false);
-
-        // RecyclerView hist LDC
-        historyLdcRecyclerView = view.findViewById(R.id.history_ldc_recyclerview);
-        LDCAdapter historyAdapter = new LDCAdapter(mContext, this);
-
-        listeCoursesViewModel.getListesCoursesArchivees().observe(this, ldc_archivees -> ldcAdapter.setData(ldc_archivees));
-
-
-        historyLdcRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        historyLdcRecyclerView.setAdapter(historyAdapter);
-
-        RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(getActivity());
-        historyLdcRecyclerView.setLayoutManager(historyLayoutManager);
-        historyLdcRecyclerView.setNestedScrollingEnabled(false);
+        
+        setLDC(listeCoursesViewModel);
+        
+        setLDCArchivees(listeCoursesViewModel);
 
         btn_create_ldc_fab = view.findViewById(R.id.ajout_ldc_fab);
         btn_create_ldc_fab.setOnClickListener(new View.OnClickListener() {
@@ -141,13 +118,55 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         return view;
     }
 
+    private void setLDCArchivees(ListeCoursesViewModel listeCoursesViewModel) {
+        // RecyclerView hist LDC
+        LDCAdapter historyAdapter = new LDCAdapter(mContext, this);
+        listeCoursesViewModel.getListesCoursesArchivees().observe(this, ldc_archivees -> historyAdapter.setData(ldc_archivees));
+
+        setRecyclerForLDCArchivees(historyAdapter);
+
+    }
+
+    private void setRecyclerForLDCArchivees(LDCAdapter historyAdapter) {
+        historyLdcRecyclerView = view.findViewById(R.id.history_ldc_recyclerview);
+
+        historyLdcRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        historyLdcRecyclerView.setAdapter(historyAdapter);
+
+        RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(getActivity());
+        historyLdcRecyclerView.setLayoutManager(historyLayoutManager);
+        historyLdcRecyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private void setLDC(ListeCoursesViewModel listeCoursesViewModel) {
+        LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
+        listeCoursesViewModel.getListesCoursesDisponibles().observe(this, ldc_disponibles -> ldcAdapter.setData(ldc_disponibles));
+
+        setRecyclerForLDC(ldcAdapter);
+    }
+
+    private void setRecyclerForLDC(LDCAdapter ldcAdapter) {
+        // RecyclerView LDC
+        ldcDisponiblesRecyclerView = view.findViewById(R.id.ldc_list_recyclerview);
+        ldcDisponiblesRecyclerView.setNestedScrollingEnabled(false);
+        ldcDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        ldcDisponiblesRecyclerView.setAdapter(ldcAdapter);
+
+        RecyclerView.LayoutManager ldcLayoutManager = new LinearLayoutManager(getActivity());
+        ldcDisponiblesRecyclerView.setLayoutManager(ldcLayoutManager);
+        ldcDisponiblesRecyclerView.setNestedScrollingEnabled(false);
+    }
+
     @Override
     public void onItemClickListener(ListeCourses ldcDefaut) {
         if(ldcDefaut.getId() == 1) // Liste automatique - Récupération des produits indisponibles
         {
             List<Produit> produits = produitDao.getAllProduitsIndisponibles();
-            ldcDefaut.setProduitsAPrendre(produits);
-            listeCoursesDao.updateListe(ldcDefaut);
+            if(! ldcDefaut.getProduitsAPrendre().retainAll(produits)){ // Si produits indisponibles == produits à prendre
+                ldcDefaut.setProduitsAPrendre(produits);
+                listeCoursesDao.updateListe(ldcDefaut);
+            }
+
         }
 
         // Launch the view for liste de course  detail

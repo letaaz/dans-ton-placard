@@ -7,21 +7,32 @@ import com.google.gson.reflect.TypeToken;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ProduitTypeConverter {
 
+
     @TypeConverter
     public static List<Produit> toProduitList(String produitList){
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<List<Produit>>() {}.getType();
+//        return gson.fromJson(produitList, type);
+
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Produit>>() {}.getType();
-        return gson.fromJson(produitList, type);
+        Type listType = new TypeToken<List<Produit>>() {}.getType();
+        return gson.fromJson(produitList, listType);
     }
 
     @TypeConverter
     public static String fromProduitList(List<Produit> produitList){
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<List<Produit>>() {}.getType();
+//        return gson.toJson(produitList, type);
+
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Produit>>() {}.getType();
-        return gson.toJson(produitList, type);
+        return gson.toJson(produitList);
+
     }
 }

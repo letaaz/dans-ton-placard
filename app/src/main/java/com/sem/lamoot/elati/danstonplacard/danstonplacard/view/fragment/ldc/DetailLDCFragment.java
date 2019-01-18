@@ -1,5 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 
 import io.reactivex.annotations.NonNull;
@@ -62,6 +65,9 @@ public class DetailLDCFragment extends Fragment {
         View view = inflater.inflate(R.layout.detail_ldc_fragment, container, false);
 
 
+        ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
+
+
         this.listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
         ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
         float prix_total = 0;
@@ -83,8 +89,12 @@ public class DetailLDCFragment extends Fragment {
 
 
         ldcProductRecyclerview = view.findViewById(R.id.ldc_product_list_recyclerview);
-        LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext);
-        ldcProductAdapter.setData(listeCourses.getProduitsAPrendre());
+        LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext, idLDC, true);
+
+//        ldcProductAdapter.setData(listeCourses.getProduitsAPrendre()); //LiveDATA ?
+        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 ->  ldcProductAdapter.setData(listeCourses1.getProduitsAPrendre()));
+
+
         ldcProductRecyclerview.setAdapter(ldcProductAdapter);
         RecyclerView.LayoutManager ldcProductLayoutManager = new LinearLayoutManager(mContext);
         ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
@@ -138,12 +148,17 @@ public class DetailLDCFragment extends Fragment {
         });
 
         historyListRecyclerView = ldcBottomControl.findViewById(R.id.bottom_sheet_content_ldc_history_recyclerview);
-        LDCProductAdapter historyAdapter = new LDCProductAdapter(mContext);
-        historyAdapter.setData(listeCourses.getProduitsPris());
+        LDCProductAdapter historyAdapter = new LDCProductAdapter(mContext, idLDC, false);
+        //historyAdapter.setData(listeCourses.getProduitsPris());
+        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 ->  historyAdapter.setData(listeCourses1.getProduitsPris()));
+
         historyListRecyclerView.setAdapter(historyAdapter);
         RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(mContext);
         historyListRecyclerView.setLayoutManager(historyLayoutManager);
 
         return view;
     }
+
+
+
 }

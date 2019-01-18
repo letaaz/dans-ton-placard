@@ -126,7 +126,8 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
         }
         else{
             data = newData;
-        }    }
+        }
+    }
 
     public class LDCViewHolder extends RecyclerView.ViewHolder {
 
