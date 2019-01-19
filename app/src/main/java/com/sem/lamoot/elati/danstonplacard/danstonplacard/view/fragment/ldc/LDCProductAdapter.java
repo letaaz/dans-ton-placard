@@ -94,18 +94,6 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
             id_product_ldc_item = itemView.findViewById(R.id.id_product_ldc_item);
             ldc_product_checked = itemView.findViewById(R.id.ldc_product_checked);
 
-            if(!aPrendre) {
-                ldc_product_checked.setChecked(true);
-                ldc_product_name.setPaintFlags(ldc_product_name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                ldc_product_price.setPaintFlags(ldc_product_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                ldc_product_price_label.setPaintFlags(ldc_product_price_label.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//                        ldc_product_quantity.setPaintFlags(ldc_product_quantity.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            }
-            else
-            {
-                ldc_product_checked.setChecked(false);
-            }
-
             ldc_product_checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -115,35 +103,26 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
                     List<Produit> produitsAprendre = ldc.getProduitsAPrendre();
                     List<Produit> produitsPris = ldc.getProduitsPris();
 
-                    if (isChecked && aPrendre) {
-                        Toast.makeText(mContext, "isChecked et APRENDRE", Toast.LENGTH_SHORT).show();
-                        for(Produit produit : produitsAprendre)
-                        {
-                            if(produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString()))
-                            {
+                    if(isChecked && aPrendre)
+                    {
+                        Toast.makeText(mContext, "Produit coché", Toast.LENGTH_SHORT).show();
+                        for(Produit produit : produitsAprendre) {
+                            if(produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
                                 Toast.makeText(mContext, "inside", Toast.LENGTH_SHORT).show();
                                 produitsAprendre.remove(produit);
                                 produitsPris.add(produit);
-
                                 ldc.setProduitsPris(produitsPris);
                                 ldc.setProduitsAPrendre(produitsAprendre);
-
                                 ldcDao.updateListe(ldc);
+                                break;
                             }
                         }
-
-                    } else {
-                        Toast.makeText(mContext, "ELSE", Toast.LENGTH_SHORT).show();
-
-                        ldc_product_name.setPaintFlags(ldc_product_name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                        ldc_product_price.setPaintFlags(ldc_product_price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                        ldc_product_price_label.setPaintFlags(ldc_product_price_label.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-//                        ldc_product_quantity.setPaintFlags(ldc_product_quantity.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-
-                        for(Produit produit : produitsPris)
-                        {
-                            if(produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString()))
-                            {
+                    }
+                    else if(!isChecked && !aPrendre)
+                    {
+                        Toast.makeText(mContext, "Produit décoché", Toast.LENGTH_SHORT).show();
+                        for(Produit produit : produitsPris) {
+                            if (produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
                                 produitsPris.remove(produit);
                                 produitsAprendre.add(produit);
 
@@ -151,8 +130,8 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
                                 ldc.setProduitsAPrendre(produitsAprendre);
 
                                 ldcDao.updateListe(ldc);
+                                break;
                             }
-
                         }
                     }
                 }
@@ -165,6 +144,18 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
             ldc_product_price.setText(product.getPrix() + " €");
             id_product_ldc_item.setText(String.valueOf(product.getId()));
 
+
+            if(aPrendre)
+            {
+                ldc_product_checked.setChecked(false);
+            }
+            else
+            {
+                ldc_product_name.setPaintFlags(ldc_product_name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                ldc_product_price.setPaintFlags(ldc_product_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                ldc_product_price_label.setPaintFlags(ldc_product_price_label.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                ldc_product_checked.setChecked(true);
+            }
 
             if(product.getUrlImage() != null) {
                 if(product.getUrlImage().contains("http")) {
@@ -216,7 +207,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
         @Override
         public boolean areContentsTheSame(int i, int i1) {
-            return newLDC.get(i).equals(newLDC.get(i1));
+            return oldLDC.get(i).equals(newLDC.get(i1));
         }
     }
 

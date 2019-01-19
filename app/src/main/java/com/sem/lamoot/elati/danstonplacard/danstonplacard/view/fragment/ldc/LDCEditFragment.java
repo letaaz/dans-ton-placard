@@ -112,7 +112,11 @@ public class LDCEditFragment extends Fragment
                 @Override
                 public void onClick(View v) {
 
-                    updateListe(ldcNameEdit);
+                    listeCourse.setNom(ldcNameEdit.getText().toString());
+                    listeCourse.setId(idLdc);
+                    listeCoursesDao.updateListe(listeCourse);
+
+                    getActivity().onBackPressed();
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(idLdc));
@@ -120,6 +124,9 @@ public class LDCEditFragment extends Fragment
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
+
+
+
             });
 
             ldcEditAddProduct.setOnClickListener(new View.OnClickListener() {
@@ -152,13 +159,6 @@ public class LDCEditFragment extends Fragment
         ListeCourses listeCourses = new ListeCourses(listeTitle);
 
         return listeCoursesDao.insert(listeCourses);
-    }
-
-    private void updateListe(EditText ldcNameEdit) {
-        String newTitle = ldcNameEdit.getText().toString();
-        listeCourse.setNom(newTitle);
-        listeCoursesDao.updateListe(listeCourse);
-
     }
 
     @Override

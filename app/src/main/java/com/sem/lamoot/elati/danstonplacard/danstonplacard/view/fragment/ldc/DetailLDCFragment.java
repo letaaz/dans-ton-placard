@@ -29,6 +29,8 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCourses
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 
+import java.util.List;
+
 import io.reactivex.annotations.NonNull;
 
 public class DetailLDCFragment extends Fragment {
@@ -67,7 +69,6 @@ public class DetailLDCFragment extends Fragment {
 
         ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
-
         this.listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
         ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
         float prix_total = 0;
@@ -92,7 +93,7 @@ public class DetailLDCFragment extends Fragment {
         LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext, idLDC, true);
 
 //        ldcProductAdapter.setData(listeCourses.getProduitsAPrendre()); //LiveDATA ?
-        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 ->  ldcProductAdapter.setData(listeCourses1.getProduitsAPrendre()));
+        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 -> ldcProductAdapter.setData(listeCourses1.getProduitsAPrendre()));
 
 
         ldcProductRecyclerview.setAdapter(ldcProductAdapter);
@@ -100,6 +101,9 @@ public class DetailLDCFragment extends Fragment {
         ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
 
         btnEditLdc = view.findViewById(R.id.btn_edit_ldc);
+        if(idLDC == 1){
+            btnEditLdc.setVisibility(View.INVISIBLE);
+        }
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +154,17 @@ public class DetailLDCFragment extends Fragment {
         historyListRecyclerView = ldcBottomControl.findViewById(R.id.bottom_sheet_content_ldc_history_recyclerview);
         LDCProductAdapter historyAdapter = new LDCProductAdapter(mContext, idLDC, false);
         //historyAdapter.setData(listeCourses.getProduitsPris());
-        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 ->  historyAdapter.setData(listeCourses1.getProduitsPris()));
+        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 -> {
+            List<Produit> estPris = listeCourses1.getProduitsPris();
+            historyAdapter.setData(estPris);
+            float prix_estPris = 0;
+            for(Produit produit : estPris)
+            {
+                prix_estPris += produit.getPrix();
+            }
+            TextView price_caddie = view.findViewById(R.id.price_product_caddie);
+            price_caddie.setText(Float.toString(prix_estPris));
+        });
 
         historyListRecyclerView.setAdapter(historyAdapter);
         RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(mContext);

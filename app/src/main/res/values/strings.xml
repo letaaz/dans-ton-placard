@@ -39,11 +39,13 @@
     <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
 
     <string-array name="pieces">
-        <item name="cuisine">Cuisine</item>git
+        <item name="cuisine">Cuisine</item>
         <item name="salle_de_bain">Salle de bain</item>
         <item name="cave">Cave</item>
         <item name="garage">Garage</item>
-        <item name="salle_a_manger">Salle à manger</item>
+        <item name="salle_a_manger">Séjour</item>
+        <item name="chambre">Chambre</item>
+        <item name="divers">Divers</item>
     </string-array>
 
     <string-array name="rayons">

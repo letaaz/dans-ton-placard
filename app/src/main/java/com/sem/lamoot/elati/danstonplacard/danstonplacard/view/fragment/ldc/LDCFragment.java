@@ -162,7 +162,8 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         if(ldcDefaut.getId() == 1) // Liste automatique - Récupération des produits indisponibles
         {
             List<Produit> produits = produitDao.getAllProduitsIndisponibles();
-            if(! ldcDefaut.getProduitsAPrendre().retainAll(produits)){ // Si produits indisponibles == produits à prendre
+            Toast.makeText(getContext(), "" + ldcDefaut.getProduitsAPrendre().retainAll(produits), Toast.LENGTH_SHORT).show();
+            if(! ldcDefaut.getProduitsAPrendre().retainAll(produits)){ // Si produits indisponibles != produits à prendre
                 ldcDefaut.setProduitsAPrendre(produits);
                 listeCoursesDao.updateListe(ldcDefaut);
             }

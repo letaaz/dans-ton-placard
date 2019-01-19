@@ -120,7 +120,7 @@ public class PieceFragment extends Fragment
     private void setRecyclerViewProduitsDisponibles() {
         // Set recyclerView + Adapter - Produits disponibles
         produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
-        produitsDisponiblesAdapter.setOnProductItemClickListener(this);
+        produitsDisponiblesAdapter.setOnProductItemClickListener(this::onProductItemClickListener);
         produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
         produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
@@ -138,7 +138,7 @@ public class PieceFragment extends Fragment
     private void setRecyclerViewProduitsIndisponibles() {
         // Set recyclerView + Adapter - Produits indisponibles
         produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
-        produitsIndisponiblesAdapter.setOnProductItemClickListener(this);
+        produitsIndisponiblesAdapter.setOnProductItemClickListener(this::onProductItemClickListener);
         produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
         produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);

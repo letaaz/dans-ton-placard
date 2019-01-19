@@ -116,8 +116,11 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 {
                     Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.FRUITS_LEGUMES, Piece.DIVERS);
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
-                    produitDao.insert(newProduit);
+                    long id_newProduit = produitDao.insert(newProduit);
+//                    Toast.makeText(mContext, "" + newProduit.getId(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mContext, "" + id_newProduit, Toast.LENGTH_SHORT).show();
 
+                    newProduit.setId((int) id_newProduit);
                     listeCourses.getProduitsAPrendre().add(newProduit);
                     listeCoursesDao.updateListe(listeCourses);
 

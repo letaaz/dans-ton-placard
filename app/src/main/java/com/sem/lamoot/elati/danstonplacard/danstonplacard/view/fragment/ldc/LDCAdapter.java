@@ -93,10 +93,12 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
                         ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
                         for(Produit produit : listeCourses.getProduitsPris())
                         {
+                            Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
                             produitDao.deleteProductById(produit.getId());
                         }
                         for(Produit produit : listeCourses.getProduitsAPrendre())
                         {
+                            Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
                             produitDao.deleteProductById(produit.getId());
                         }
 
@@ -173,7 +175,7 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
         @Override
         public boolean areContentsTheSame(int i, int i1) {
-            return newLDC.get(i).equals(newLDC.get(i1));
+            return oldLDC.get(i).equals(newLDC.get(i1));
         }
     }
 }

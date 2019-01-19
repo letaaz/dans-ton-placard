@@ -15,7 +15,7 @@ import java.util.List;
 public interface ProduitDao {
 
     @Insert
-    void insert(Produit produit);
+    long insert(Produit produit);
 
     @Query("DELETE FROM produit")
     void deleteAll();
