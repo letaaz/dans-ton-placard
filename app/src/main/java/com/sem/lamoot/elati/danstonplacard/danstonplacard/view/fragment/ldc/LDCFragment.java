@@ -28,7 +28,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCourses
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListener {
 
@@ -162,21 +164,18 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public void onItemClickListener(ListeCourses ldcDefaut) {
         if(ldcDefaut.getId() == 1) // Liste automatique - Récupération des produits indisponibles
         {
-            List<Produit> produits = produitDao.getAllProduitsIndisponibles();
 
+            List<Produit> produitsIndisponibles = produitDao.getAllProduitsIndisponibles();
 
-            List<Produit> allPrduitsInLDCDefault = new ArrayList<>();
-            allPrduitsInLDCDefault.addAll(ldcDefaut.getProduitsAPrendre());
-            allPrduitsInLDCDefault.addAll(ldcDefaut.getProduitsPris());
+            boolean generateNewList = checkIfNewProductsIndisponibles(produitsIndisponibles, ldcDefaut);
+//
+//            if(generateNewList){ // Si produits indisponibles != produits à prendre
+//                ldcDefaut.setProduitsAPrendre(produitsIndisponibles);
+//                listeCoursesDao.updateListe(ldcDefaut);
+//            }
 
-            Toast.makeText(getContext(), "" + allPrduitsInLDCDefault.retainAll(produits), Toast.LENGTH_SHORT).show();
-
-
-            if(! allPrduitsInLDCDefault.retainAll(produits)){ // Si produits indisponibles != produits à prendre
-                ldcDefaut.setProduitsAPrendre(produits);
-                listeCoursesDao.updateListe(ldcDefaut);
-            }
-
+//            ldcDefaut.setProduitsAPrendre(produitsIndisponibles);
+//            listeCoursesDao.updateListe(ldcDefaut);
         }
 
         // Launch the view for liste de course  detail
@@ -187,5 +186,131 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         transaction.commit();
     }
 
+    /**
+     * Fonction qui va comparer les ids des produits notés indisponibles dans l'inventaire avec les id des produits indiqués comme aPrendre et estPris dans la liste "autogénérée"
+     * @param allIndispos
+     * @param li
+     */
+    private boolean checkIfNewProductsIndisponibles(List<Produit> allIndispos, ListeCourses li)
+    {
+        List<Produit> produitsInLDC = new ArrayList<>();
+        List<Produit> aPrendre = li.getProduitsAPrendre();
+        List<Produit> estPris = li.getProduitsPris();
+        produitsInLDC.addAll(aPrendre);
+        produitsInLDC.addAll(estPris);
+        boolean allIndispoContainsProductLDC = containsProducts(produitsInLDC, allIndispos);
+
+        Log.d("dtp", "contains ? : " +  allIndispoContainsProductLDC);
+
+
+        if(! allIndispoContainsProductLDC) //Les deux listes sont différents - il faut mettre jour aPrendre et estPris
+        {
+
+            List<Integer> idInLDC = new ArrayList<>();
+            List<Integer> idInIndispo = new ArrayList<>();
+
+            for(Produit produit : allIndispos){ idInIndispo.add(produit.getId());}
+            for(Produit produit : produitsInLDC){ idInLDC.add(produit.getId());}
+
+            if(allIndispos.size() < produitsInLDC.size()) // On a supprimé des produits indisponibles - Il faut retirer de aPrendre/estPris
+            {
+                Log.d("dtp", "ARE WE HERE ?");
+                idInLDC.removeAll(idInIndispo);
+                Produit produit = null;
+                for(Integer id : idInLDC)
+                {
+                    produit = produitDao.findProductById(id);
+                    if(containsProduct(aPrendre, produit)) // produit est dans aPrendre
+                    {
+                        //boolean isRemove = aPrendre.remove(produit);
+                        //Log.d("dtp", "isRemove ?" + isRemove);
+                        removeProductFromList(aPrendre, produit);
+                    }
+                    else // produti est dans estPris
+                    {
+                        //estPris.remove(produit);
+                        removeProductFromList(estPris, produit);
+                    }
+                    li.setProduitsPris(estPris);
+                    li.setProduitsAPrendre(aPrendre);
+                    listeCoursesDao.updateListe(li);
+                }
+
+
+                Log.d("dtp", "if : " + String.valueOf(idInLDC.size()));
+
+
+            }
+            else{ // On a ajouté des produits aux indisponibles - Il faut ajouter à aPrendre
+                idInIndispo.removeAll(idInLDC);
+                Produit produit = null;
+                for(Integer id : idInIndispo)
+                {
+                    produit = produitDao.findProductById(id);
+                    aPrendre.add(produit);
+                    Log.d("dtp", produit.getNom());
+                }
+
+                listeCoursesDao.updateListe(li);
+                Log.d("dtp", "else : " +String.valueOf(idInIndispo.size()));
+            }
+
+        }
+
+        //return true;
+        return false;
+    }
+
+
+    public boolean containsProducts(List<Produit> listA, List<Produit> listB) {
+
+        if(listB.size() > listA.size())
+        {
+            List<Produit> att = listA;
+            listA = listB;
+            listB = att;
+        }
+
+        for(Produit produitA : listA)
+        {
+           for(int j = 0; j < listB.size(); j++)
+           {
+               Log.d("dtp", produitA.getId() + " vs " + listB.get(j).getId());
+               if(produitA.getId() == listB.get(j).getId())
+               {
+                   break;
+               }
+               if(j == listB.size()-1 && produitA.getId() != listB.get(j).getId())
+               {
+                   return false;
+               }
+           }
+        }
+        return true;
+    }
+
+    public boolean containsProduct(List<Produit> list, Produit produit)
+    {
+        for(Produit pro : list)
+        {
+            if(produit.getId() == pro.getId())
+                return true;
+        }
+        return false;
+    }
+
+    public List<Produit> removeProductFromList(List<Produit> list, Produit produit)
+    {
+        for(int i = 0; i < list.size(); i++)
+        {
+            if(list.get(i).getId() == produit.getId())
+            {
+                list.remove(i);
+                return list;
+            }
+        }
+        return list;
+    }
 
 }
+
