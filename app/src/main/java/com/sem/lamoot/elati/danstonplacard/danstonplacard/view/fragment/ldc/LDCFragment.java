@@ -27,6 +27,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListener {
@@ -162,8 +163,16 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         if(ldcDefaut.getId() == 1) // Liste automatique - Récupération des produits indisponibles
         {
             List<Produit> produits = produitDao.getAllProduitsIndisponibles();
-            Toast.makeText(getContext(), "" + ldcDefaut.getProduitsAPrendre().retainAll(produits), Toast.LENGTH_SHORT).show();
-            if(! ldcDefaut.getProduitsAPrendre().retainAll(produits)){ // Si produits indisponibles != produits à prendre
+
+
+            List<Produit> allPrduitsInLDCDefault = new ArrayList<>();
+            allPrduitsInLDCDefault.addAll(ldcDefaut.getProduitsAPrendre());
+            allPrduitsInLDCDefault.addAll(ldcDefaut.getProduitsPris());
+
+            Toast.makeText(getContext(), "" + allPrduitsInLDCDefault.retainAll(produits), Toast.LENGTH_SHORT).show();
+
+
+            if(! allPrduitsInLDCDefault.retainAll(produits)){ // Si produits indisponibles != produits à prendre
                 ldcDefaut.setProduitsAPrendre(produits);
                 listeCoursesDao.updateListe(ldcDefaut);
             }

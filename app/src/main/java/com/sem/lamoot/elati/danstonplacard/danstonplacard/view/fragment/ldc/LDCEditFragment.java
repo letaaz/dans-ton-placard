@@ -66,36 +66,6 @@ public class LDCEditFragment extends Fragment
         EditText ldcNameEdit = (EditText) view.findViewById(R.id.ldc_edit_name);
         ldcEditAddProduct = view.findViewById(R.id.ldc_edit_ajout_produit_fab);
 
-
-//        if (idLdc != LDCFragment.NEW_LDC) {
-//            // Create empty ldc with no product and a default title
-//
-//            ldcSaveEdit.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    long newid = ajouterNouvelleListe(ldcNameEdit);
-//
-//                    getActivity().onBackPressed();
-//
-//                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance((int) newid));
-//                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                    transaction.addToBackStack(null);
-//                    transaction.commit();
-//                }
-//            });
-//
-//            ldcEditAddProduct.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    getActivity().onBackPressed();
-//                }
-//            });
-//
-//        }
-//
-//        else {
-
             if(idLdc == LDCFragment.NEW_LDC)
             {
                 listeCourse = new ListeCourses(getActivity().getString(R.string.titre_listecourse_defaut));

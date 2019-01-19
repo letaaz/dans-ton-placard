@@ -23,12 +23,15 @@ import android.widget.TextView;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao_Impl;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -44,6 +47,7 @@ public class DetailLDCFragment extends Fragment {
     private RelativeLayout ldcLabel;
 
     private ListeCoursesDao listeCoursesDao;
+    private ProduitDao produitDao;
 
     public static Fragment newInstance(int id) {
         Bundle args = new Bundle();
@@ -70,6 +74,9 @@ public class DetailLDCFragment extends Fragment {
         ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
         this.listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
+        this.produitDao = RoomDB.getDatabase(mContext).produitDao();
+
+
         ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
         float prix_total = 0;
         for(Produit produit : listeCourses.getProduitsPris())
@@ -101,9 +108,10 @@ public class DetailLDCFragment extends Fragment {
         ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
 
         btnEditLdc = view.findViewById(R.id.btn_edit_ldc);
-        if(idLDC == 1){
+        if(idLDC == 1 ||listeCourses.getEtat() == 1){
             btnEditLdc.setVisibility(View.INVISIBLE);
         }
+
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,11 +123,22 @@ public class DetailLDCFragment extends Fragment {
             }
         });
         btnRecycleLdc = view.findViewById(R.id.btn_archive_ldc);
-        btnRecycleLdc.setOnClickListener(new View.OnClickListener() {
+        btnRecycleLdc.setOnClickListener(new View.OnClickListener() { // Archiver liste de courses
             @Override
             public void onClick(View v) {
                 // Set archive field to 1
+
+                listeCourses.setEtat(1);
+                listeCourses.setDateArchive(new Date());
+                listeCoursesDao.updateListe(listeCourses);
+
+                for(Produit produit : listeCourses.getProduitsPris())
+                {
+                    produitDao.updateQuantityById(produit.getId(), 1);
+                }
+
                 getFragmentManager().popBackStack();
+
             }
         });
 

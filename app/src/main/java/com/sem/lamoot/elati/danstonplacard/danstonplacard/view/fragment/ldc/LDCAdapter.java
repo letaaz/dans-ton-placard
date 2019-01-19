@@ -87,24 +87,25 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
                         dialog.cancel();
                     }
                 });
-                alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
-                        for(Produit produit : listeCourses.getProduitsPris())
-                        {
-                            Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
-                            produitDao.deleteProductById(produit.getId());
-                        }
-                        for(Produit produit : listeCourses.getProduitsAPrendre())
-                        {
-                            Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
-                            produitDao.deleteProductById(produit.getId());
-                        }
 
-                        listeCoursesDao.deleteListeCoursesById(data.get(i).getId());
-                    }
-                });
+                if(data.get(i).getId() != 1) {
+                    alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
+                            for (Produit produit : listeCourses.getProduitsPris()) {
+                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
+                                produitDao.deleteProductById(produit.getId());
+                            }
+                            for (Produit produit : listeCourses.getProduitsAPrendre()) {
+                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
+                                produitDao.deleteProductById(produit.getId());
+                            }
+
+                            listeCoursesDao.deleteListeCoursesById(data.get(i).getId());
+                        }
+                    });
+                }
                 AlertDialog dialog = alertDialog.create();
                 dialog.show();
                 return true;
