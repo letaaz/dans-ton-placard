@@ -159,9 +159,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public void onItemClickListener(ListeCourses ldcDefaut) {
         if(ldcDefaut.getId() == 1) // Liste automatique - Récupération des produits indisponibles
         {
-
             List<Produit> produitsIndisponibles = produitDao.getAllProduitsIndisponibles();
-
             updateListeAutomatique(produitsIndisponibles, ldcDefaut);
         }
 

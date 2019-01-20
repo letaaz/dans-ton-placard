@@ -9,6 +9,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.IngredientTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.PieceTypeConverter;
@@ -49,10 +50,9 @@ public abstract class RoomDB extends RoomDatabase {
                             Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ListeCourses listeCourses = new ListeCourses("Liste automatique");
+                                    ListeCourses listeCourses = new ListeCourses(context.getResources().getString(R.string.label_titre_listecourse_auto_generee_automatique));
                                     getDatabase(context).listeCoursesDao().insert(listeCourses);
                                     Log.i("dtp", "Liste automatique ajouté en BDD");
-
                                 }
                             });
                         }
@@ -69,11 +69,6 @@ public abstract class RoomDB extends RoomDatabase {
     public static void destroyInstance() {
 
         INSTANCE = null;
-    }
-
-    private static void createListeGeneree() {
-        ListeCourses listeCourses = new ListeCourses("Liste automatique");
-        INSTANCE.listeCoursesDao().insert(listeCourses);
     }
 
     private static void createFakeProduct(){
@@ -93,8 +88,7 @@ public abstract class RoomDB extends RoomDatabase {
         INSTANCE.produitDao().insert(p6);
     }
 
-    private static void createFakeLDC()
-    {
+    private static void createFakeLDC() {
 
         Produit p1 = new Produit("pizza", 1, Rayon.SURGELE, Piece.CUISINE);
         Produit p2 = new Produit("oeufs", 1, Rayon.BIO, Piece.CUISINE);

@@ -37,6 +37,7 @@
     <string name="label_quantité_ab">Qté :</string>
     <string name="label_prix_ab">Prix :</string>
     <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
+    <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

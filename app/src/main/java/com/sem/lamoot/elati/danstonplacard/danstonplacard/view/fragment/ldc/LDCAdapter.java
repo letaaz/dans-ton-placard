@@ -143,8 +143,9 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
         }
 
         public void bind(ListeCourses value){
-            if (value.getNom().equals("Liste automatique"))
+            if(value.getNom().equals(mContext.getResources().getString(R.string.label_titre_listecourse_auto_generee_automatique))){
                 itemView.setBackgroundColor(Color.LTGRAY);
+            }
             ldcName.setText(value.getNom());
         }
     }
