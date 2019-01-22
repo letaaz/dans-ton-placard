@@ -136,7 +136,8 @@ public class DetailLDCFragment extends Fragment {
 
                 if(listeCourses.getId() == 1)
                 {
-                    ListeCourses li = new ListeCourses(listeCourses);
+                    ListeCourses upListeCourse = listeCoursesDao.getListeCoursesById(1);
+                    ListeCourses li = new ListeCourses(upListeCourse);
                     li.setEtat(1);
 
                     Date date = new Date();
