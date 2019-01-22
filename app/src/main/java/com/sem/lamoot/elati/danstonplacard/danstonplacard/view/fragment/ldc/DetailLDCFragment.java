@@ -155,11 +155,13 @@ public class DetailLDCFragment extends Fragment {
                     }
                 }
                 else {
-                    listeCourses.setEtat(1);
-                    listeCourses.setDateArchive(new Date());
-                    listeCoursesDao.updateListe(listeCourses);
+                    ListeCourses li = listeCoursesDao.getListeCoursesById(listeCourses.getId());
 
-                    for (Produit produit : listeCourses.getProduitsPris()) {
+                    li.setEtat(1);
+                    li.setDateArchive(new Date());
+                    listeCoursesDao.updateListe(li);
+
+                    for (Produit produit : li.getProduitsPris()) {
                         produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
                     }
                 }

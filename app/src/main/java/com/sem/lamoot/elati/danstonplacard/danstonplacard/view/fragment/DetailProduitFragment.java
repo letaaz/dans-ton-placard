@@ -132,35 +132,37 @@ public class DetailProduitFragment extends Fragment {
             mProduct.setDlc(dlc);
             Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
             detailProduitViewModel.updateProduct(mProduct);
-//            for(ListeCourses ldc : listeCoursesDao.getAllListeCourses())
-//            {
-//                List<Produit> aPrendre = ldc.getProduitsAPrendre();
-//                List<Produit> estPris = ldc.getProduitsPris();
-//
-//                for(int i = 0; i < aPrendre.size(); i++)
-//                {
-//                    if(aPrendre.get(i).getId() == mProduct.getId())
-//                    {
-//                        aPrendre.remove(i);
-//                        aPrendre.add(mProduct);
-//                        ldc.setProduitsAPrendre(aPrendre);
-//                        listeCoursesDao.updateListe(ldc);
-//                        Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                for(int i = 0; i < estPris.size(); i++)
-//                {
-//                    if(estPris.get(i).getId() == mProduct.getId())
-//                    {
-//                        estPris.remove(i);
-//                        estPris.add(mProduct);
-//                        ldc.setProduitsPris(estPris);
-//                        listeCoursesDao.updateListe(ldc);
-//
-//                    }
-//                }
-//
-//            }
+
+            /* Update product in LDC */
+            for(ListeCourses ldc : listeCoursesDao.getAllListeCourses())
+            {
+                List<Produit> aPrendre = ldc.getProduitsAPrendre();
+                List<Produit> estPris = ldc.getProduitsPris();
+
+                for(int i = 0; i < aPrendre.size(); i++)
+                {
+                    if(aPrendre.get(i).getId() == mProduct.getId())
+                    {
+                        aPrendre.remove(i);
+                        aPrendre.add(mProduct);
+                        ldc.setProduitsAPrendre(aPrendre);
+                        listeCoursesDao.updateListe(ldc);
+                        Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                for(int i = 0; i < estPris.size(); i++)
+                {
+                    if(estPris.get(i).getId() == mProduct.getId())
+                    {
+                        estPris.remove(i);
+                        estPris.add(mProduct);
+                        ldc.setProduitsPris(estPris);
+                        listeCoursesDao.updateListe(ldc);
+
+                    }
+                }
+
+            }
 
 
             getFragmentManager().popBackStack();
