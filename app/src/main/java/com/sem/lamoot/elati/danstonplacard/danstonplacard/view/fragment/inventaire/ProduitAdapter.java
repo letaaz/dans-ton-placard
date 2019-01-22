@@ -23,6 +23,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCour
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,7 +70,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     public ProduitViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        final View view = inflater.inflate(R.layout.layout_liste_produits_inventaire, viewGroup, false);
+        final View view = inflater.inflate(R.layout.produits_inventaire_item, viewGroup, false);
 
         return new ProduitViewHolder(view);
     }
@@ -150,14 +151,17 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView nom_produit, quantite, id_produit;
+        private TextView nom_produit, quantite, prix, id_produit;
         private ImageView imageProduit, retirerUnProduit, ajouterUnProduit, iconAlert;
+        private View container;
 
         public ProduitViewHolder(View itemView) {
             super(itemView);
 
-            nom_produit = itemView.findViewById(R.id.produit);
-            quantite = itemView.findViewById(R.id.quantite_produit_textview);
+            container = itemView;
+            nom_produit = itemView.findViewById(R.id.inventaire_product_name);
+            quantite = itemView.findViewById(R.id.inventaire_product_quantite);
+            prix = itemView.findViewById(R.id.inventaire_product_price);
             id_produit = itemView.findViewById(R.id.id_product_txt);
 
             imageProduit = itemView.findViewById(R.id.id_product_image);
@@ -177,13 +181,14 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         public void bind(Produit produit) {
             if (produit != null) {
-
+                container.setBackgroundColor(context.getResources().getColor(Rayon.getRayonColor(produit.getRayon())));
                 if(produit.getMarque() != null)
                     nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
                 else
                     nom_produit.setText(produit.getNom());
 
-                quantite.setText("Quantité : " + String.valueOf(produit.getQuantite()));
+                quantite.setText(String.valueOf(produit.getQuantite()));
+                prix.setText(produit.getPrix() + " €");
                 id_produit.setText(String.valueOf(produit.getId()));
 
                 if(produit.getUrlImage() != null) {

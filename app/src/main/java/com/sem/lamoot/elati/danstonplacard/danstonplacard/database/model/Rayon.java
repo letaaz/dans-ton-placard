@@ -1,5 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+
 public enum Rayon {
 
 
@@ -47,5 +49,36 @@ public enum Rayon {
 
     }
 
-
+    public static int getRayonColor(Rayon rayon) {
+        switch (rayon) {
+            case SURGELE:
+                return R.color.rayon_surgeles;
+            case BIO:
+                return R.color.rayon_bio;
+            case FRUITS_LEGUMES:
+                return R.color.rayon_fruits_legumes;
+            case BOISSONS:
+                return R.color.rayon_boissons;
+            case BOULANGERIE_PATISSERIE:
+                return R.color.rayon_boulangeries_patisseries;
+            case CREMERIE:
+                return R.color.cremerie;
+            case YAOURTS_DESSERTS:
+                return R.color.yaourts_desserts;
+            case FROMAGES:
+                return R.color.fromages;
+            case VIANDES:
+                return R.color.rayon_viandes;
+            case POISSONS_CRUSTACES:
+                return R.color.rayon_poissons_crustaces;
+            case EPICERIE_SUCREE:
+                return R.color.epicerie_sucree;
+            case EPICERIE_SALEE:
+                return R.color.epicerie_salee;
+            case HYGIENES_BEAUTES:
+                return R.color.epicerie_hygiene_beaute;
+            default:
+                return R.color.divers;
+        }
+    }
 }

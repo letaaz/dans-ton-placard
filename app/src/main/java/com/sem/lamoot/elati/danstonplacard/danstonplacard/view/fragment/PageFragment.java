@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
@@ -33,9 +32,9 @@ public class PageFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         switch (mPage) {
             case 3:
-                return inflater.inflate(R.layout.recipe_fragment_layout, container, false);
+                return inflater.inflate(R.layout.recipe_fragment, container, false);
             case 4:
-                return inflater.inflate(R.layout.promotion_fragment_layout, container, false);
+                return inflater.inflate(R.layout.promotion_fragment, container, false);
             default:
                 return view = inflater.inflate(R.layout.fragment_page, container, false);
         }

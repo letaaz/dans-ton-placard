@@ -15,6 +15,21 @@
     <color name="cellar_background">#0FA663</color>
     <color name="transparent_background">#00ffffff</color>
 
+    <color name="rayon_bio">#689F38</color>
+    <color name="rayon_surgeles">#90A4AE</color>
+    <color name="rayon_fruits_legumes">#FF5722</color>
+    <color name="rayon_boissons">#424242</color>
+    <color name="rayon_boulangeries_patisseries">#BF360C</color>
+    <color name="rayon_viandes">#D50000</color>
+    <color name="rayon_poissons_crustaces">#0D47A1</color>
+    <color name="cremerie">#90CAF9</color>
+    <color name="yaourts_desserts">#BDBDBD</color>
+    <color name="fromages">#FFEE58</color>
+    <color name="epicerie_sucree">#FF7043</color>
+    <color name="epicerie_salee">#CDDC39</color>
+    <color name="epicerie_hygiene_beaute">#AD1457</color>
+    <color name="divers">#8D6E63</color>
+
     <color name="empty">#f0f0f0</color>
     <color name="black">#000</color>
     <color name="white">#ffffff</color>
@@ -22,5 +37,6 @@
     <color name="darkGray">#605f5f</color>
     <color name="nero">#202020</color>
     <color name="gridViewBackground">#dedede</color>
+    <color name="default_background">#FAFAFA</color>
 
 </resources>
