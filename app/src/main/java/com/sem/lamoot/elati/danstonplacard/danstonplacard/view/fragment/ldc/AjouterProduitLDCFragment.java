@@ -60,7 +60,7 @@ public class AjouterProduitLDCFragment extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ajouter_produit_fragment, container, false);
-        ImageView imageView3 = (ImageView) view.findViewById(R.id.imageView3);
+        ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
         imageView3.setOnClickListener(this);
 
         ImageView button_add = (ImageView) view.findViewById(R.id.button_add);

@@ -48,6 +48,8 @@
     <string name="scan_product_indication">Appuyez sur l\'image pour scanner le produit</string>
     <string name="recipe_default_content">Vos recettes personnalisées bientôt disponibles !</string>
     <string name="promotions_default_content">Vos promotions en magasins bientôt disponibles !</string>
+    <string name="btn_show_label">Show</string>
+    <string name="btn_hide_label">Hide</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>
