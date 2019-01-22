@@ -16,6 +16,10 @@ public class RayonCategories {
     private static RayonCategories INSTANCE = new RayonCategories();
 
 
+    public static HashMap<List<String>, Rayon> getListRayonCategories() {
+        return listRayonCategories;
+    }
+
     private RayonCategories() {
 
         // BIO
@@ -244,18 +248,18 @@ public class RayonCategories {
     public Rayon findRayonByCategory(String[] categories) {
         Rayon rayon = Rayon.DIVERS;
 
-        Log.d("dtp", "Length of categories : "+categories.length);
+        //Log.d("dtp", "Length of categories : "+categories.length);
         for (String categorie : categories) {
-            Log.d("dtp", "Categorie : "+categorie);
-            Log.d("dtp", "this.getKeys() : "+this.getKeys().size());
+            //Log.d("dtp", "Categorie : "+categorie);
+            //Log.d("dtp", "this.getKeys() : "+this.getKeys().size());
             for (List<String> cats : this.getKeys()) {
-                Log.d("dtp", "Length of cats : "+cats.size());
-                Log.d("dtp", "cats.contains(categorie) ? "+categorie+" : "+cats.contains(categorie));
+                //Log.d("dtp", "Length of cats : "+cats.size());
+                //Log.d("dtp", "cats.contains(categorie) ? "+categorie+" : "+cats.contains(categorie));
 
                 if (cats.contains(categorie.trim())) {
-                    Log.d("dtp", "Rayon trouvé !");
+                    //Log.d("dtp", "Rayon trouvé !");
                     rayon = this.listRayonCategories.get(cats);
-                    Log.d("dtp", "Rayon of product is : "+rayon.toString());
+                    //Log.d("dtp", "Rayon of product is : "+rayon.toString());
                     return rayon;
                 }
             }
@@ -264,11 +268,11 @@ public class RayonCategories {
         return rayon;
     }
 
-    private List<List<String>> getKeys () {
+    public List<List<String>> getKeys () {
         List<List<String>> keys = new ArrayList<List<String>>();
-        Log.d("dtp", "Length of listRayonCategories : "+this.listRayonCategories.size());
+        //Log.d("dtp", "Length of listRayonCategories : "+this.listRayonCategories.size());
         for (List<String> key : this.listRayonCategories.keySet()) {
-            Log.d("dtp", "list of categories : "+key.toString());
+            //Log.d("dtp", "list of categories : "+key.toString());
             keys.add(key);
         }
         return keys;

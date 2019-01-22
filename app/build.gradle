@@ -71,6 +71,18 @@ dependencies {
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
     implementation 'com.github.travijuu:numberpicker:1.0.7'
 
+    // Required -- JUnit 4 framework
+    implementation 'junit:junit:4.12'
+    // Optional -- Mockito framework
+    implementation 'org.mockito:mockito-core:1.10.19'
+
+
+    implementation "android.arch.lifecycle:extensions:1.1.0"
+    implementation "android.arch.lifecycle:viewmodel:1.1.0"
+    implementation "android.arch.lifecycle:livedata:1.1.0"
+    androidTestImplementation "android.arch.core:core-testing:1.1.0"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
+    implementation "com.android.support.test:rules:1.0.1"
 }
 
 ext {
