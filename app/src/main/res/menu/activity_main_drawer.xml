@@ -13,26 +13,29 @@
             android:icon="@drawable/ic_wordpress"
             android:title="@string/blog" />
         <item
+            android:id="@+id/nav_facebook"
+            android:icon="@drawable/ic_facebook_logo"
+            android:title="@string/facebook" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_rounded_info_button"
+            android:title="@string/about" />
+        <!-- <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notifications_black_24dp"
             android:title="@string/notifications" />
+        <item
+            android:id="@+id/nav_param"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/parametres" /> -->
+        <item
+            android:id="@+id/nav_notez_nous"
+            android:icon="@drawable/ic_like_fb_24dp"
+            android:title="@string/notez_nous" />
         <item
             android:id="@+id/nav_deconnexion"
             android:icon="@drawable/ic_sign_out_option_24dp"
             android:title="@string/deconnexion" />
     </group>
-
-    <item android:title="@string/autres">
-        <menu>
-            <item
-                android:id="@+id/nav_param"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="@string/parametres" />
-            <item
-                android:id="@+id/nav_notez_nous"
-                android:icon="@drawable/ic_like_fb_24dp"
-                android:title="@string/notez_nous" />
-        </menu>
-    </item>
 
 </menu>

@@ -19,5 +19,6 @@
     <color name="white">#ffffff</color>
     <color name="lightGray">#99d1cccc</color>
     <color name="darkGray">#605f5f</color>
+    <color name="nero">#202020</color>
     <color name="gridViewBackground">#dedede</color>
 </resources>
