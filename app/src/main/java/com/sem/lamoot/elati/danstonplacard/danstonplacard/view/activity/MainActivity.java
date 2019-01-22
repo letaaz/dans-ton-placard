@@ -30,6 +30,8 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SampleFragmentPag
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    private TabLayout tabLayout;
+    private int tab_position;
     private NavigationView navigationView;
 
     @Override
