@@ -12,7 +12,7 @@ public class PieceTypeConverter {
     }
 
     @TypeConverter
-    public static String d fromPiece(Piece piece){
+    public static String fromPiece(Piece piece){
         return piece == null ? null : piece.toString();
     }
 }
