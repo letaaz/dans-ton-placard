@@ -17,8 +17,8 @@
 
     <string name="titleAlterDialogSupprimerProduit">Suppression du produit</string>
     <string name="msgAlertDialogSupprimerProduit">Êtes-vous sûr de vouloir supprimer le produit suivant de votre inventaire :</string>
-    <string name="positiveButtonAlertDialogSupprimerProduit">Supprimer</string>
-    <string name="negativeButtonAlertDialogSupprimerProduit">Conserver</string>
+    <string name="positiveButtonAlertDialogSupprimer">Supprimer</string>
+    <string name="negativeButtonAlertDialogSupprimer">Conserver</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cuisine">Cuisine</string>
@@ -29,13 +29,31 @@
     <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
     <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
     <string name="voir">Voir</string>
+    <string name="ldc_disponibles_label">Listes de courses disponibles</string>
+    <string name="history_ldc_label">Historique des listes de courses</string>
+    <string name="msgAlertDialogSupprimerLdc">Êtes-vous sûr de vouloir supprimer la liste de courses suivante :</string>
+    <string name="titleAlertDialogSupprimerLdc">Suppression de la liste de courses</string>
+    <string name="archiver_ldc">Archiver</string>
+    <string name="label_quantité_ab">Qté :</string>
+    <string name="label_prix_ab">Prix :</string>
+    <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
+    <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
+    <string name="app_version_label">v1.0.0</string>
+    <string name="app_logo_label">Logo application Dans Ton Placard</string>
+    <string name="app_credit_label">Credits :</string>
+    <string name="credits_content">www.lunapik.com \nwww.icons8.com \nwww.flaticon.com</string>
+    <string name="facebook">Page Facebook</string>
+    <string name="about">Informations</string>
+    <string name="default_page_content">Désolé, la page est indisponible pour le moment.</string>
 
     <string-array name="pieces">
-        <item name="cuisine">Cuisine</item>git
+        <item name="cuisine">Cuisine</item>
         <item name="salle_de_bain">Salle de bain</item>
         <item name="cave">Cave</item>
         <item name="garage">Garage</item>
-        <item name="salle_a_manger">Salle à manger</item>
+        <item name="salle_a_manger">Séjour</item>
+        <item name="chambre">Chambre</item>
+        <item name="divers">Divers</item>
     </string-array>
 
     <string-array name="rayons">

@@ -5,9 +5,10 @@
     <color name="colorPrimaryDark">#1663d0</color>
     <color name="colorAccent">#f8d81b4d</color>
     <color name="colorTabLayoutBackground">#2877e8</color>
+    <color name="colorPrimaryText">#1E2D3E</color>
 
 
-    <color name="colorBackgroundPiece">#C9B086</color>
+    <color name="colorBackgroundPiece">#f8f8f8</color>
     <color name="kitchen_background">#DDA853</color>
     <color name="bathroom_background">#beae76</color>
     <color name="dinner_background">#7A80FF</color>
@@ -16,7 +17,10 @@
 
     <color name="empty">#f0f0f0</color>
     <color name="black">#000</color>
-    <color name="white">#fff</color>
+    <color name="white">#ffffff</color>
     <color name="lightGray">#99d1cccc</color>
     <color name="darkGray">#605f5f</color>
+    <color name="nero">#202020</color>
+    <color name="gridViewBackground">#dedede</color>
+
 </resources>

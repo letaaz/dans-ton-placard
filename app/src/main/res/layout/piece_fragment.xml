@@ -2,11 +2,10 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="insideOverlay"
@@ -134,7 +133,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/ajout_produit_fab"

@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
     implementation 'com.github.travijuu:numberpicker:1.0.7'
 
+
     // Required -- JUnit 4 framework
     implementation 'junit:junit:4.12'
     // Optional -- Mockito framework
@@ -83,6 +84,11 @@ dependencies {
     androidTestImplementation "android.arch.core:core-testing:1.1.0"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
     implementation "com.android.support.test:rules:1.0.1"
+
+    // Animations
+    implementation 'com.github.mancj:SlideUp-Android:2.2.8'
+
+
 }
 
 ext {
