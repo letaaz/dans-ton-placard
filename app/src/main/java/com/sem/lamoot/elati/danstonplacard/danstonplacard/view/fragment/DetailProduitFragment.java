@@ -25,7 +25,10 @@ import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
@@ -36,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.reactivex.annotations.NonNull;
@@ -45,6 +49,7 @@ public class DetailProduitFragment extends Fragment {
     final static String ARG_PROD = "";
     public final static int DATE_PICKER_REQUEST_CODE = 1;
     private DetailProduitViewModel detailProduitViewModel = null;
+    private ListeCoursesDao listeCoursesDao;
 
     Context mContext;
     private String mParam = null;
@@ -80,10 +85,12 @@ public class DetailProduitFragment extends Fragment {
             mPiece = args[1];
         }
         detailProduitViewModel = ViewModelProviders.of(this).get(DetailProduitViewModel.class);
+        listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
         detailProduitViewModel.getProduit(Integer.parseInt(mParam))
                 .observe(this, result -> {
                     if (result != null) {
                         mProduct = result;
+                        Toast.makeText(mContext, "" + mProduct.getId(), Toast.LENGTH_SHORT).show();
                         updateFields(result);
                     } else {
                         Log.d("DETAIL_PRODUCT", "ERROR WHILE RETRIEVING PRODUCT FROM DATABASE ID := " + mParam);
@@ -125,6 +132,37 @@ public class DetailProduitFragment extends Fragment {
             mProduct.setDlc(dlc);
             Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
             detailProduitViewModel.updateProduct(mProduct);
+//            for(ListeCourses ldc : listeCoursesDao.getAllListeCourses())
+//            {
+//                List<Produit> aPrendre = ldc.getProduitsAPrendre();
+//                List<Produit> estPris = ldc.getProduitsPris();
+//
+//                for(int i = 0; i < aPrendre.size(); i++)
+//                {
+//                    if(aPrendre.get(i).getId() == mProduct.getId())
+//                    {
+//                        aPrendre.remove(i);
+//                        aPrendre.add(mProduct);
+//                        ldc.setProduitsAPrendre(aPrendre);
+//                        listeCoursesDao.updateListe(ldc);
+//                        Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                for(int i = 0; i < estPris.size(); i++)
+//                {
+//                    if(estPris.get(i).getId() == mProduct.getId())
+//                    {
+//                        estPris.remove(i);
+//                        estPris.add(mProduct);
+//                        ldc.setProduitsPris(estPris);
+//                        listeCoursesDao.updateListe(ldc);
+//
+//                    }
+//                }
+//
+//            }
+
+
             getFragmentManager().popBackStack();
         });
 

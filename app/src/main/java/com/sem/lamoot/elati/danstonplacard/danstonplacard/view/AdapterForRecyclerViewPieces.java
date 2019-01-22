@@ -1,23 +1,20 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.PieceIcone;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.PieceFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.PieceFragment;
 
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
 
                 FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
-                trans.replace(R.id.root_frame, PieceFragment.newInstance(piece));
+                trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece));
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 trans.addToBackStack(null);
                 trans.commit();

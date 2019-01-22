@@ -21,6 +21,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.AboutActivity;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
@@ -29,7 +30,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SampleFragmentPag
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    NavigationView navigationView;
+    private TabLayout tabLayout;
+    private int tab_position;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), this));
 
         // Pour générer les "onglets"
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_check_list, R.drawable.ic_recipe_book, R.drawable.ic_discount};
@@ -65,6 +68,23 @@ public class MainActivity extends AppCompatActivity
         {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);
         }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab){
+                tab_position = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
     }
 
     @Override
@@ -72,7 +92,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else if(tab_position != 0 && this.getSupportFragmentManager().getBackStackEntryCount() == 0)
+        {
+            tabLayout.getTabAt(0).select();
+
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -115,6 +141,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
+
 
     private String getFacebookPageURL(Context context) {
         PackageManager packageManager = context.getPackageManager();

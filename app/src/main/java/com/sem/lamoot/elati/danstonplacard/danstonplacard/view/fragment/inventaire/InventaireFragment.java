@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -76,7 +76,7 @@ public class InventaireFragment extends Fragment {
 
     private void showPieceFragment(String piece) {
         FragmentTransaction trans = getFragmentManager().beginTransaction();
-        trans.replace(R.id.root_frame, PieceFragment.newInstance(piece));
+        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece));
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         trans.addToBackStack(null);
         trans.commit();

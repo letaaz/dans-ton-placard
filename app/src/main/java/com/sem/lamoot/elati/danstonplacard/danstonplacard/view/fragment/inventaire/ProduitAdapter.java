@@ -1,7 +1,8 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -37,8 +38,8 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         void onAddImageViewClickListener(Produit produit);
     }
 
-    public interface OnItemClickListener {
-        void onItemClickListener(Produit produit);
+    public interface OnProductItemClickListener {
+        void onProductItemClickListener(Produit produit);
     }
 
     private List<Produit> data;
@@ -46,16 +47,14 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     private LayoutInflater layoutInflater;
     private OnMinusImageViewClickListener onMinusImageViewClickListener;
     private OnAddImageViewClickListener onAddImageViewClickListener;
-    private OnItemClickListener onItemClickListener;
+    private OnProductItemClickListener onProductItemClickListener;
 
 
-    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener,
-                          OnItemClickListener itemListener){
+    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener){
         this.data = new ArrayList<>();
         this.context = context;
         this.onMinusImageViewClickListener = minusListener;
         this.onAddImageViewClickListener = addListener;
-        this.onItemClickListener = itemListener;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -74,25 +73,37 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         String alertMsg = this.context.getResources().getString(R.string.msgAlertDialogSupprimerProduit);
         String title = this.context.getResources().getString(R.string.titleAlterDialogSupprimerProduit);
-        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimerProduit);
-        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimerProduit);
+        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
+        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
+        produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                alertDialog.setTitle(title);
 
-        produitViewHolder.itemView.setOnLongClickListener(v -> {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-            alertDialog.setTitle(title);
-
-            alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
-            alertDialog.setNegativeButton(negativeButtonTxt, (dialog, which) -> dialog.cancel());
-            alertDialog.setPositiveButton(positiveButtonTxt, (dialog, which) -> produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId()));
-
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
-            return true;
+                alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
+                alertDialog.setNegativeButton(negativeButtonTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
+                    }
+                });
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+                return true;
+            }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -115,12 +126,14 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         }
     }
 
+    public void setOnProductItemClickListener(OnProductItemClickListener onProductItemClickListener) {
+        this.onProductItemClickListener = onProductItemClickListener;
+    }
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
         private TextView nom_produit, quantite, id_produit;
-        private ImageView imageProduit, retirerUnProduit, ajouterUnProduit;
-        private View item_produit;
+        private ImageView imageProduit, retirerUnProduit, ajouterUnProduit, iconAlert;
 
         public ProduitViewHolder(View itemView) {
             super(itemView);
@@ -133,10 +146,14 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             retirerUnProduit = itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
-            item_produit = itemView.findViewById(R.id.item_product);
-            item_produit.setOnClickListener( v -> {
-                if (onItemClickListener != null)
-                    onItemClickListener.onItemClickListener(data.get(getAdapterPosition()));
+            iconAlert = itemView.findViewById(R.id.alert_icon);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onProductItemClickListener != null)
+                        onProductItemClickListener.onProductItemClickListener(data.get(getAdapterPosition()));
+                }
             });
         }
 

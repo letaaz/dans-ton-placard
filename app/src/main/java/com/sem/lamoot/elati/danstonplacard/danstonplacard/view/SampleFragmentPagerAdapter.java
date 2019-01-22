@@ -6,7 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.PageFragment;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.RootInventaireFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.RootInventaireFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.RootLDCFragment;
 
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -29,6 +30,8 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         {
             case 0:
                 return RootInventaireFragment.newInstance("PARAM");
+            case 1:
+                return RootLDCFragment.newInstance("PARAM");
             default :
                 return PageFragment.newInstance(i+1);
         }
