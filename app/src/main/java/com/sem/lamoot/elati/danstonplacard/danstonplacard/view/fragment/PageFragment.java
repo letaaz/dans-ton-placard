@@ -35,8 +35,6 @@ public class PageFragment extends Fragment{
 
             default:
                 view = inflater.inflate(R.layout.fragment_page, container, false);
-                TextView textView = (TextView) view;
-                textView.setText("Fragment #" + mPage);
                 break;
         }
         return view;

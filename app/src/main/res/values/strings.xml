@@ -29,6 +29,13 @@
     <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
     <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
     <string name="voir">Voir</string>
+    <string name="app_version_label">v1.0.0</string>
+    <string name="app_logo_label">Logo application Dans Ton Placard</string>
+    <string name="app_credit_label">Credits :</string>
+    <string name="credits_content">www.lunapik.com \nwww.icons8.com \nwww.flaticon.com</string>
+    <string name="facebook">Page Facebook</string>
+    <string name="about">Informations</string>
+    <string name="default_page_content">Désolé, la page est indisponible pour le moment.</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>git
