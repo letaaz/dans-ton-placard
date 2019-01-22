@@ -1,6 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,10 +22,14 @@ import android.widget.Toast;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterProduitFragment;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
+
+import java.util.List;
 
 public class LDCEditFragment extends Fragment
                 implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener {
@@ -62,6 +67,9 @@ public class LDCEditFragment extends Fragment
         View view = inflater.inflate(R.layout.ldc_edit_fragment, container, false);
 
         listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
+
+        ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
+
         ldcSaveEdit = view.findViewById(R.id.btn_save_ldc_edit);
         EditText ldcNameEdit = (EditText) view.findViewById(R.id.ldc_edit_name);
         ldcEditAddProduct = view.findViewById(R.id.ldc_edit_ajout_produit_fab);
@@ -82,9 +90,11 @@ public class LDCEditFragment extends Fragment
                 @Override
                 public void onClick(View v) {
 
+                    listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
                     listeCourse.setNom(ldcNameEdit.getText().toString());
                     listeCourse.setId(idLdc);
                     listeCoursesDao.updateListe(listeCourse);
+
 
                     getActivity().onBackPressed();
 
@@ -112,9 +122,11 @@ public class LDCEditFragment extends Fragment
             });
 
             ldcEditProductRecyclerView = view.findViewById(R.id.ldc_product_edit_recyclerview);
-            ProduitAdapter produitAdapter = new ProduitAdapter(mContext, this, this);
-            produitAdapter.setData(listeCourse.getProduitsAPrendre());
-            ldcEditProductRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            ProduitAdapter produitAdapter = new ProduitAdapter(mContext, this, this, idLdc);
+            //produitAdapter.setData(listeCourse.getProduitsAPrendre());
+        listeCoursesViewModel.getListeCoursesByIdLD(idLdc).observe(this, listeCourses1 -> produitAdapter.setData(listeCourses1.getProduitsAPrendre()));
+
+        ldcEditProductRecyclerView.setItemAnimator(new DefaultItemAnimator());
             ldcEditProductRecyclerView.setAdapter(produitAdapter);
 
             RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
@@ -133,11 +145,33 @@ public class LDCEditFragment extends Fragment
 
     @Override
     public void onMinusImageViewClickListener(Produit produit) {
-        // update view
+        List<Produit> aPrendre = listeCourse.getProduitsAPrendre();
+        for(Produit p : aPrendre)
+        {
+            if(p.getId() == produit.getId() && p.getQuantite() > 0)
+            {
+                p.setQuantite(p.getQuantite() - 1);
+            }
+        }
+        listeCourse.setProduitsAPrendre(aPrendre);
+        listeCoursesDao.updateListe(listeCourse);
     }
 
     @Override
     public void onAddImageViewClickListener(Produit produit) {
-        // update view
+        Log.d("dtp", "ADD PRODUCT");
+
+        List<Produit> aPrendre = listeCourse.getProduitsAPrendre();
+
+        Log.d("dtp", "" + aPrendre.size());
+
+        for(Produit p : aPrendre)
+        {
+            if(p.getId() == produit.getId()){
+                p.setQuantite(p.getQuantite() + 1);
+            }
+        }
+        listeCourse.setProduitsAPrendre(aPrendre);
+        listeCoursesDao.updateListe(listeCourse);
     }
 }

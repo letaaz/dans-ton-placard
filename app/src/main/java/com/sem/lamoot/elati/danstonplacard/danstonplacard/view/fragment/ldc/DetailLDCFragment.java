@@ -159,7 +159,7 @@ public class DetailLDCFragment extends Fragment {
                     listeCoursesDao.updateListe(listeCourses);
 
                     for (Produit produit : listeCourses.getProduitsPris()) {
-                        produitDao.updateQuantityById(produit.getId(), 1);
+                        produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
                     }
                 }
 

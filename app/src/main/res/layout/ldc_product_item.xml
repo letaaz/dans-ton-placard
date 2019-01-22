@@ -38,10 +38,11 @@
         android:id="@+id/ldc_product_quantity_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:text="@string/label_quantité_ab"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@+id/ldc_product_name"
-        app:layout_constraintTop_toBottomOf="@+id/ldc_product_price_label" />
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/ldc_product_price"
+        app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
 
     <TextView
         android:id="@+id/ldc_product_quantity"
@@ -49,7 +50,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:text="2"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_quantity_label"
         app:layout_constraintStart_toEndOf="@+id/ldc_product_quantity_label" />
 
