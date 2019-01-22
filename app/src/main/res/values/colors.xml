@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#1663d0</color>
     <color name="colorAccent">#f8d81b4d</color>
     <color name="colorTabLayoutBackground">#2877e8</color>
+    <color name="colorPrimaryText">#1E2D3E</color>
 
 
     <color name="colorBackgroundPiece">#f8f8f8</color>
@@ -21,4 +22,5 @@
     <color name="darkGray">#605f5f</color>
     <color name="nero">#202020</color>
     <color name="gridViewBackground">#dedede</color>
+
 </resources>

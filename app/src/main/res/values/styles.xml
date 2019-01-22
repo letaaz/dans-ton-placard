@@ -39,6 +39,16 @@
         <item name="android:padding">3dp</item>
     </style>
 
+    <style name="ListLabelStyle">
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

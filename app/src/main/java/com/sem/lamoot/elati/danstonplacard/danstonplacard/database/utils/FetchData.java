@@ -7,7 +7,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
@@ -28,15 +30,17 @@ import java.util.List;
 
 public class FetchData extends AsyncTask<String, Void, String> {
 
+    private int idDLC;
     private Context mContext;
     private String contents;
     private Piece piece;
     private String scancode;
 
-    public FetchData(Context context, String contents, String piece) {
+    public FetchData(Context context, String contents, String piece, int idDLC) {
         this.mContext = context;
         this.contents = contents;
 
+        this.idDLC = idDLC;
         this.piece = Piece.getPiece(piece);
     }
 
@@ -49,10 +53,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
-
-
-        Log.i("dtp", "data : " + data);
-        Log.i("dtp", "afterdata");
 
         if("".equals(data))
         {
@@ -136,18 +136,34 @@ public class FetchData extends AsyncTask<String, Void, String> {
         Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
 
         ProduitDao produitDao = RoomDB.getDatabase(this.mContext).produitDao();
-        List<Produit> products = produitDao.findProductByBarcode(this.contents, this.piece.toString());
+        ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(this.mContext).listeCoursesDao();
 
-        // Update du produit si il est déjà enregistré - sinon on l'ajoute à la base
-        if(!products.isEmpty()){
-            Produit product_found = products.get(0);
-            produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite()+1);
-            Log.d("dtp","PRODUCT QUANTITY UPDATED BY 1");
+        if(idDLC == -1) {
+            List<Produit> products = produitDao.findProductByBarcode(this.contents, this.piece.toString());
+
+            // Update du produit si il est déjà enregistré - sinon on l'ajoute à la base
+            if (!products.isEmpty()) {
+                Produit product_found = products.get(0);
+                produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite() + 1);
+                Log.d("dtp", "PRODUCT QUANTITY UPDATED BY 1");
+            } else {
+                Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage, 1, product_weight, product_date, product_rayon, 0, piece);
+                produitDao.insert(product);
+                Log.d("dtp", "PRODUCT INSERTED");
+            }
         }
-        else{
-            Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage,1, product_weight, product_date, product_rayon, 0, piece);
-            produitDao.insert(product);
-            Log.d("dtp","PRODUCT INSERTED");
+        else
+        {
+            Log.d("dtp", "Fetch idLDC = " + idDLC);
+            Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage, 0, product_weight, product_date, product_rayon, 0, piece);
+            long idProduct = produitDao.insert(product);
+            product.setId((int) idProduct);
+
+            ListeCourses li = listeCoursesDao.getListeCoursesById(idDLC);
+            List<Produit> aPrendre = li.getProduitsAPrendre();
+            aPrendre.add(product);
+            li.setProduitsAPrendre(aPrendre);
+            listeCoursesDao.updateListe(li);
         }
     }
 

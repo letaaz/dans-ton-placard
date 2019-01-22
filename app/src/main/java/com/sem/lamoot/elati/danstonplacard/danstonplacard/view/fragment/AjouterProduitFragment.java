@@ -1,6 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +15,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
@@ -41,15 +46,28 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
     public static String ARGS = "";
     private Context mContext = null;
     private String mPiece = null;
-    ProduitDao produitDao = null;
-    Piece piece = null;
-
-
+    private int idLDC = -1;
+    private ProduitDao produitDao = null;
+    private ListeCoursesDao listeCoursesDao = null;
+    private Piece piece = null;
+    private boolean isLDC = false;
 
     public static Fragment newInstance(String params) {
         Bundle args = new Bundle();
         args.putString(ARGS, params);
         args.putString("PIECE", params);
+        args.putInt("idLDC", -1);
+        AjouterProduitFragment ajouterProduitFragment = new AjouterProduitFragment();
+        ajouterProduitFragment.setArguments(args);
+        return ajouterProduitFragment;
+    }
+
+
+    public static Fragment newInstance(String params, int idLDC) {
+        Bundle args = new Bundle();
+        args.putString(ARGS, params);
+        args.putString("PIECE", params);
+        args.putInt("idLDC", idLDC);
         AjouterProduitFragment ajouterProduitFragment = new AjouterProduitFragment();
         ajouterProduitFragment.setArguments(args);
         return ajouterProduitFragment;
@@ -61,6 +79,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         mContext = this.getContext();
         if (getArguments() != null) {
             mPiece = getArguments().getString("PIECE");
+            idLDC = getArguments().getInt("idLDC");
         }
     }
 
@@ -73,6 +92,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
         imageView3.setOnClickListener(this);
 
+        Toast.makeText(mContext, "idLDC = " + idLDC, Toast.LENGTH_SHORT).show();
+
         ImageView button_add = (ImageView) view.findViewById(R.id.button_add);
 
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(),"products_FR_fr.json");
@@ -84,40 +105,88 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
         piece = Piece.getPiece(mPiece);
 
-        actv.setOnItemClickListener((parent, view1, position, id) -> {
-            Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
-            if(produit == null)
-            {
-                Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.FRUITS_LEGUMES, Piece.getPiece(mPiece));
-                newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
-                produitDao.insert(newProduit);
 
-                hideKeyboard();
-                showSnackBar(R.string.msg_produit_ajoute);
-            }
-            else
-            {
-                produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
-                hideKeyboard();
-                showSnackBar(R.string.msg_produit_miseajour);
-            }
-        });
+        if(idLDC != -1) // Ajout produit à LDC
+        {
+            listeCoursesDao = RoomDB.getDatabase(view.getContext()).listeCoursesDao();
+            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
 
-        button_add.setOnClickListener(v -> {
-            Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
-            if(produit == null) {
-                Produit newProduit = new Produit(actv.getText().toString(), 1, Rayon.DIVERS, piece);
-                produitDao.insert(newProduit);
-                hideKeyboard();
-                showSnackBar(R.string.msg_produit_ajoute);
-            }
-            else
-            {
-                produitDao.updateQuantityById(produit.getId(), produit.getQuantite()+1);
-                hideKeyboard();
-                showSnackBar(R.string.msg_produit_miseajour);
-            }
-        });
+            actv.setOnItemClickListener((parent, view1, position, id) -> {
+                Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
+                if(produit == null)
+                {
+                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.FRUITS_LEGUMES, Piece.DIVERS);
+                    newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
+                    long id_newProduit = produitDao.insert(newProduit);
+
+                    newProduit.setId((int) id_newProduit);
+                    listeCourses.getProduitsAPrendre().add(newProduit);
+                    listeCoursesDao.updateListe(listeCourses);
+
+                    hideKeyboard();
+                    getActivity().onBackPressed();
+                }
+                else
+                {
+                    //Update
+                }
+            });
+
+            button_add.setOnClickListener(v -> {
+                Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
+                if(produit == null) {
+                    Produit newProduit = new Produit(actv.getText().toString(), 0, Rayon.DIVERS, Piece.DIVERS);
+                    produitDao.insert(newProduit);
+                    listeCourses.getProduitsAPrendre().add(newProduit);
+                    listeCoursesDao.updateListe(listeCourses);
+
+                    hideKeyboard();
+                    getActivity().onBackPressed();
+                }
+                else
+                {
+                    // Update
+                }
+            });
+        }
+        else // Ajouter produit à la LDC
+        {
+            actv.setOnItemClickListener((parent, view1, position, id) -> {
+                Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
+                if(produit == null)
+                {
+                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.FRUITS_LEGUMES, Piece.getPiece(mPiece));
+                    newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
+                    produitDao.insert(newProduit);
+
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_ajoute);
+                }
+                else
+                {
+                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_miseajour);
+                }
+            });
+
+            button_add.setOnClickListener(v -> {
+                Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
+                if(produit == null) {
+                    Produit newProduit = new Produit(actv.getText().toString(), 1, Rayon.DIVERS, piece);
+                    produitDao.insert(newProduit);
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_ajoute);
+                }
+                else
+                {
+                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite()+1);
+                    hideKeyboard();
+                    showSnackBar(R.string.msg_produit_miseajour);
+                }
+            });
+        }
+
         return view;
     }
 
@@ -137,15 +206,17 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
         if (result != null) {
-            Log.d("dtp : ", "result null");
             if (result.getContents() == null) {
-                Log.d("dtp :", "result getContents null");
             } else {
-                Log.d("dtp", result.getContents());
                 String data_product = "";
                 try {
-                    data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), mPiece).execute(result.getContents()).get();
-                    Log.d("dtp", data_product);
+                    if(idLDC != -1)
+                    {
+                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), "DIVERS", idLDC).execute(result.getContents()).get();
+                    }
+                    else {
+                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), mPiece, -1).execute(result.getContents()).get();
+                    }
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }

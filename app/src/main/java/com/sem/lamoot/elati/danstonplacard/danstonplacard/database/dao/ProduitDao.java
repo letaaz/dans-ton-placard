@@ -15,7 +15,7 @@ import java.util.List;
 public interface ProduitDao {
 
     @Insert
-    void insert(Produit produit);
+    long insert(Produit produit);
 
     @Query("DELETE FROM produit")
     void deleteAll();
@@ -32,6 +32,9 @@ public interface ProduitDao {
     @Query("SELECT * from produit WHERE nom = :nom and piece = :piece")
     Produit findProductByNom(String nom, String piece);
 
+    @Query("SELECT * from produit WHERE id = :idProduit")
+    Produit findProductById(int idProduit);
+
 
     @Query("SELECT * from produit ORDER BY nom ASC")
     LiveData<List<Produit>> findAll();
@@ -39,6 +42,8 @@ public interface ProduitDao {
     @Query("SELECT * from produit WHERE piece = :piece")
     LiveData<List<Produit>> findProductsByPiece(String piece);
 
+    @Query("SELECT * from produit WHERE quantite = 0")
+    List<Produit> getAllProduitsIndisponibles();
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0")
     LiveData<List<Produit>> getProduitsDisponiblesParPiece(String piece);
