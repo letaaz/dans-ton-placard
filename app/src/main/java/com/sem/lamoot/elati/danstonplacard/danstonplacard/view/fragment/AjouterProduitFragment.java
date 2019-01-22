@@ -148,7 +148,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 }
             });
         }
-        else
+        else // Ajouter produit à la LDC
         {
             actv.setOnItemClickListener((parent, view1, position, id) -> {
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
