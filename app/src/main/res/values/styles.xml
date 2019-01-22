@@ -15,6 +15,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar2">
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!-- Spinner style -->
     <style name="SpinnerStyle">
         <item name="android:layout_width">wrap_content</item>

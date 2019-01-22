@@ -1,9 +1,13 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -19,6 +23,9 @@ public class AboutActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        TextView credits_content = findViewById(R.id.about_credit_content);
+        credits_content.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

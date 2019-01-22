@@ -32,11 +32,12 @@ public class PageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         switch (mPage) {
-
+            case 3:
+                return inflater.inflate(R.layout.recipe_fragment_layout, container, false);
+            case 4:
+                return inflater.inflate(R.layout.promotion_fragment_layout, container, false);
             default:
-                view = inflater.inflate(R.layout.fragment_page, container, false);
-                break;
+                return view = inflater.inflate(R.layout.fragment_page, container, false);
         }
-        return view;
     }
 }

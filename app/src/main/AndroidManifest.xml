@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.activity.MainActivity"
-            android:label="@string/title_activity_setting"
+            android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,9 +26,9 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-        <activity android:name=".AboutActivity"
+        <activity android:name=".view.activity.AboutActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar2"/>
     </application>
 
 </manifest>
