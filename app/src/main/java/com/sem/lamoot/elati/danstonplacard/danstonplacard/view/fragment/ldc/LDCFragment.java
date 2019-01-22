@@ -197,11 +197,23 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                 Produit produit = null;
                 for(Integer id : idInLDC) {
                     produit = produitDao.findProductById(id);
-                    if(checkIfProductListContainsProduct(aPrendre, produit)){  // produit est dans aPrendre
-                        removeProductFromList(aPrendre, produit);
+                    if(produit != null) {
+                        if (checkIfProductListContainsProduct(aPrendre, produit)) {  // produit est dans aPrendre
+                            removeProductFromList(aPrendre, produit);
+                        } else { // produti est dans estPris
+                            removeProductFromList(estPris, produit);
+                        }
                     }
-                    else{ // produti est dans estPris
-                        removeProductFromList(estPris, produit);
+                    else
+                    {
+                        for(Produit p : aPrendre)
+                        {
+                            if(p.getId() == id){aPrendre.remove(p); break;}
+                        }
+                        for(Produit p : estPris)
+                        {
+                            if(p.getId() == id){estPris.remove(p); break;}
+                        }
                     }
                     li.setProduitsPris(estPris);
                     li.setProduitsAPrendre(aPrendre);

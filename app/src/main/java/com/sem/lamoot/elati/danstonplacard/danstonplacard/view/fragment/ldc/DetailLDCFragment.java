@@ -31,6 +31,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCourses
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -99,7 +100,6 @@ public class DetailLDCFragment extends Fragment {
         ldcProductRecyclerview = view.findViewById(R.id.ldc_product_list_recyclerview);
         LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext, idLDC, true);
 
-//        ldcProductAdapter.setData(listeCourses.getProduitsAPrendre()); //LiveDATA ?
         listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 -> ldcProductAdapter.setData(listeCourses1.getProduitsAPrendre()));
 
 
@@ -108,8 +108,15 @@ public class DetailLDCFragment extends Fragment {
         ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
 
         btnEditLdc = view.findViewById(R.id.btn_edit_ldc);
-        if(idLDC == 1 ||listeCourses.getEtat() == 1){
+        btnRecycleLdc = view.findViewById(R.id.btn_archive_ldc);
+
+        if(idLDC == 1){
             btnEditLdc.setVisibility(View.INVISIBLE);
+        }
+        if(listeCourses.getEtat() == 1)
+        {
+            btnEditLdc.setVisibility(View.INVISIBLE);
+            btnRecycleLdc.setVisibility(View.INVISIBLE);
         }
 
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
@@ -122,19 +129,38 @@ public class DetailLDCFragment extends Fragment {
                 transaction.commit();
             }
         });
-        btnRecycleLdc = view.findViewById(R.id.btn_archive_ldc);
         btnRecycleLdc.setOnClickListener(new View.OnClickListener() { // Archiver liste de courses
             @Override
             public void onClick(View v) {
                 // Set archive field to 1
 
-                listeCourses.setEtat(1);
-                listeCourses.setDateArchive(new Date());
-                listeCoursesDao.updateListe(listeCourses);
-
-                for(Produit produit : listeCourses.getProduitsPris())
+                if(listeCourses.getId() == 1)
                 {
-                    produitDao.updateQuantityById(produit.getId(), 1);
+                    ListeCourses li = new ListeCourses(listeCourses);
+                    li.setEtat(1);
+
+                    Date date = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    String strDate = formatter.format(date);
+
+                    li.setDateArchive(date);
+                    li.setNom("Liste des produits manquants du " + strDate);
+
+                    listeCoursesDao.insert(li);
+
+                    for(Produit produit : li.getProduitsPris())
+                    {
+                        produitDao.updateQuantityById(produit.getId(), 1);
+                    }
+                }
+                else {
+                    listeCourses.setEtat(1);
+                    listeCourses.setDateArchive(new Date());
+                    listeCoursesDao.updateListe(listeCourses);
+
+                    for (Produit produit : listeCourses.getProduitsPris()) {
+                        produitDao.updateQuantityById(produit.getId(), 1);
+                    }
                 }
 
                 getFragmentManager().popBackStack();

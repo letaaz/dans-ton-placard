@@ -47,6 +47,16 @@ public class ListeCourses {
         this.produitsPris = new ArrayList<Produit>();
     }
 
+    public ListeCourses(ListeCourses li)
+    {
+        this.nom = li.nom;
+        this.etat = li.etat;
+        this.dateArchive = li.dateArchive;
+        this.dateCreation = li.dateCreation;
+        this.produitsPris = li.produitsPris;
+        this.produitsAPrendre = li.produitsAPrendre;
+    }
+
     public int getId() {
         return id;
     }

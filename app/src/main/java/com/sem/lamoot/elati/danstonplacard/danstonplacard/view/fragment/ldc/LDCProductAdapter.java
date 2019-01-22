@@ -86,6 +86,9 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
         public LDCProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
+            ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
+
             ldc_product_name = itemView.findViewById(R.id.ldc_product_name);
             ldc_product_quantity = itemView.findViewById(R.id.ldc_product_quantity);
             ldc_product_price = itemView.findViewById(R.id.ldc_product_price);
@@ -93,6 +96,12 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
             ldc_product_price_label = itemView.findViewById(R.id.ldc_product_price_label);
             id_product_ldc_item = itemView.findViewById(R.id.id_product_ldc_item);
             ldc_product_checked = itemView.findViewById(R.id.ldc_product_checked);
+
+            if(li.getEtat() == 1)
+            {
+                ldc_product_checked.setEnabled(false);
+            }
+
 
             ldc_product_checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
