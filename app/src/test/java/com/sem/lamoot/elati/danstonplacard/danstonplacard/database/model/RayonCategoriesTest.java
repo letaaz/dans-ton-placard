@@ -33,7 +33,7 @@ public class RayonCategoriesTest {
         assertEquals(12, rayonCategories.getKeys().size());
     }
 
-    @Test
+/*    @Test
     public void testFindRayonByCategory(){
 
         // categories for Foods
@@ -52,7 +52,7 @@ public class RayonCategoriesTest {
         String[] categoriesThree = new String[3];
         assertEquals(Rayon.DIVERS, rayonCategories.findRayonByCategory(categoriesThree));
 
-    }
+    }*/
 
 
 }

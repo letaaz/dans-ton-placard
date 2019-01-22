@@ -45,7 +45,7 @@ public class ProductDaoTest {
 
     }
 
-    @Test
+/*    @Test
     public void testDBIsEmpty(){
 
         List<Produit> produitList = new ArrayList<Produit>();
@@ -77,5 +77,5 @@ public class ProductDaoTest {
         List<Produit> produitList = new ArrayList<>();
         produitList.add(produit);
 
-    }
+    }*/
 }
