@@ -70,6 +70,7 @@
         <item name="epicerie_sucree">Épicerie sucrée</item>
         <item name="epicerie_salee">Épicerie salée</item>
         <item name="hygienes_beautes">Hygiènes et Beautés</item>
+        <item name="animaux">Animaux</item>
         <item name="divers">Divers</item>
     </string-array>
 </resources>
