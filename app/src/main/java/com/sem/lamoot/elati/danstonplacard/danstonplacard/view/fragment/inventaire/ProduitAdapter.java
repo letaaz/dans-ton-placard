@@ -107,12 +107,13 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                         }
                         else
                         {
-                            Log.d("dtp", "IM HERE");
                             ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
                             List<Produit> aPrendre = li.getProduitsAPrendre();
-                            aPrendre = removeProductFromList(aPrendre,data.get(produitViewHolder.getAdapterPosition()));
+                            Produit produit = data.get(produitViewHolder.getAdapterPosition());
+                            aPrendre = removeProductFromList(aPrendre,produit);
                             li.setProduitsAPrendre(aPrendre);
                             listeCoursesDao.updateListe(li);
+                            produitDao.deleteProductById(produit.getId());
                         }
                     }
                 });
