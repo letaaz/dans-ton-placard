@@ -117,15 +117,14 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.FRUITS_LEGUMES, Piece.DIVERS);
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     long id_newProduit = produitDao.insert(newProduit);
-//                    Toast.makeText(mContext, "" + newProduit.getId(), Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(mContext, "" + id_newProduit, Toast.LENGTH_SHORT).show();
 
                     newProduit.setId((int) id_newProduit);
                     listeCourses.getProduitsAPrendre().add(newProduit);
                     listeCoursesDao.updateListe(listeCourses);
 
                     hideKeyboard();
-                    getActivity().onBackPressed();
+                    showSnackBar(R.string.msg_produit_ajoute_ldc);
+                    //getActivity().onBackPressed();
                 }
                 else
                 {
@@ -142,7 +141,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     listeCoursesDao.updateListe(listeCourses);
 
                     hideKeyboard();
-                    getActivity().onBackPressed();
+                    showSnackBar(R.string.msg_produit_ajoute_ldc);
+                    //getActivity().onBackPressed();
                 }
                 else
                 {
@@ -150,7 +150,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 }
             });
         }
-        else
+        else // Ajouter produit à la LDC
         {
             actv.setOnItemClickListener((parent, view1, position, id) -> {
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
@@ -208,6 +208,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 
         if (result != null) {
             if (result.getContents() == null) {
+                getActivity().onBackPressed();
             } else {
                 String data_product = "";
                 try {
@@ -221,8 +222,9 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
+                onClick(getView());
             }
-            getActivity().onBackPressed();
+
         }
     }
 

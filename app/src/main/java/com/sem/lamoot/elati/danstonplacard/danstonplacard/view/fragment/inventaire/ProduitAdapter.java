@@ -19,7 +19,9 @@ import android.widget.TextView;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.io.IOException;
@@ -27,6 +29,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.LDCFragment.removeProductFromList;
 
 public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitViewHolder> {
 
@@ -48,14 +52,16 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     private OnMinusImageViewClickListener onMinusImageViewClickListener;
     private OnAddImageViewClickListener onAddImageViewClickListener;
     private OnProductItemClickListener onProductItemClickListener;
+    private int idLDC;
 
 
-    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener){
+    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener, int idLDC){
         this.data = new ArrayList<>();
         this.context = context;
         this.onMinusImageViewClickListener = minusListener;
         this.onAddImageViewClickListener = addListener;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.idLDC = idLDC;
     }
 
     @NonNull
@@ -76,6 +82,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
         String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
+        ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(context).listeCoursesDao();
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
         produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -94,7 +101,20 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
+
+                        if(idLDC == -1) {
+                            produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
+                        }
+                        else
+                        {
+                            ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
+                            List<Produit> aPrendre = li.getProduitsAPrendre();
+                            Produit produit = data.get(produitViewHolder.getAdapterPosition());
+                            aPrendre = removeProductFromList(aPrendre,produit);
+                            li.setProduitsAPrendre(aPrendre);
+                            listeCoursesDao.updateListe(li);
+                            produitDao.deleteProductById(produit.getId());
+                        }
                     }
                 });
                 AlertDialog dialog = alertDialog.create();
@@ -103,7 +123,6 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

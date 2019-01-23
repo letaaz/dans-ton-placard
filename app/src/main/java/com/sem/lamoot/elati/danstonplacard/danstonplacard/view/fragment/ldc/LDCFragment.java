@@ -282,7 +282,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
      * @param produit the product to remove
      * @return the new list without the product (or same list if product not exists)
      */
-    public List<Produit> removeProductFromList(List<Produit> list, Produit produit) {
+    public static List<Produit> removeProductFromList(List<Produit> list, Produit produit) {
         for(int i = 0; i < list.size(); i++) {
             if(list.get(i).getId() == produit.getId()) {
                 list.remove(i);

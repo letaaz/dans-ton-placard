@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -122,6 +123,8 @@ public class DetailLDCFragment extends Fragment {
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getFragmentManager().popBackStack();
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(idLDC));
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -136,7 +139,8 @@ public class DetailLDCFragment extends Fragment {
 
                 if(listeCourses.getId() == 1)
                 {
-                    ListeCourses li = new ListeCourses(listeCourses);
+                    ListeCourses upListeCourse = listeCoursesDao.getListeCoursesById(1);
+                    ListeCourses li = new ListeCourses(upListeCourse);
                     li.setEtat(1);
 
                     Date date = new Date();
@@ -154,15 +158,20 @@ public class DetailLDCFragment extends Fragment {
                     }
                 }
                 else {
-                    listeCourses.setEtat(1);
-                    listeCourses.setDateArchive(new Date());
-                    listeCoursesDao.updateListe(listeCourses);
+                    ListeCourses li = listeCoursesDao.getListeCoursesById(listeCourses.getId());
 
-                    for (Produit produit : listeCourses.getProduitsPris()) {
-                        produitDao.updateQuantityById(produit.getId(), 1);
+                    li.setEtat(1);
+                    li.setDateArchive(new Date());
+                    listeCoursesDao.updateListe(li);
+
+                    for (Produit produit : li.getProduitsPris()) {
+                        if(produit.getQuantite() != 0)
+                            produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
+                        else
+                            produitDao.updateQuantityById(produit.getId(), 1);
+
                     }
                 }
-
                 getFragmentManager().popBackStack();
 
             }
@@ -217,7 +226,4 @@ public class DetailLDCFragment extends Fragment {
 
         return view;
     }
-
-
-
 }

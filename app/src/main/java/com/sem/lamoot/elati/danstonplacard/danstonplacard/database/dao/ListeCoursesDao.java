@@ -47,6 +47,7 @@ public interface ListeCoursesDao {
     @Query("SELECT * FROM liste_de_courses WHERE id = :idLDC")
     LiveData<ListeCourses> getListeCoursesByIdLD(int idLDC);
 
+
 //
 //    @Query("SELECT produitsAPrendre FROM liste_de_courses WHERE id = :idLDC")
 //    LiveData<List<Produit>> getProduitsAPrendreByIdLDC(int idLDC);
