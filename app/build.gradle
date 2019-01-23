@@ -88,7 +88,7 @@ dependencies {
     androidTestImplementation "android.arch.core:core-testing:1.1.0"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
     implementation "com.android.support.test:rules:1.0.1"
-
+1
     // Animations
     implementation 'com.github.mancj:SlideUp-Android:2.2.8'
 

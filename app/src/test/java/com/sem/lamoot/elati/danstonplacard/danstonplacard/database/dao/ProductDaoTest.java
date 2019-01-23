@@ -1,11 +1,9 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao;
 
-import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.content.Context;
-import android.support.annotation.Nullable;
+
+import android.arch.persistence.room.Room;
 import android.support.test.InstrumentationRegistry;
-import android.support.v7.app.AppCompatActivity;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
@@ -14,36 +12,48 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Observer;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertTrue;
+
 
 public class ProductDaoTest {
 
+
     private Produit produit;
     private ProduitDao produitDao;
-    private RoomDB roomDatabase;
+    private RoomDB roomDB;
 
+/*
     @Before
     public void initDb(){
-        roomDatabase = mock(RoomDB.class);
-        produitDao = mock(ProduitDao.class);
+        roomDB = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
+                RoomDB.class)
+                .allowMainThreadQueries()
+                .build();
+
+        produitDao = roomDB.produitDao();
+
+
         produit = new Produit("Bonbon", "123321123321", "Haribo", "wwww.abcd.com/image.png",2, 500, new Date(), Rayon.EPICERIE_SUCREE, 1, Piece.CUISINE);
     }
 
     @After
-    public void tearDown(){
-
-
+    public void closeDb() throws Exception{
+        roomDB.close();
     }
+
+    @Test
+    public void onFetchingProduits_shouldGetEmptyList_IfTable_IsEmpty() throws InterruptedException {
+        List< Produit > noteList = LiveDataTestUtil.getValue(produitDao.getProduitsDisponiblesParPiece("Cuisine"));
+        assertTrue(noteList.isEmpty());
+    }
+*/
 
 /*    @Test
     public void testDBIsEmpty(){
@@ -62,7 +72,7 @@ public class ProductDaoTest {
                 return super.getValue();
             }
         };
-
+/*
         //listLiveData.setValue(produitList);
 
         Mockito.when(produitDao.getProduitsDisponiblesParPiece("Cuisine")).thenReturn(listLiveData);
