@@ -145,6 +145,7 @@ public class LDCEditFragment extends Fragment
 
     @Override
     public void onMinusImageViewClickListener(Produit produit) {
+        listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
         List<Produit> aPrendre = listeCourse.getProduitsAPrendre();
         for(Produit p : aPrendre)
         {
@@ -161,6 +162,7 @@ public class LDCEditFragment extends Fragment
     public void onAddImageViewClickListener(Produit produit) {
         Log.d("dtp", "ADD PRODUCT");
 
+        listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
         List<Produit> aPrendre = listeCourse.getProduitsAPrendre();
 
         Log.d("dtp", "" + aPrendre.size());
