@@ -40,7 +40,7 @@ public abstract class RoomDB extends RoomDatabase {
     public static RoomDB getDatabase(final Context context) {
         if (INSTANCE == null) {
 
-            //context.deleteDatabase(DB_NAME);
+            context.deleteDatabase(DB_NAME);
 
             synchronized (RoomDB.class) {
                 if (INSTANCE == null) {

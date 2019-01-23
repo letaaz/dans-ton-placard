@@ -27,8 +27,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="15sp"
+        style="@style/ListItemTitle"
         app:layout_constraintEnd_toStartOf="@+id/ldc_product_checked"
         app:layout_constraintStart_toEndOf="@+id/ldc_product_image"
         app:layout_constraintTop_toTopOf="parent"
@@ -40,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="@string/label_quantité_ab"
+        style="@style/ListItemInfo"
         android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/ldc_product_price"
         app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
@@ -50,6 +50,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:text="2"
+        style="@style/ListItemInfo"
         android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_quantity_label"
         app:layout_constraintStart_toEndOf="@+id/ldc_product_quantity_label" />
@@ -59,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_prix_ab"
+        style="@style/ListItemInfo"
         app:layout_constraintStart_toStartOf="@+id/ldc_product_name"
         app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
 
@@ -68,6 +70,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:text="2 €"
+        style="@style/ListItemInfo"
         app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_price_label"
         app:layout_constraintStart_toEndOf="@+id/ldc_product_price_label" />
 

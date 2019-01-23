@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,12 +17,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
@@ -41,6 +46,8 @@ public class LDCEditFragment extends Fragment
     private ImageButton ldcSaveEdit;
     private RecyclerView ldcEditProductRecyclerView;
     private FloatingActionButton ldcEditAddProduct;
+    private TextInputLayout ldcInputLayout;
+    private EditText ldcNameEdit;
 
     private ListeCoursesDao listeCoursesDao;
     private ListeCourses listeCourse;
@@ -71,17 +78,24 @@ public class LDCEditFragment extends Fragment
         ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
         ldcSaveEdit = view.findViewById(R.id.btn_save_ldc_edit);
-        EditText ldcNameEdit = (EditText) view.findViewById(R.id.ldc_edit_name);
+        ldcInputLayout = view.findViewById(R.id.ldc_edit_name_layout);
+        ldcNameEdit = view.findViewById(R.id.ldc_edit_name);
         ldcEditAddProduct = view.findViewById(R.id.ldc_edit_ajout_produit_fab);
+
+        TextView ldcEditDefaultContent = view.findViewById(R.id.ldc_edit_default_content);
 
             if(idLdc == LDCFragment.NEW_LDC)
             {
-                listeCourse = new ListeCourses(getActivity().getString(R.string.titre_listecourse_defaut));
+                listeCourse = new ListeCourses("");
+                String defaultName = "Liste du " + DateTypeConverter.DATE_FORMATTER.format(listeCourse.getDateCreation());
+                listeCourse.setNom(defaultName);
                 idLdc = (int) listeCoursesDao.insert(listeCourse);
 
             }
             else{
                 listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
+                if (!listeCourse.getProduitsAPrendre().isEmpty())
+                    ldcEditDefaultContent.setVisibility(View.GONE);
             }
 
             ldcNameEdit.setText(listeCourse.getNom());
@@ -89,6 +103,9 @@ public class LDCEditFragment extends Fragment
             ldcSaveEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!validateName()) {
+                        return;
+                    }
 
                     listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
                     listeCourse.setNom(ldcNameEdit.getText().toString());
@@ -141,6 +158,24 @@ public class LDCEditFragment extends Fragment
         ListeCourses listeCourses = new ListeCourses(listeTitle);
 
         return listeCoursesDao.insert(listeCourses);
+    }
+
+    private boolean validateName() {
+        if (ldcNameEdit.getText().toString().trim().isEmpty()) {
+            ldcInputLayout.setError(getString(R.string.err_msg_name));
+            requestFocus(ldcNameEdit);
+            return false;
+        } else {
+            ldcInputLayout.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
     }
 
     @Override

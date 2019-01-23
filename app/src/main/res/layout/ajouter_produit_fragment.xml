@@ -33,7 +33,7 @@
             android:layout_marginEnd="8dp"
             android:background="@null"
             android:ems="10"
-            android:hint="Chercher un produit"
+            android:hint="Chercher un produit..."
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
@@ -71,8 +71,8 @@
 
     <ImageView
         android:id="@+id/image_view_scan_codebarre"
-        android:layout_width="175dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"

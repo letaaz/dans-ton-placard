@@ -45,11 +45,15 @@
     <string name="facebook">Page Facebook</string>
     <string name="about">Informations</string>
     <string name="default_page_content">Désolé, la page est indisponible pour le moment.</string>
-    <string name="scan_product_indication">Appuyez sur l\'image pour scanner le produit</string>
+    <string name="scan_product_indication">Appuyer sur l\'image pour scanner le produit</string>
     <string name="recipe_default_content">Vos recettes personnalisées bientôt disponibles !</string>
     <string name="promotions_default_content">Vos promotions en magasins bientôt disponibles !</string>
     <string name="btn_show_label">Show</string>
     <string name="btn_hide_label">Hide</string>
+    <string name="ldc_edit_default_content">Votre liste de courses est vide.</string>
+    <string name="hint_new_ldc_name">Nom de la liste</string>
+    <string name="err_msg_name">Entrer un nom pour votre liste</string>
+    <string name="ldc_detail_default_content">Aucun article à prendre.</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

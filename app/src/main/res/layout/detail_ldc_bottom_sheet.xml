@@ -8,6 +8,7 @@
     android:orientation="vertical"
     app:behavior_hideable="false"
     app:behavior_peekHeight="40dp"
+    android:background="@color/empty"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <android.support.constraint.ConstraintLayout
@@ -27,7 +28,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:text="3,45 €"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +101,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="3dp"
             android:text="12,5 €"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
