@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -122,6 +123,8 @@ public class DetailLDCFragment extends Fragment {
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getFragmentManager().popBackStack();
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(idLDC));
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -169,7 +172,6 @@ public class DetailLDCFragment extends Fragment {
 
                     }
                 }
-
                 getFragmentManager().popBackStack();
 
             }
@@ -224,7 +226,4 @@ public class DetailLDCFragment extends Fragment {
 
         return view;
     }
-
-
-
 }

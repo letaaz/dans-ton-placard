@@ -95,8 +95,7 @@ public class LDCEditFragment extends Fragment
                     listeCourse.setId(idLdc);
                     listeCoursesDao.updateListe(listeCourse);
 
-
-                    getActivity().onBackPressed();
+                    getFragmentManager().popBackStack();
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(idLdc));
