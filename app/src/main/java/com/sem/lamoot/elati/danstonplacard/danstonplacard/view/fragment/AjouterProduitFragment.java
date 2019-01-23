@@ -123,7 +123,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     listeCoursesDao.updateListe(listeCourses);
 
                     hideKeyboard();
-                    getActivity().onBackPressed();
+                    showSnackBar(R.string.msg_produit_ajoute_ldc);
+                    //getActivity().onBackPressed();
                 }
                 else
                 {
@@ -140,7 +141,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     listeCoursesDao.updateListe(listeCourses);
 
                     hideKeyboard();
-                    getActivity().onBackPressed();
+                    showSnackBar(R.string.msg_produit_ajoute_ldc);
+                    //getActivity().onBackPressed();
                 }
                 else
                 {
@@ -206,6 +208,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 
         if (result != null) {
             if (result.getContents() == null) {
+                getActivity().onBackPressed();
             } else {
                 String data_product = "";
                 try {
@@ -219,8 +222,9 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
+                onClick(getView());
             }
-            getActivity().onBackPressed();
+
         }
     }
 
