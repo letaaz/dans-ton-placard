@@ -25,12 +25,11 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao_Impl;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.DetailProduitFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +37,7 @@ import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
-public class DetailLDCFragment extends Fragment {
+public class DetailLDCFragment extends Fragment{
 
     final static String ARG_LDC = "ARG_LDC";
     private int idLDC;
@@ -81,8 +80,7 @@ public class DetailLDCFragment extends Fragment {
 
         ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
         float prix_total = 0;
-        for(Produit produit : listeCourses.getProduitsPris())
-        {
+        for(Produit produit : listeCourses.getProduitsPris()) {
             prix_total += produit.getPrix();
         }
         for(Produit produit : listeCourses.getProduitsAPrendre())
@@ -137,8 +135,7 @@ public class DetailLDCFragment extends Fragment {
             public void onClick(View v) {
                 // Set archive field to 1
 
-                if(listeCourses.getId() == 1)
-                {
+                if(listeCourses.getId() == 1) {
                     ListeCourses upListeCourse = listeCoursesDao.getListeCoursesById(1);
                     ListeCourses li = new ListeCourses(upListeCourse);
                     li.setEtat(1);
@@ -152,8 +149,7 @@ public class DetailLDCFragment extends Fragment {
 
                     listeCoursesDao.insert(li);
 
-                    for(Produit produit : li.getProduitsPris())
-                    {
+                    for(Produit produit : li.getProduitsPris()) {
                         produitDao.updateQuantityById(produit.getId(), 1);
                     }
                 }

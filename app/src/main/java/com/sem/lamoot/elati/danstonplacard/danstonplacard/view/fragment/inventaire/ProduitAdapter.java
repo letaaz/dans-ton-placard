@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -23,6 +26,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCour
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.DetailProduitFragment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,6 +126,20 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 return true;
             }
         });
+
+//        produitViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+//                FragmentTransaction trans = manager.beginTransaction();
+//                String[] params = new String[]{data.get(produitViewHolder.getAdapterPosition()).getId()+"", "CUISINE"};
+//                trans.replace(R.id.root_ldc_frame, DetailProduitFragment.newInstance(params));
+//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                trans.addToBackStack(null);
+//                trans.commit();
+//            }
+//        });
     }
 
     @Override
