@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
@@ -207,13 +208,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
                 if(produit.getUrlImage() != null) {
                     if(produit.getUrlImage().contains("http")) {
-                        try {
-                            Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-                            imageProduit.setImageBitmap(bitmap);
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
-                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                        }
+                        Glide.with(context).load(produit.getUrlImage()).into(imageProduit);
                     }
                     else{
                         try {

@@ -74,6 +74,10 @@ dependencies {
     // Animations
     implementation 'com.github.mancj:SlideUp-Android:2.2.8'
 
+    // Glide - https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
 }
 
 ext {

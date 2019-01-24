@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
@@ -168,13 +169,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
             if(product.getUrlImage() != null) {
                 if(product.getUrlImage().contains("http")) {
-                    try {
-                        Bitmap bitmap = new AsyncTaskLoadImage().execute(product.getUrlImage()).get();
-                        ldc_product_image.setImageBitmap(bitmap);
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                        ldc_product_image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_barcode));
-                    }
+                    Glide.with(mContext).load(product.getUrlImage()).into(ldc_product_image);
                 }
                 else{
                     try {

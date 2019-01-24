@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
@@ -216,12 +217,8 @@ public class DetailProduitFragment extends Fragment {
         else{
             if(produit.getUrlImage().contains("http"))
             {
-                try {
-                    Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-                    produitImage.setImageBitmap(bitmap);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+                Glide.with(mContext).load(produit.getUrlImage()).into(produitImage);
             }
             else
             {
