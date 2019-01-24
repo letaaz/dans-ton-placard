@@ -1,9 +1,10 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao;
 
 
+import android.app.Application;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
@@ -12,9 +13,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.List;
@@ -32,10 +33,7 @@ public class ProductDaoTest {
 /*
     @Before
     public void initDb(){
-        roomDB = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
-                RoomDB.class)
-                .allowMainThreadQueries()
-                .build();
+        roomDB = RoomDB.create(InstrumentationRegistry.getTargetContext(), true);
 
         produitDao = roomDB.produitDao();
 
@@ -47,13 +45,18 @@ public class ProductDaoTest {
     public void closeDb() throws Exception{
         roomDB.close();
     }
+*/
+
+
+
 
     @Test
     public void onFetchingProduits_shouldGetEmptyList_IfTable_IsEmpty() throws InterruptedException {
-        List< Produit > noteList = LiveDataTestUtil.getValue(produitDao.getProduitsDisponiblesParPiece("Cuisine"));
-        assertTrue(noteList.isEmpty());
+        //List< Produit > produitList = LiveDataTestUtil.getValue(produitDao.getProduitsDisponiblesParPiece("Cuisine"));
+        //assertTrue(produitList.isEmpty());
     }
-*/
+
+
 
 /*    @Test
     public void testDBIsEmpty(){

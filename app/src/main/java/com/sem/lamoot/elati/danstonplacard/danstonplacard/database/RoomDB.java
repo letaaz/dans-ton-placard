@@ -66,6 +66,23 @@ public abstract class RoomDB extends RoomDatabase {
         return INSTANCE;
     }
 
+
+    public static RoomDB create(Context ctxt, boolean memoryOnly) {
+        RoomDatabase.Builder<RoomDB> b;
+
+        if (memoryOnly) {
+            b=Room.inMemoryDatabaseBuilder(ctxt.getApplicationContext(),
+                    RoomDB.class);
+        }
+        else {
+            b=Room.databaseBuilder(ctxt.getApplicationContext(), RoomDB.class,
+                    DB_NAME);
+        }
+
+        return(b.build());
+    }
+
+
     public static void destroyInstance() {
 
         INSTANCE = null;
