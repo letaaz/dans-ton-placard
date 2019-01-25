@@ -17,22 +17,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterProduitFragment;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.DetailProduitFragment;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
 
 import java.util.List;
 
 public class LDCEditFragment extends Fragment
-                implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener {
+        implements ProduitAdapter.OnMinusImageViewClickListener,
+        ProduitAdapter.OnAddImageViewClickListener,
+        ProduitAdapter.OnProductItemClickListener {
 
     public static String ARG_LDC = "";
     private Context mContext;
@@ -74,63 +75,63 @@ public class LDCEditFragment extends Fragment
         EditText ldcNameEdit = (EditText) view.findViewById(R.id.ldc_edit_name);
         ldcEditAddProduct = view.findViewById(R.id.ldc_edit_ajout_produit_fab);
 
-            if(idLdc == LDCFragment.NEW_LDC)
-            {
-                listeCourse = new ListeCourses(getActivity().getString(R.string.titre_listecourse_defaut));
-                idLdc = (int) listeCoursesDao.insert(listeCourse);
+        if(idLdc == LDCFragment.NEW_LDC)
+        {
+            listeCourse = new ListeCourses(getActivity().getString(R.string.titre_listecourse_defaut));
+            idLdc = (int) listeCoursesDao.insert(listeCourse);
 
-            }
-            else{
+        }
+        else{
+            listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
+        }
+
+        ldcNameEdit.setText(listeCourse.getNom());
+
+        ldcSaveEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
+                listeCourse.setNom(ldcNameEdit.getText().toString());
+                listeCourse.setId(idLdc);
+                listeCoursesDao.updateListe(listeCourse);
+
+                getFragmentManager().popBackStack();
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(idLdc));
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
 
-            ldcNameEdit.setText(listeCourse.getNom());
-
-            ldcSaveEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    listeCourse = listeCoursesDao.getListeCoursesById(idLdc);
-                    listeCourse.setNom(ldcNameEdit.getText().toString());
-                    listeCourse.setId(idLdc);
-                    listeCoursesDao.updateListe(listeCourse);
-
-                    getFragmentManager().popBackStack();
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(idLdc));
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
 
 
+        });
 
-            });
+        ldcEditAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch the view for adding a product to the current piece
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.root_ldc_frame, AjouterProduitFragment.newInstance("DIVERS", idLdc));
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
-            ldcEditAddProduct.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Launch the view for adding a product to the current piece
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.root_ldc_frame, AjouterProduitFragment.newInstance("DIVERS", idLdc));
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });
-
-            ldcEditProductRecyclerView = view.findViewById(R.id.ldc_product_edit_recyclerview);
-            ProduitAdapter produitAdapter = new ProduitAdapter(mContext, this, this, idLdc);
-            //produitAdapter.setData(listeCourse.getProduitsAPrendre());
+        ldcEditProductRecyclerView = view.findViewById(R.id.ldc_product_edit_recyclerview);
+        ProduitAdapter produitAdapter = new ProduitAdapter(mContext, this, this, idLdc);
+        produitAdapter.setOnProductItemClickListener(this::onProductItemClickListener);
         listeCoursesViewModel.getListeCoursesByIdLD(idLdc).observe(this, listeCourses1 -> produitAdapter.setData(listeCourses1.getProduitsAPrendre()));
 
         ldcEditProductRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            ldcEditProductRecyclerView.setAdapter(produitAdapter);
+        ldcEditProductRecyclerView.setAdapter(produitAdapter);
 
-            RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
-            ldcEditProductRecyclerView.setLayoutManager(manager);
-            ldcEditProductRecyclerView.setNestedScrollingEnabled(false);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
+        ldcEditProductRecyclerView.setLayoutManager(manager);
+        ldcEditProductRecyclerView.setNestedScrollingEnabled(false);
 
         return view;
     }
@@ -174,5 +175,16 @@ public class LDCEditFragment extends Fragment
         }
         listeCourse.setProduitsAPrendre(aPrendre);
         listeCoursesDao.updateListe(listeCourse);
+    }
+
+    @Override
+    public void onProductItemClickListener(Produit produit) {
+        // Launch the view for product's detail
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        String[] params = new String[]{produit.getId()+"", "" + idLdc};
+        transaction.replace(R.id.root_ldc_frame, DetailProduitFragment.newInstance(params));
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

@@ -1,7 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -16,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
@@ -27,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LDCProductViewHolder> {
 
@@ -91,7 +89,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
             ldc_product_name = itemView.findViewById(R.id.ldc_product_name);
             ldc_product_quantity = itemView.findViewById(R.id.ldc_product_quantity);
-            ldc_product_price = itemView.findViewById(R.id.ldc_product_price);
+            ldc_product_price = itemView.findViewById(R.id.prix_produit);
             ldc_product_image = itemView.findViewById(R.id.ldc_product_image);
             ldc_product_price_label = itemView.findViewById(R.id.ldc_product_price_label);
             id_product_ldc_item = itemView.findViewById(R.id.id_product_ldc_item);
@@ -168,13 +166,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
             if(product.getUrlImage() != null) {
                 if(product.getUrlImage().contains("http")) {
-                    try {
-                        Bitmap bitmap = new AsyncTaskLoadImage().execute(product.getUrlImage()).get();
-                        ldc_product_image.setImageBitmap(bitmap);
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                        ldc_product_image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_barcode));
-                    }
+                    Glide.with(mContext).load(product.getUrlImage()).into(ldc_product_image);
                 }
                 else{
                     try {

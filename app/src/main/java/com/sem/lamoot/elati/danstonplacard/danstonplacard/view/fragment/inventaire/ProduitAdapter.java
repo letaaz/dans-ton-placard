@@ -3,20 +3,18 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventa
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
@@ -28,11 +26,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.LDCFragment.removeProductFromList;
 
 public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitViewHolder> {
+
+    private OnMinusImageViewClickListener onMinusImageViewClickListener;
+    private OnAddImageViewClickListener onAddImageViewClickListener;
+    private OnProductItemClickListener onProductItemClickListener;
+    private List<Produit> data;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private int idLDC;
+
 
     public interface OnMinusImageViewClickListener{
         void onMinusImageViewClickListener(Produit produit);
@@ -46,13 +52,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         void onProductItemClickListener(Produit produit);
     }
 
-    private List<Produit> data;
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private OnMinusImageViewClickListener onMinusImageViewClickListener;
-    private OnAddImageViewClickListener onAddImageViewClickListener;
-    private OnProductItemClickListener onProductItemClickListener;
-    private int idLDC;
+
 
 
     public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener, int idLDC){
@@ -122,6 +122,20 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 return true;
             }
         });
+
+//        produitViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+//                FragmentTransaction trans = manager.beginTransaction();
+//                String[] params = new String[]{data.get(produitViewHolder.getAdapterPosition()).getId()+"", "CUISINE"};
+//                trans.replace(R.id.root_ldc_frame, DetailProduitFragment.newInstance(params));
+//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                trans.addToBackStack(null);
+//                trans.commit();
+//            }
+//        });
     }
 
     @Override
@@ -151,7 +165,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView nom_produit, quantite, id_produit;
+        private TextView nom_produit, quantite, id_produit, prix;
         private ImageView imageProduit, retirerUnProduit, ajouterUnProduit, iconAlert;
 
         public ProduitViewHolder(View itemView) {
@@ -166,6 +180,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
             iconAlert = itemView.findViewById(R.id.alert_icon);
+            prix = itemView.findViewById(R.id.prix_produit);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -186,16 +201,11 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
                 quantite.setText("Quantité : " + String.valueOf(produit.getQuantite()));
                 id_produit.setText(String.valueOf(produit.getId()));
+                prix.setText(String.valueOf(produit.getPrix()) + " €");
 
                 if(produit.getUrlImage() != null) {
                     if(produit.getUrlImage().contains("http")) {
-                        try {
-                            Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-                            imageProduit.setImageBitmap(bitmap);
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
-                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                        }
+                        Glide.with(context).load(produit.getUrlImage()).into(imageProduit);
                     }
                     else{
                         try {

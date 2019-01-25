@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,11 +20,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
@@ -40,7 +38,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import io.reactivex.annotations.NonNull;
 
@@ -55,7 +52,8 @@ public class DetailProduitFragment extends Fragment {
     private String mParam = null;
     private Produit mProduct;
     private Date dlc;
-    private String mPiece = null;
+    private int idLDC = -1;
+    private int idxProdInAPrendre = -1;
 
     // View
     ImageView produitImage;
@@ -82,20 +80,36 @@ public class DetailProduitFragment extends Fragment {
         if (getArguments() != null) {
             String[] args =  getArguments().getStringArray(ARG_PROD);
             mParam = args[0];
-            mPiece = args[1];
+            idLDC = Integer.valueOf(args[1]);
         }
-        detailProduitViewModel = ViewModelProviders.of(this).get(DetailProduitViewModel.class);
         listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
-        detailProduitViewModel.getProduit(Integer.parseInt(mParam))
-                .observe(this, result -> {
-                    if (result != null) {
-                        mProduct = result;
-                        Toast.makeText(mContext, "" + mProduct.getId(), Toast.LENGTH_SHORT).show();
-                        updateFields(result);
-                    } else {
-                        Log.d("DETAIL_PRODUCT", "ERROR WHILE RETRIEVING PRODUCT FROM DATABASE ID := " + mParam);
-                    }
-                });
+        detailProduitViewModel = ViewModelProviders.of(this).get(DetailProduitViewModel.class);
+
+        if(idLDC != -1) {
+            ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
+            mProduct = foundProduitInListeAPrendre(li.getProduitsAPrendre(), Integer.parseInt(mParam));
+        } else {
+            detailProduitViewModel.getProduit(Integer.parseInt(mParam))
+                    .observe(this, result -> {
+                        if (result != null) {
+                            mProduct = result;
+                            Toast.makeText(mContext, "" + mProduct.getId(), Toast.LENGTH_SHORT).show();
+                            updateFields(result);
+                        } else {
+                            Log.d("DETAIL_PRODUCT", "ERROR WHILE RETRIEVING PRODUCT FROM DATABASE ID := " + mParam);
+                        }
+                    });
+        }
+
+    }
+
+    private Produit foundProduitInListeAPrendre(List<Produit> produitsAPrendre, int idProduit) {
+        for(int i = 0; i < produitsAPrendre.size(); i++) {
+            if(produitsAPrendre.get(i).getId() == idProduit){
+                idxProdInAPrendre = i;
+                return produitsAPrendre.get(i);}
+        }
+        return null;
     }
 
     @Override
@@ -119,6 +133,17 @@ public class DetailProduitFragment extends Fragment {
         produitDlc.setOnClickListener(this::showDatePicker);
 
         saveBtn = view.findViewById(R.id.sauvegarde_product_btn);
+
+        if(idLDC != -1) {
+            updateFields(mProduct);
+            OnClickListenerUpdateProductInLDC();
+        } else {
+            OnClickListenerUpdateProductInInventory();
+        }
+        return view;
+    }
+
+    private void OnClickListenerUpdateProductInLDC() {
         saveBtn.setOnClickListener(view1 -> {
             String pieceItemName = getResources().getStringArray(R.array.pieces)[produitPiece.getSelectedItemPosition()];
             Piece piece = Piece.getPiece(pieceItemName);
@@ -131,61 +156,66 @@ public class DetailProduitFragment extends Fragment {
             mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
             mProduct.setDlc(dlc);
             Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
-            detailProduitViewModel.updateProduct(mProduct);
 
-            /* Update product in LDC */
-            for(ListeCourses ldc : listeCoursesDao.getAllListeCourses())
-            {
-                List<Produit> aPrendre = ldc.getProduitsAPrendre();
-                List<Produit> estPris = ldc.getProduitsPris();
 
-                for(int i = 0; i < aPrendre.size(); i++)
-                {
-                    if(aPrendre.get(i).getId() == mProduct.getId())
-                    {
-                        aPrendre.remove(i);
-                        aPrendre.add(mProduct);
-                        ldc.setProduitsAPrendre(aPrendre);
-                        listeCoursesDao.updateListe(ldc);
-                        Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                for(int i = 0; i < estPris.size(); i++)
-                {
-                    if(estPris.get(i).getId() == mProduct.getId())
-                    {
-                        estPris.remove(i);
-                        estPris.add(mProduct);
-                        ldc.setProduitsPris(estPris);
-                        listeCoursesDao.updateListe(ldc);
+            /* Update in LDC */
+            ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
+            List<Produit> aPrendre = li.getProduitsAPrendre();
+            aPrendre.remove(idxProdInAPrendre);
+            aPrendre.add(mProduct);
+            li.setProduitsAPrendre(aPrendre);
+            listeCoursesDao.updateListe(li);
 
-                    }
-                }
-
-            }
+            /* Update in inventory */
+            ProduitDao produitDao = RoomDB.getDatabase(mContext).produitDao();
+            Produit productFromInventaire = produitDao.findProductById(mProduct.getId());
+            productFromInventaire.setPiece(mProduct.getPiece());
+            productFromInventaire.setPrix(mProduct.getPrix());
+            productFromInventaire.setRayon(mProduct.getRayon());
+            productFromInventaire.setDlc(mProduct.getDlc());
+            produitDao.updateProduct(productFromInventaire);
 
 
             getFragmentManager().popBackStack();
         });
+    }
 
-        return view;
+    /**
+     * This method will update the product data that has been changed in the inventory.
+     */
+    private void OnClickListenerUpdateProductInInventory() {
+        saveBtn.setOnClickListener(view1 -> {
+            String pieceItemName = getResources().getStringArray(R.array.pieces)[produitPiece.getSelectedItemPosition()];
+            Piece piece = Piece.getPiece(pieceItemName);
+            String rayonItemName = getResources().getStringArray(R.array.rayons)[produitRayon.getSelectedItemPosition()];
+            Rayon rayon = Rayon.getRayon(rayonItemName);
+            // Form controls ?
+            mProduct.setPiece(piece);
+            mProduct.setRayon(rayon);
+            mProduct.setQuantite(produitQuantite.getValue());
+            mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
+            mProduct.setDlc(dlc);
+            Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
+
+            /* Update product in inventory */
+            detailProduitViewModel.updateProduct(mProduct);
+            /* Update product in LDC */
+            updateProductInLDCAfterInventory();
+
+
+            getFragmentManager().popBackStack();
+        });
     }
 
     private void updateFields(Produit produit){
-
-
         if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
             produitImage.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_barcode));
         }
         else{
             if(produit.getUrlImage().contains("http"))
             {
-                try {
-                    Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-                    produitImage.setImageBitmap(bitmap);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+                Glide.with(mContext).load(produit.getUrlImage()).into(produitImage);
             }
             else
             {
@@ -201,7 +231,7 @@ public class DetailProduitFragment extends Fragment {
         }
 
 
-        produitNom.setText(produit.getNom());
+        produitNom.setText(produit.getMarque() + " - " + produit.getNom());
         produitPoids.setText(produit.getPoids() + " g");
         int piece = produit.getPiece().ordinal();
         produitPiece.setSelection(piece);
@@ -237,6 +267,43 @@ public class DetailProduitFragment extends Fragment {
                     }
                 }
         }
+    }
+
+    /**
+     * After editing the information of a product in the inventory,
+     * this method will also go to modify the corresponding product in the shopping list.
+     */
+    private void updateProductInLDCAfterInventory() {
+        for(ListeCourses ldc : listeCoursesDao.getAllListeCourses())
+        {
+            List<Produit> aPrendre = ldc.getProduitsAPrendre();
+            List<Produit> estPris = ldc.getProduitsPris();
+
+            for(int i = 0; i < aPrendre.size(); i++)
+            {
+                if(aPrendre.get(i).getId() == mProduct.getId())
+                {
+                    aPrendre.remove(i);
+                    aPrendre.add(mProduct);
+                    ldc.setProduitsAPrendre(aPrendre);
+                    listeCoursesDao.updateListe(ldc);
+                    Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
+                }
+            }
+            for(int i = 0; i < estPris.size(); i++)
+            {
+                if(estPris.get(i).getId() == mProduct.getId())
+                {
+                    estPris.remove(i);
+                    estPris.add(mProduct);
+                    ldc.setProduitsPris(estPris);
+                    listeCoursesDao.updateListe(ldc);
+
+                }
+            }
+
+        }
+
     }
 
 }

@@ -23,7 +23,22 @@
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
+            <!--<ImageView-->
+                <!--android:id="@+id/id_product_image"-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginStart="1dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:contentDescription="imageProduct"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintHorizontal_chainStyle="packed"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:srcCompat="@drawable/ic_barcode" />-->
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/id_product_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -35,15 +50,15 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_barcode" />
+                app:srcCompat="@drawable/ic_barcode"/>
 
 
             <TextView
                 android:id="@+id/produit"
-                android:layout_width="222dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="@android:color/black"
@@ -55,14 +70,38 @@
             </TextView>
 
             <TextView
+                android:id="@+id/ldc_product_price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/label_prix_ab"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/id_product_image"
+                app:layout_constraintTop_toBottomOf="@+id/produit" />
+
+            <TextView
+                android:id="@+id/prix_produit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="2 €"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ldc_product_price_label"
+                app:layout_constraintTop_toBottomOf="@+id/produit" />
+
+
+            <TextView
                 android:id="@+id/quantite_produit_textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginEnd="8dp"
                 android:text="Quantité :"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/produit"
+                app:layout_constraintStart_toEndOf="@+id/prix_produit"
                 app:layout_constraintTop_toBottomOf="@+id/produit"
                 app:layout_constraintVertical_bias="0.0" />
 

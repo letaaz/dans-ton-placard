@@ -14,13 +14,11 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 4;
     private String tabTitle[]= new String[] {"Inventaire", "Listes", "Recettes", "Promotions"};
-    private Context mContext;
-    private final FragmentManager mFragmentManager;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.mFragmentManager = fm;
-        this.mContext = context;
+        FragmentManager mFragmentManager = fm;
+        Context mContext = context;
     }
 
 

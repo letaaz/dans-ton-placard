@@ -15,11 +15,7 @@ import android.widget.ImageView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 

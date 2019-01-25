@@ -41,7 +41,7 @@
         android:layout_marginStart="24dp"
         android:text="@string/label_quantité_ab"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/ldc_product_price"
+        app:layout_constraintStart_toEndOf="@+id/prix_produit"
         app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
 
     <TextView
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
 
     <TextView
-        android:id="@+id/ldc_product_price"
+        android:id="@+id/prix_produit"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
