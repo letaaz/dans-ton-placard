@@ -113,7 +113,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
                 if(produit == null)
                 {
-                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.FRUITS_LEGUMES, Piece.DIVERS);
+                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.DIVERS);
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     long id_newProduit = produitDao.insert(newProduit);
 
@@ -155,7 +155,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
                 if(produit == null)
                 {
-                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.FRUITS_LEGUMES, Piece.getPiece(mPiece));
+                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     produitDao.insert(newProduit);
 
