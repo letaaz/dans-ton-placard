@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,13 +34,11 @@ public class PieceFragment extends Fragment
     // RecyclerView + Adapter - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
     private ProduitAdapter produitsDisponiblesAdapter;
-    private RecyclerView.LayoutManager produitsDisponiblesLayoutManager;
 
 
     // RecyclerView + Adapter - produits indisponibles
     private RecyclerView produitsIndisponiblesRecyclerView;
     private ProduitAdapter produitsIndisponiblesAdapter;
-    private RecyclerView.LayoutManager produitsIndisponiblesLayoutManager;
     private ProduitViewModel produitViewModel;
     private ProduitViewModel produitViewModel2;
 
@@ -103,6 +102,8 @@ public class PieceFragment extends Fragment
             }
         });
 
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+
         // Listener for the FAB
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
         add_fab.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +115,17 @@ public class PieceFragment extends Fragment
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    add_fab.hide();
+                } else {
+                    add_fab.show();
+                }
             }
         });
 
@@ -135,7 +147,7 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
 
-        produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
@@ -153,7 +165,7 @@ public class PieceFragment extends Fragment
         produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
 
-        produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
         produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
@@ -174,7 +186,7 @@ public class PieceFragment extends Fragment
     public void onProductItemClickListener(Produit produit) {
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        String[] params = new String[]{produit.getId()+"", mParam};
+        String[] params = new String[]{produit.getId()+"", "-1"};
         transaction.replace(R.id.root_inventaire_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);

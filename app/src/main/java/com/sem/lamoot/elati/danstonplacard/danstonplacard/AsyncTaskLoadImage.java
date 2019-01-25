@@ -13,9 +13,6 @@ public class AsyncTaskLoadImage extends AsyncTask<String, Void, Bitmap> {
 
     private final static String TAG = "AsyncTaskLoadImage";
 
-    public AsyncTaskLoadImage(){
-    }
-
     @Override
     protected Bitmap doInBackground(String... params) {
         Bitmap bitmap = null;
@@ -30,5 +27,6 @@ public class AsyncTaskLoadImage extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap){
+        return;
     }
 }

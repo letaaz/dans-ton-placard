@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

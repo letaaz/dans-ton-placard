@@ -12,7 +12,6 @@ public class PageFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
-    private View view;
 
     public static PageFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -30,6 +29,7 @@ public class PageFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view;
         switch (mPage) {
             case 3:
                 return inflater.inflate(R.layout.recipe_fragment, container, false);

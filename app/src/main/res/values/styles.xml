@@ -44,8 +44,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_alignParentStart">true</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
+        <item name="android:padding">3dp</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
@@ -80,6 +79,10 @@
 
     <style name="tabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#D81B60</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
 </resources>

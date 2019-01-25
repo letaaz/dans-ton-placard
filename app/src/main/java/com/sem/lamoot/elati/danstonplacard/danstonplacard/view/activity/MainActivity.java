@@ -7,11 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -73,11 +73,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                return;
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                return;
             }
         });
 
@@ -124,6 +125,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_notez_nous:
             case R.id.nav_deconnexion:
+                break;
+            default:
                 break;
         }
 

@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCour
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +28,17 @@ import java.util.List;
 public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
     private ProduitDao produitDao;
+    private OnItemClickListener itemClickListener;
+    private ListeCoursesDao listeCoursesDao;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    private List<ListeCourses> data;
+
 
     public interface OnItemClickListener {
         void onItemClickListener(ListeCourses ldcDefaut);
     }
 
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private List<ListeCourses> data;
-    private OnItemClickListener itemClickListener;
-    private ListeCoursesDao listeCoursesDao;
 
     public LDCAdapter (Context context, OnItemClickListener listener) {
         this.mContext = context;

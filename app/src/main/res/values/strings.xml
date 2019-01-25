@@ -25,9 +25,10 @@
     <string name="salle_de_bain">Salle de bain</string>
     <string name="app_label">Dans ton placard</string>
     <string name="search_hint">Chercher un produit</string>
-
     <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
     <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
+    <string name="msg_produit_ajoute_ldc">Le produit a été ajouté à la liste de course et dans la pièce Divers</string>
+
     <string name="voir">Voir</string>
     <string name="ldc_disponibles_label">Listes de courses disponibles</string>
     <string name="history_ldc_label">Historique des listes de courses</string>
@@ -79,6 +80,7 @@
         <item name="epicerie_sucree">Épicerie sucrée</item>
         <item name="epicerie_salee">Épicerie salée</item>
         <item name="hygienes_beautes">Hygiènes et Beautés</item>
+        <item name="animaux">Animaux</item>
         <item name="divers">Divers</item>
     </string-array>
 </resources>

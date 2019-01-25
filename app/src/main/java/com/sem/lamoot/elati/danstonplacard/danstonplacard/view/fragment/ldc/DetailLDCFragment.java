@@ -2,7 +2,6 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,20 +22,18 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao_Impl;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCoursesViewModel;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
-
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
-public class DetailLDCFragment extends Fragment {
+public class DetailLDCFragment extends Fragment{
 
     final static String ARG_LDC = "ARG_LDC";
     private int idLDC;
@@ -45,7 +41,7 @@ public class DetailLDCFragment extends Fragment {
 
     private TextView ldcProductDefaultContent;
     private RecyclerView ldcProductRecyclerview, historyListRecyclerView;
-    private ImageButton btnEditLdc, btnRecycleLdc;
+    private ImageButton btnEditLdc;
     private RelativeLayout ldcLabel;
 
     private ListeCoursesDao listeCoursesDao;
@@ -96,30 +92,63 @@ public class DetailLDCFragment extends Fragment {
         TextView ldc_name_detail = view.findViewById(R.id.ldc_name_detail);
         ldc_name_detail.setText(listeCourses.getNom());
 
-        TextView price_product_right = view.findViewById(R.id.price_product_right);
-        price_product_right.setText(Float.toString(prix_total) + " €");
 
+        setDatasProduitsAPrendre(view, listeCoursesViewModel, listeCourses);
 
-        ldcProductRecyclerview = view.findViewById(R.id.ldc_product_list_recyclerview);
-        LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext, idLDC, true);
-
-        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 -> ldcProductAdapter.setData(listeCourses1.getProduitsAPrendre()));
-
-
-        ldcProductRecyclerview.setAdapter(ldcProductAdapter);
-        RecyclerView.LayoutManager ldcProductLayoutManager = new LinearLayoutManager(mContext);
-        ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
 
         btnEditLdc = view.findViewById(R.id.btn_edit_ldc);
-        btnRecycleLdc = view.findViewById(R.id.btn_archive_ldc);
+        ImageButton btnRecycleLdc = view.findViewById(R.id.btn_archive_ldc);
 
         if(idLDC == 1){
             btnEditLdc.setVisibility(View.INVISIBLE);
         }
 
+
+
+        setOnClickToBtnEditLdc(btnEditLdc);
+
+        setOnClickToBtnRecycler(btnRecycleLdc, listeCourses);
+
+
+        LinearLayout ldcBottomControl = view.findViewById(R.id.bottom_sheet);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(ldcBottomControl);
+
+        setBottomSheetComportement(bottomSheetBehavior, ldcBottomControl);
+
+        setDatasProduitsPris(view, ldcBottomControl, listeCoursesViewModel);
+
+        return view;
+    }
+
+    private void setDatasProduitsAPrendre(View view, ListeCoursesViewModel listeCoursesViewModel, ListeCourses listeCourses) {
+        ldcProductRecyclerview = view.findViewById(R.id.ldc_product_list_recyclerview);
+        LDCProductAdapter ldcProductAdapter = new LDCProductAdapter(mContext, idLDC, true);
+
+        listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 -> ldcProductAdapter.setData(listeCourses1.getProduitsAPrendre()));
+        ldcProductRecyclerview.setAdapter(ldcProductAdapter);
+        RecyclerView.LayoutManager ldcProductLayoutManager = new LinearLayoutManager(mContext);
+        ldcProductRecyclerview.setLayoutManager(ldcProductLayoutManager);
+        float prix_total = 0;
+        for(Produit produit : listeCourses.getProduitsPris()) {
+            prix_total += produit.getPrix();
+        }
+        for(Produit produit : listeCourses.getProduitsAPrendre())
+        {
+            prix_total += produit.getPrix();
+        }
+
+        /* show Prix Total liste (droite)  */
+        TextView price_product_right = view.findViewById(R.id.price_product_right);
+        DecimalFormat df = new DecimalFormat("###.##");
+        price_product_right.setText(df.format(prix_total)  + " €");
+    }
+
+    private void setOnClickToBtnEditLdc(ImageButton btnEditLdc) {
         btnEditLdc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getFragmentManager().popBackStack();
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(idLDC));
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -127,13 +156,15 @@ public class DetailLDCFragment extends Fragment {
                 transaction.commit();
             }
         });
+    }
+
+    private void setOnClickToBtnRecycler(ImageButton btnRecycleLdc, ListeCourses listeCourses) {
         btnRecycleLdc.setOnClickListener(new View.OnClickListener() { // Archiver liste de courses
             @Override
             public void onClick(View v) {
                 // Set archive field to 1
 
-                if(listeCourses.getId() == 1)
-                {
+                if(listeCourses.getId() == 1) {
                     ListeCourses upListeCourse = listeCoursesDao.getListeCoursesById(1);
                     ListeCourses li = new ListeCourses(upListeCourse);
                     li.setEtat(1);
@@ -147,8 +178,7 @@ public class DetailLDCFragment extends Fragment {
 
                     listeCoursesDao.insert(li);
 
-                    for(Produit produit : li.getProduitsPris())
-                    {
+                    for(Produit produit : li.getProduitsPris()) {
                         produitDao.updateQuantityById(produit.getId(), 1);
                     }
                 }
@@ -167,14 +197,14 @@ public class DetailLDCFragment extends Fragment {
 
                     }
                 }
-
                 getFragmentManager().popBackStack();
 
             }
         });
+    }
 
-        LinearLayout ldcBottomControl = view.findViewById(R.id.bottom_sheet);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(ldcBottomControl);
+
+    public void setBottomSheetComportement(BottomSheetBehavior bottomSheetBehavior, LinearLayout ldcBottomControl){
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@android.support.annotation.NonNull View view, int newState) {
@@ -198,12 +228,17 @@ public class DetailLDCFragment extends Fragment {
             }
 
             @Override
-            public void onSlide(@android.support.annotation.NonNull View view, float v) { }
+            public void onSlide(@android.support.annotation.NonNull View view, float v) {
+                return;
+            }
         });
+    }
 
+    public void setDatasProduitsPris(View view, LinearLayout ldcBottomControl, ListeCoursesViewModel listeCoursesViewModel)
+    {
         historyListRecyclerView = ldcBottomControl.findViewById(R.id.bottom_sheet_content_ldc_history_recyclerview);
         LDCProductAdapter historyAdapter = new LDCProductAdapter(mContext, idLDC, false);
-        //historyAdapter.setData(listeCourses.getProduitsPris());
+
         listeCoursesViewModel.getListeCoursesByIdLD(idLDC).observe(this, listeCourses1 -> {
             List<Produit> estPris = listeCourses1.getProduitsPris();
             historyAdapter.setData(estPris);
@@ -213,16 +248,12 @@ public class DetailLDCFragment extends Fragment {
                 prix_estPris += produit.getPrix();
             }
             TextView price_caddie = view.findViewById(R.id.price_product_caddie);
-            price_caddie.setText(Float.toString(prix_estPris));
+            DecimalFormat df = new DecimalFormat("###.##");
+            price_caddie.setText(df.format(prix_estPris) + " €");
         });
 
         historyListRecyclerView.setAdapter(historyAdapter);
         RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(mContext);
         historyListRecyclerView.setLayoutManager(historyLayoutManager);
-
-        return view;
     }
-
-
-
 }

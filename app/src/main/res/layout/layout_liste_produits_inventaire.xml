@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listeProduitInventaire"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/id_product_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="imageProduct"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_barcode" />
+
+
+            <TextView
+                android:id="@+id/inventaire_product_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                style="@style/ListItemTitle"
+                app:layout_constraintEnd_toStartOf="@+id/minus_button"
+                app:layout_constraintStart_toEndOf="@+id/id_product_image"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Nom produit" />
+
+            <TextView
+                android:id="@+id/inventaire_product_price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_prix_ab"
+                style="@style/ListItemInfo"
+                app:layout_constraintStart_toStartOf="@+id/inventaire_product_name"
+                app:layout_constraintTop_toBottomOf="@+id/inventaire_product_name" />
+
+        <TextView
+            android:id="@+id/inventaire_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="2 €"
+            style="@style/ListItemInfo"
+            app:layout_constraintStart_toEndOf="@+id/inventaire_product_price_label"
+            app:layout_constraintTop_toBottomOf="@+id/inventaire_product_name" />
+
+        <TextView
+            android:id="@+id/inventaire_product_quantite_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/label_quantité_ab"
+            style="@style/ListItemInfo"
+            app:layout_constraintStart_toEndOf="@id/inventaire_product_price"
+            app:layout_constraintTop_toBottomOf="@id/inventaire_product_name" />
+
+        <TextView
+            android:id="@+id/inventaire_product_quantite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="2"
+            style="@style/ListItemInfo"
+            app:layout_constraintStart_toEndOf="@+id/inventaire_product_quantite_label"
+            app:layout_constraintTop_toBottomOf="@+id/inventaire_product_name" />
+
+        <!-- <ImageView
+                android:id="@+id/alert_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/minus_button"
+                android:layout_marginEnd="3dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/alert_red" /> -->
+
+            <ImageView
+                android:id="@+id/add_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="8dp"
+                app:srcCompat="@drawable/ic_add_circular_button" />
+
+            <ImageView
+                android:id="@+id/minus_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/add_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_minus_circular_button" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

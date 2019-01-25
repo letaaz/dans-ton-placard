@@ -7,9 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Ingredient;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.util.List;
 
