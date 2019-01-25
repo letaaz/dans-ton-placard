@@ -1,6 +1,11 @@
 
 # Created by https://www.gitignore.io/api/androidstudio
 
+### GoogleServices ###
+app/google-services.json
+google-services.json
+
+
 ### AndroidStudio ###
 # Covers files to be ignored for android development using Android Studio.
 
