@@ -31,18 +31,19 @@
         app:srcCompat="@drawable/ic_barcode" />
 
 
-    <TextView
-        android:id="@+id/ldc_product_name"
-        android:layout_width="222dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        style="@style/ListItemTitle"
-        app:layout_constraintEnd_toStartOf="@+id/ldc_product_checked"
-        app:layout_constraintStart_toEndOf="@+id/ldc_product_image"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Nom produit" />
+     <TextView
+         android:id="@+id/ldc_product_name"
+         style="@style/ListItemTitle"
+         android:layout_width="222dp"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="12dp"
+         android:layout_marginTop="8dp"
+         android:layout_marginEnd="8dp"
+         android:textSize="16sp"
+         app:layout_constraintEnd_toStartOf="@+id/ldc_product_checked"
+         app:layout_constraintStart_toEndOf="@+id/ldc_product_image"
+         app:layout_constraintTop_toTopOf="parent"
+         tools:text="Nom produit" />
 
     <TextView
         android:id="@+id/ldc_product_quantity_label"
