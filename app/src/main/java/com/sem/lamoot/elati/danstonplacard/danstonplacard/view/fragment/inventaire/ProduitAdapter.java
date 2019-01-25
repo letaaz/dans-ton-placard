@@ -170,7 +170,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView nom_produit, quantite, id_produit;
+        private TextView nom_produit, quantite, id_produit, prix;
         private ImageView imageProduit, retirerUnProduit, ajouterUnProduit, iconAlert;
 
         public ProduitViewHolder(View itemView) {
@@ -185,6 +185,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
             iconAlert = itemView.findViewById(R.id.alert_icon);
+            prix = itemView.findViewById(R.id.prix_produit);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -205,6 +206,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
                 quantite.setText("Quantité : " + String.valueOf(produit.getQuantite()));
                 id_produit.setText(String.valueOf(produit.getId()));
+                prix.setText(String.valueOf(produit.getPrix()) + " €");
 
                 if(produit.getUrlImage() != null) {
                     if(produit.getUrlImage().contains("http")) {

@@ -23,4 +23,6 @@
     <color name="nero">#202020</color>
     <color name="gridViewBackground">#dedede</color>
 
+    <color name="greyback">#f2f2f2</color>
+
 </resources>

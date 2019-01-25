@@ -234,7 +234,7 @@ public class DetailProduitFragment extends Fragment {
         }
 
 
-        produitNom.setText(produit.getNom());
+        produitNom.setText(produit.getMarque() + " - " + produit.getNom());
         produitPoids.setText(produit.getPoids() + " g");
         int piece = produit.getPiece().ordinal();
         produitPiece.setSelection(piece);

@@ -53,4 +53,8 @@
         <item name="tabIndicatorColor">#D81B60</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 </resources>

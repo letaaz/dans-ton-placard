@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
+
 import java.util.Calendar;
 
 public class MyDatePickerFragment extends DialogFragment {
@@ -22,7 +24,8 @@ public class MyDatePickerFragment extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+
+        return new DatePickerDialog(getActivity(), R.style.DialogTheme, dateSetListener, year, month, day);
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener =
