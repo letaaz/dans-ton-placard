@@ -21,6 +21,7 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,6 +147,10 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
         }
 
         public void bind(Produit product) {
+
+            itemView.setBackgroundColor(mContext.getResources().getColor(Rayon.getRayonColor(product.getRayon())));
+
+
             ldc_product_name.setText(product.getNom());
             ldc_product_quantity.setText(product.getQuantite() + "");
             ldc_product_price.setText(product.getPrix() + " €");

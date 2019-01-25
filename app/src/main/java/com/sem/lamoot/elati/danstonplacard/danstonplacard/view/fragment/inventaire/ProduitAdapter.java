@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,7 +203,10 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 quantite.setText(String.valueOf(produit.getQuantite()));
                 prix.setText(produit.getPrix() + " €");
 
-                if(produit.getUrlImage() != null) {
+                if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
+                    imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                }
+                else{
                     if(produit.getUrlImage().contains("http")) {
                         Glide.with(context).load(produit.getUrlImage()).into(imageProduit);
                     }
@@ -216,8 +220,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                         }
                     }
                 }
-                else
-                    imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+
 
                 retirerUnProduit.setOnClickListener(v -> {
                     if (onMinusImageViewClickListener != null)

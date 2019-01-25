@@ -8,6 +8,7 @@
         android:id="@+id/nestedScrollViewLDC"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/greyback"
         android:scrollbarStyle="insideOverlay"
         android:visibility="visible">
 
@@ -23,35 +24,48 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    style="@style/ListLabelStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignBaseline="@id/btn_expand_ldc_list"
                     android:duplicateParentState="true"
-                    android:text="@string/ldc_disponibles_label"
-                    style="@style/ListLabelStyle"/>
+                    android:text="@string/ldc_disponibles_label" />
 
                 <TextView
                     android:id="@+id/btn_expand_ldc_list"
                     style="@style/ListButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:duplicateParentState="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/btn_hide_label" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/default_background" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ldc_list_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
                 android:overScrollMode="never"
                 android:scrollbars="none"
                 android:visibility="visible"
@@ -69,17 +83,22 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ldc_list_recyclerview">
 
                 <TextView
+                    style="@style/ListLabelStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:duplicateParentState="true"
                     android:layout_alignBaseline="@id/btn_expand_history_list"
-                    android:text="@string/history_ldc_label"
-                    style="@style/ListLabelStyle"/>
+                    android:layout_marginEnd="-8dp"
+                    android:layout_toStartOf="@+id/btn_expand_history_list"
+                    android:duplicateParentState="true"
+                    android:text="@string/history_ldc_label" />
 
                 <TextView
                     android:id="@+id/btn_expand_history_list"
@@ -87,17 +106,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:duplicateParentState="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/btn_hide_label" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/default_background" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/history_ldc_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
                 android:scrollbars="vertical"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"

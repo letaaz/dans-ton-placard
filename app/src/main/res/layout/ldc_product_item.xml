@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listeProduitInventaire"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@color/white">
+
+ <android.support.constraint.ConstraintLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:layout_marginStart="4dp"
+     android:background="@color/white"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintStart_toStartOf="parent">
 
     <ImageView
         android:id="@+id/ldc_product_image"
@@ -44,16 +55,16 @@
         app:layout_constraintStart_toEndOf="@+id/prix_produit"
         app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
 
-    <TextView
-        android:id="@+id/ldc_product_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:text="2"
-        style="@style/ListItemInfo"
-        android:visibility="visible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_quantity_label"
-        app:layout_constraintStart_toEndOf="@+id/ldc_product_quantity_label" />
+     <TextView
+         android:id="@+id/ldc_product_quantity"
+         style="@style/ListItemInfo"
+         android:layout_width="wrap_content"
+         android:layout_height="0dp"
+         android:layout_marginStart="8dp"
+         android:text="2"
+         android:visibility="visible"
+         app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_quantity_label"
+         app:layout_constraintStart_toEndOf="@+id/ldc_product_quantity_label" />
 
     <TextView
         android:id="@+id/ldc_product_price_label"
@@ -64,15 +75,15 @@
         app:layout_constraintStart_toStartOf="@+id/ldc_product_name"
         app:layout_constraintTop_toBottomOf="@+id/ldc_product_name" />
 
-    <TextView
-        android:id="@+id/prix_produit"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:text="2 €"
-        style="@style/ListItemInfo"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_price_label"
-        app:layout_constraintStart_toEndOf="@+id/ldc_product_price_label" />
+     <TextView
+         android:id="@+id/prix_produit"
+         style="@style/ListItemInfo"
+         android:layout_width="wrap_content"
+         android:layout_height="0dp"
+         android:layout_marginStart="8dp"
+         android:text="2 €"
+         app:layout_constraintBaseline_toBaselineOf="@+id/ldc_product_price_label"
+         app:layout_constraintStart_toEndOf="@+id/ldc_product_price_label" />
 
     <CheckBox
         android:id="@+id/ldc_product_checked"
@@ -95,4 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ldc_product_checked" />
 
-</android.support.constraint.ConstraintLayout>
+
+ </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

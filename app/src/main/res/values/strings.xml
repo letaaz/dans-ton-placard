@@ -31,7 +31,7 @@
 
     <string name="voir">Voir</string>
     <string name="ldc_disponibles_label">Listes de courses disponibles</string>
-    <string name="history_ldc_label">Historique des listes de courses</string>
+    <string name="history_ldc_label">Historique des listes</string>
     <string name="msgAlertDialogSupprimerLdc">Êtes-vous sûr de vouloir supprimer la liste de courses suivante :</string>
     <string name="titleAlertDialogSupprimerLdc">Suppression de la liste de courses</string>
     <string name="archiver_ldc">Archiver</string>
@@ -49,8 +49,8 @@
     <string name="scan_product_indication">Appuyer sur l\'image pour scanner le produit</string>
     <string name="recipe_default_content">Vos recettes personnalisées bientôt disponibles !</string>
     <string name="promotions_default_content">Vos promotions en magasins bientôt disponibles !</string>
-    <string name="btn_show_label">Show</string>
-    <string name="btn_hide_label">Hide</string>
+    <string name="btn_show_label">Voir</string>
+    <string name="btn_hide_label">Masquer</string>
     <string name="ldc_edit_default_content">Votre liste de courses est vide.</string>
     <string name="hint_new_ldc_name">Nom de la liste</string>
     <string name="err_msg_name">Entrer un nom pour votre liste</string>
