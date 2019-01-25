@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCour
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

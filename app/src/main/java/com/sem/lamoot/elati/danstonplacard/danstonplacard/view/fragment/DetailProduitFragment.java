@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
@@ -40,7 +38,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import io.reactivex.annotations.NonNull;
 

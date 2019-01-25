@@ -7,8 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class ProduitTypeConverter {

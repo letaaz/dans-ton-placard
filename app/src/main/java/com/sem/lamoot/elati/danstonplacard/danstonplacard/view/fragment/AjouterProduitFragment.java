@@ -1,7 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,17 +18,17 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
