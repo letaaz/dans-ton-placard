@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
@@ -61,6 +62,14 @@ public class LDCEditFragment extends Fragment
         if (getArguments() != null) {
             idLdc = getArguments().getInt(ARG_LDC);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+        firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
+
     }
 
     @Override
