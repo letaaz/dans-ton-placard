@@ -150,8 +150,13 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
             itemView.setBackgroundColor(mContext.getResources().getColor(Rayon.getRayonColor(product.getRayon())));
 
+            if(product.getMarque() != null) {
+                ldc_product_name.setText(product.getMarque() + " - " + product.getNom());
+            }
+            else{
+                ldc_product_name.setText(product.getNom());}
 
-            ldc_product_name.setText(product.getNom());
+
             ldc_product_quantity.setText(product.getQuantite() + "");
             ldc_product_price.setText(product.getPrix() + " €");
             id_product_ldc_item.setText(String.valueOf(product.getId()));
