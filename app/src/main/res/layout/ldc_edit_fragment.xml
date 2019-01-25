@@ -29,23 +29,17 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_toLeftOf="@+id/btn_save_ldc_edit"
+            android:hint="@string/hint_new_ldc_name"
             android:theme="@style/MyEditTextTheme">
 
             <EditText
                 android:id="@+id/ldc_edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:drawableTop="@color/colorPrimary"
-                android:drawableTint="@color/colorPrimary"
-                android:hint="@string/hint_new_ldc_name"
                 android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/primaryTextColor"
-                android:textColorHighlight="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary"
-                android:textSize="23sp"
-                android:theme="@style/MyEditTextTheme" />
+                android:textSize="23sp" />
 
         </android.support.design.widget.TextInputLayout>
 
