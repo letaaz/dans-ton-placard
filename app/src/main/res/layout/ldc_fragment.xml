@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewLDC"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="insideOverlay"
@@ -99,20 +100,20 @@
                     android:id="@+id/btn_expand_history_list"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:duplicateParentState="true"
-                    android:src="@drawable/expand_arrow_gray"
-                    android:background="@color/transparent_background"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/transparent_background"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/expand_arrow_gray" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/darkGray"/>
+                    android:background="@color/darkGray" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView

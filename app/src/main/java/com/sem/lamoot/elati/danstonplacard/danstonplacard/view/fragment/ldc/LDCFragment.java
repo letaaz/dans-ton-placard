@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -78,6 +79,18 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        NestedScrollView nestedScrollViewLDC = view.findViewById(R.id.nestedScrollViewLDC);
+        nestedScrollViewLDC.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    btn_create_ldc_fab.hide();
+                } else {
+                    btn_create_ldc_fab.show();
+                }
             }
         });
 
