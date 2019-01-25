@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +94,8 @@ public class PieceFragment extends Fragment
             }
         });
 
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+
         // Listener for the FAB
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
         add_fab.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +107,17 @@ public class PieceFragment extends Fragment
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    add_fab.hide();
+                } else {
+                    add_fab.show();
+                }
             }
         });
 

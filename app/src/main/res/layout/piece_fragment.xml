@@ -6,6 +6,7 @@
     android:background="@color/gridViewBackground">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="insideOverlay"
@@ -173,7 +174,8 @@
         app:backgroundTintMode="src_over"
         app:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_anchor="@id/nestedScrollView" />
 
 
 </android.support.constraint.ConstraintLayout>
