@@ -29,16 +29,17 @@ import java.util.List;
 public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
     private ProduitDao produitDao;
+    private OnItemClickListener itemClickListener;
+    private ListeCoursesDao listeCoursesDao;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    private List<ListeCourses> data;
+
 
     public interface OnItemClickListener {
         void onItemClickListener(ListeCourses ldcDefaut);
     }
 
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private List<ListeCourses> data;
-    private OnItemClickListener itemClickListener;
-    private ListeCoursesDao listeCoursesDao;
 
     public LDCAdapter (Context context, OnItemClickListener listener) {
         this.mContext = context;

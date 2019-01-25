@@ -34,13 +34,11 @@ public class PieceFragment extends Fragment
     // RecyclerView + Adapter - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
     private ProduitAdapter produitsDisponiblesAdapter;
-    private RecyclerView.LayoutManager produitsDisponiblesLayoutManager;
 
 
     // RecyclerView + Adapter - produits indisponibles
     private RecyclerView produitsIndisponiblesRecyclerView;
     private ProduitAdapter produitsIndisponiblesAdapter;
-    private RecyclerView.LayoutManager produitsIndisponiblesLayoutManager;
     private ProduitViewModel produitViewModel;
     private ProduitViewModel produitViewModel2;
 
@@ -139,7 +137,7 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
 
-        produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
@@ -157,7 +155,7 @@ public class PieceFragment extends Fragment
         produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
 
-        produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
         produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }

@@ -3,16 +3,11 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventa
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,24 +15,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.DetailProduitFragment;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.LDCFragment.removeProductFromList;
 
 public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitViewHolder> {
+
+    private OnMinusImageViewClickListener onMinusImageViewClickListener;
+    private OnAddImageViewClickListener onAddImageViewClickListener;
+    private OnProductItemClickListener onProductItemClickListener;
+    private List<Produit> data;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private int idLDC;
+
 
     public interface OnMinusImageViewClickListener{
         void onMinusImageViewClickListener(Produit produit);
@@ -51,13 +52,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         void onProductItemClickListener(Produit produit);
     }
 
-    private List<Produit> data;
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private OnMinusImageViewClickListener onMinusImageViewClickListener;
-    private OnAddImageViewClickListener onAddImageViewClickListener;
-    private OnProductItemClickListener onProductItemClickListener;
-    private int idLDC;
+
 
 
     public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener, int idLDC){

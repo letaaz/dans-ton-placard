@@ -1,17 +1,21 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.ProduitTypeConverter;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class ListeCoursesDefaut {
+
+    private int id;
+    private String nom;
+    private int etat; // 1 pour archivé, 0 pour en cours
+    private Date dateArchive;
+    private Date dateCreation;
+    private List<Produit> produitsPris;
+    private List<Produit> produitsAPrendre;
+
+
     public int getId() {
         return id;
     }
@@ -19,20 +23,6 @@ public class ListeCoursesDefaut {
     public void setId(int id) {
         this.id = id;
     }
-
-    private int id;
-
-    private String nom;
-
-    private int etat; // 1 pour archivé, 0 pour en cours
-
-    private Date dateArchive;
-
-    private Date dateCreation;
-
-    private List<Produit> produitsPris;
-
-    private List<Produit> produitsAPrendre;
 
     public String getNom() {
         return nom;

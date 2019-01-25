@@ -77,11 +77,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                return;
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                return;
             }
         });
 
@@ -128,6 +129,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_notez_nous:
             case R.id.nav_deconnexion:
+                break;
+            default:
                 break;
         }
 
