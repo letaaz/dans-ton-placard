@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gridViewBackground">
+    android:background="@color/default_background">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -24,6 +24,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:padding="3dp"
                 android:background="@android:color/white"
                 android:elevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -35,30 +36,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/section_show_all_button_dispo"
-                    android:layout_alignParentStart="true"
-                    android:layout_margin="8dp"
                     android:text="Produits disponibles"
-                    android:textColor="@android:color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                    style="@style/ListLabelStyle" />
 
                 <TextView
                     android:id="@+id/section_show_all_button_dispo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="8dp"
-                    android:background="@color/colorPrimary"
                     android:clickable="true"
                     android:focusable="true"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="8dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="8dp"
-                    android:text="Show all"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    android:text="@string/btn_hide_label"
+                    style="@style/ListButtonStyle"/>
 
             </RelativeLayout>
 
@@ -93,8 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:padding="3dp"
                 android:background="@android:color/white"
                 android:elevation="2dp"
                 android:visibility="visible"
@@ -108,30 +97,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/section_show_all_button_indispo"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="8dp"
                     android:text="Produits indisponibles"
-                    android:textColor="@android:color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                    style="@style/ListLabelStyle"/>
 
                 <TextView
                     android:id="@+id/section_show_all_button_indispo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="8dp"
-                    android:background="@color/colorPrimary"
                     android:clickable="true"
                     android:focusable="true"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="8dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="8dp"
-                    android:text="Show all"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    android:text="@string/btn_hide_label"
+                    style="@style/ListButtonStyle" />
 
             </RelativeLayout>
 

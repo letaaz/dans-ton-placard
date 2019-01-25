@@ -31,11 +31,12 @@ public class PageFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         switch (mPage) {
-
+            case 3:
+                return inflater.inflate(R.layout.recipe_fragment, container, false);
+            case 4:
+                return inflater.inflate(R.layout.promotion_fragment, container, false);
             default:
-                view = inflater.inflate(R.layout.fragment_page, container, false);
-                break;
+                return view = inflater.inflate(R.layout.fragment_page, container, false);
         }
-        return view;
     }
 }

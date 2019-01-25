@@ -14,8 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
@@ -35,7 +35,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public static Integer NEW_LDC = 0x999999;
     private Context mContext;
     private RecyclerView ldcDisponiblesRecyclerView, historyLdcRecyclerView;
-    private ImageButton btn_hide_show_ldc, btn_hide_show_history;
+    private TextView btn_hide_show_ldc, btn_hide_show_history;
     private FloatingActionButton btn_create_ldc_fab;
     private ListeCoursesDao listeCoursesDao = null;
     private ProduitDao produitDao = null;
@@ -104,7 +104,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         });
 
         // Hide/Show buttons
-        btn_hide_show_ldc = (ImageButton) view.findViewById(R.id.btn_expand_ldc_list);
+        btn_hide_show_ldc = view.findViewById(R.id.btn_expand_ldc_list);
         btn_hide_show_history = view.findViewById(R.id.btn_expand_history_list);
 
         RelativeLayout sectionLdc = view.findViewById(R.id.section_ldc_list);
@@ -112,10 +112,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
             @Override
             public void onClick(View v) {
                 if (ldcDisponiblesRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_ldc.setImageDrawable(mContext.getResources().getDrawable(R.drawable.expand_arrow_gray));
+                    btn_hide_show_ldc.setText(getResources().getString(R.string.btn_hide_label));
                     ldcDisponiblesRecyclerView.setVisibility(View.VISIBLE);
                 } else { // Assuming the view is visible
-                    btn_hide_show_ldc.setImageDrawable(mContext.getResources().getDrawable(R.drawable.collapse_arrow_gray));
+                    btn_hide_show_ldc.setText(getResources().getString(R.string.btn_show_label));
                     ldcDisponiblesRecyclerView.setVisibility(View.GONE);
                 }
             }
@@ -126,10 +126,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
             @Override
             public void onClick(View v) {
                 if (historyLdcRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_history.setImageDrawable(mContext.getResources().getDrawable(R.drawable.expand_arrow_gray));
+                    btn_hide_show_history.setText(getResources().getString(R.string.btn_hide_label));
                     historyLdcRecyclerView.setVisibility(View.VISIBLE);
                 } else { // Assuming the view is visible
-                    btn_hide_show_history.setImageDrawable(mContext.getResources().getDrawable(R.drawable.collapse_arrow_gray));
+                    btn_hide_show_history.setText(getResources().getString(R.string.btn_show_label));
                     historyLdcRecyclerView.setVisibility(View.GONE);
                 }
             }

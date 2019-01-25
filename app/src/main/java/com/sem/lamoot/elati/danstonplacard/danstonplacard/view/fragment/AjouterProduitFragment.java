@@ -96,8 +96,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.ajouter_produit_fragment, container, false);
-
-        ImageView imageView3 = (ImageView) view.findViewById(R.id.imageView3);
+        ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
         imageView3.setOnClickListener(this);
 
         Toast.makeText(mContext, "idLDC = " + idLDC, Toast.LENGTH_SHORT).show();

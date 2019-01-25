@@ -20,7 +20,6 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AboutActivity;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SampleFragmentPagerAdapter;
 
@@ -167,6 +166,6 @@ public class MainActivity extends AppCompatActivity
 
     private void resetAllMenuItemsTextColor(NavigationView navigationView) {
         for (int i = 0; i < navigationView.getMenu().size(); i++)
-            setTextColorForMenuItem(navigationView.getMenu().getItem(i), R.color.nero);
+            setTextColorForMenuItem(navigationView.getMenu().getItem(i), R.color.text_black);
     }
 }

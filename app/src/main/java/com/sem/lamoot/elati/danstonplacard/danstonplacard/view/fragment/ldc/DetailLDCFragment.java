@@ -40,6 +40,7 @@ public class DetailLDCFragment extends Fragment{
     private int idLDC;
     private Context mContext;
 
+    private TextView ldcProductDefaultContent;
     private RecyclerView ldcProductRecyclerview, historyListRecyclerView;
     private ImageButton btnEditLdc;
     private RelativeLayout ldcLabel;
@@ -82,8 +83,19 @@ public class DetailLDCFragment extends Fragment{
         this.listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
         this.produitDao = RoomDB.getDatabase(mContext).produitDao();
 
-
+        ldcProductDefaultContent = view.findViewById(R.id.ldc_product_list_default_content);
         ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
+        if (!listeCourses.getProduitsAPrendre().isEmpty())
+            ldcProductDefaultContent.setVisibility(View.GONE);
+        float prix_total = 0;
+        for(Produit produit : listeCourses.getProduitsPris())
+        {
+            prix_total += produit.getPrix();
+        }
+        for(Produit produit : listeCourses.getProduitsAPrendre())
+        {
+            prix_total += produit.getPrix();
+        }
 
         ldcLabel = view.findViewById(R.id.ldc_label);
         TextView ldc_name_detail = view.findViewById(R.id.ldc_name_detail);
@@ -98,11 +110,6 @@ public class DetailLDCFragment extends Fragment{
 
         if(idLDC == 1){
             btnEditLdc.setVisibility(View.INVISIBLE);
-        }
-        if(listeCourses.getEtat() == 1)
-        {
-            btnEditLdc.setVisibility(View.INVISIBLE);
-            btnRecycleLdc.setVisibility(View.INVISIBLE);
         }
 
 

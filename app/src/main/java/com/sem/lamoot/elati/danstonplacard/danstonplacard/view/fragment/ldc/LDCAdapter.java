@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -143,7 +144,8 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
         public void bind(ListeCourses value){
             if(value.getNom().equals(mContext.getResources().getString(R.string.label_titre_listecourse_auto_generee_automatique))){
-                itemView.setBackgroundColor(Color.LTGRAY);
+                ldcName.setTypeface(null, Typeface.ITALIC);
+     ///           itemView.setBackgroundColor(Color.LTGRAY);
             }
             ldcName.setText(value.getNom());
         }

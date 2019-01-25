@@ -83,12 +83,17 @@ public class PieceFragment extends Fragment
         setProduitsDisponibles(produitViewModel);
         setProduitsIndisponibles(produitViewModel);
 
-        TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
-        btn.setOnClickListener(new View.OnClickListener() {
+        TextView btn_hide_show_available_product = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
+        btn_hide_show_available_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int visibilite = ((produitsDisponiblesRecyclerView.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
-                produitsDisponiblesRecyclerView.setVisibility(visibilite);
+                if (produitsDisponiblesRecyclerView.getVisibility() == View.GONE) {
+                    btn_hide_show_available_product.setText(getResources().getString(R.string.btn_hide_label));
+                    produitsDisponiblesRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    btn_hide_show_available_product.setText(getResources().getString(R.string.btn_show_label));
+                    produitsDisponiblesRecyclerView.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -96,8 +101,13 @@ public class PieceFragment extends Fragment
         btn_hide_show_unavailable_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int visibilite = ((produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
-                produitsIndisponiblesRecyclerView.setVisibility(visibilite);
+                if (produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) {
+                    btn_hide_show_unavailable_product.setText(getResources().getString(R.string.btn_hide_label));
+                    produitsIndisponiblesRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    btn_hide_show_unavailable_product.setText(getResources().getString(R.string.btn_show_label));
+                    produitsIndisponiblesRecyclerView.setVisibility(View.GONE);
+                }
             }
         });
 
