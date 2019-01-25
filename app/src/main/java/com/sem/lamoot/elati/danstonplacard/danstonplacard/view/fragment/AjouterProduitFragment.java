@@ -16,6 +16,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.FirebaseAnalyticsEvent;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
@@ -81,6 +83,13 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+        firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
