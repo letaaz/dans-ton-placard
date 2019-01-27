@@ -1,9 +1,14 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,11 +114,37 @@ public class AjouterProduitLDCFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Log.d("dtp", "onclickImageview3");
-        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
-        integrator.setPrompt("Scan a barcode or QRcode");
-        integrator.setOrientationLocked(false);
-        integrator.initiateScan();
+        if (isNetworkAvailable()) {
+            Log.d("dtp", "onclickImageview3");
+            IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+            integrator.setPrompt("Scan a barcode or QRcode");
+            integrator.setOrientationLocked(false);
+            integrator.initiateScan();
+        } else {
+            String alertMsg = mContext.getResources().getString(R.string.msgAlertDialogInternetConnection);
+            String title = mContext.getResources().getString(R.string.titleAlertDialogInternetConnection);
+            String buttonText = mContext.getResources().getString(R.string.buttonAlertDialogInternetConnection);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+            alertDialog.setTitle(title);
+
+            alertDialog.setMessage(Html.fromHtml(alertMsg));
+            alertDialog.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 
     @Override
