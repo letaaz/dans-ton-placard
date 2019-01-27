@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.FirebaseAnalyticsEvent;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.Result;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
@@ -40,6 +41,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import androidx.annotation.NonNull;
 
 public class AjouterProduitFragment extends Fragment implements View.OnClickListener{
 
@@ -88,8 +91,13 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         super.onResume();
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
-
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -202,39 +210,47 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         Log.d("dtp", "onclickImageview3");
-        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
-        integrator.setPrompt("Scan a barcode or QRcode");
-        integrator.setOrientationLocked(false);
-        integrator.initiateScan();
+//        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+//        integrator.setPrompt("Scan a barcode or QRcode");
+//        integrator.setOrientationLocked(false);
+//        integrator.initiateScan();
+        getFragmentManager().popBackStack();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.root_inventaire_frame, ScanbarFragment.newInstance(mPiece, idLDC));
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
-        if (result != null) {
-            if (result.getContents() == null) {
-                getActivity().onBackPressed();
-            } else {
-                String data_product = "";
-                try {
-                    if(idLDC != -1)
-                    {
-                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), "DIVERS", idLDC).execute(result.getContents()).get();
-                    }
-                    else {
-                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), mPiece, -1).execute(result.getContents()).get();
-                    }
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                onClick(getView());
-            }
-
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//
+//        if (result != null) {
+//            if (result.getContents() == null) {
+//                getActivity().onBackPressed();
+//            } else {
+//                String data_product = "";
+//                try {
+//                    if(idLDC != -1)
+//                    {
+//                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), "DIVERS", idLDC).execute(result.getContents()).get();
+//                    }
+//                    else {
+//                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), mPiece, -1).execute(result.getContents()).get();
+//                    }
+//                } catch (ExecutionException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                onClick(getView());
+//            }
+//
+//        }
+//    }
 
     public String loadJSONFromAsset(Context context, String fileName) {
         String json;
