@@ -55,6 +55,9 @@
     <string name="hint_new_ldc_name">Nom de la liste</string>
     <string name="err_msg_name">Entrer un nom pour votre liste</string>
     <string name="ldc_detail_default_content">Aucun article à prendre.</string>
+    <string name="msgAlertDialogInternetConnection">Le scan nécessite une connexion internet active pour fonctionner, penser à l\'activer.</string>
+    <string name="titleAlertDialogInternetConnection">Aucune connexion internet détectée</string>
+    <string name="buttonAlertDialogInternetConnection">OK</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,7 +178,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             quantite = itemView.findViewById(R.id.inventaire_product_quantite);
             prix = itemView.findViewById(R.id.inventaire_product_price);
 
-            imageProduit = itemView.findViewById(R.id.id_product_image);
+            imageProduit = itemView.findViewById(R.id.ldc_icon);
             retirerUnProduit = itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
