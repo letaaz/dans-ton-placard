@@ -45,11 +45,30 @@ public interface ProduitDao {
     @Query("SELECT * from produit WHERE quantite = 0")
     List<Produit> getAllProduitsIndisponibles();
 
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0")
-    LiveData<List<Produit>> getProduitsDisponiblesParPiece(String piece);
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY nom ASC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNom(String piece);
 
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPiece(String piece);
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY rayon ASC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayon(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY dlc ASC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDate(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY prix ASC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrix(String piece);
+
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY nom ASC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNom(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY rayon ASC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayon(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY dlc ASC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDate(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY prix ASC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrix(String piece);
 
     @Query("SELECT * from produit WHERE id = :produitId")
     LiveData<Produit> findProduct(int produitId);

@@ -33,13 +33,47 @@ public class ProduitViewModel extends AndroidViewModel {
         return produitDao.findAll();
     }
 
-    public LiveData<List<Produit>> getProduitsDisponiblesParPiece(String piece)
+    public LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNom(String piece)
     {
-        return produitDao.getProduitsDisponiblesParPiece(piece);
+        return produitDao.getProduitsDisponiblesParPieceTrierParNom(piece);
     }
-    public LiveData<List<Produit>> getProduitsIndisponiblesParPiece(String piece)
+
+    public LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayon(String piece)
     {
-        return produitDao.getProduitsIndisponiblesParPiece(piece);
+        return produitDao.getProduitsDisponiblesParPieceTrierParRayon(piece);
+    }
+
+
+    public LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDate(String piece)
+    {
+        return produitDao.getProduitsDisponiblesParPieceTrierParDate(piece);
+    }
+
+
+    public LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrix(String piece)
+    {
+        return produitDao.getProduitsDisponiblesParPieceTrierParPrix(piece);
+    }
+
+
+    public LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNom(String piece)
+    {
+        return produitDao.getProduitsIndisponiblesParPieceTrierParNom(piece);
+    }
+
+    public LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayon(String piece)
+    {
+        return produitDao.getProduitsIndisponiblesParPieceTrierParRayon(piece);
+    }
+
+    public LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDate(String piece)
+    {
+        return produitDao.getProduitsIndisponiblesParPieceTrierParDate(piece);
+    }
+
+    public LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrix(String piece)
+    {
+        return produitDao.getProduitsIndisponiblesParPieceTrierParPrix(piece);
     }
 
     public void updateProduit(int id, int quantite){

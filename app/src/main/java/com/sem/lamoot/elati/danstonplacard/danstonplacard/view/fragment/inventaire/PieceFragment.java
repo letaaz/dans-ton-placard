@@ -1,7 +1,9 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +75,8 @@ public class PieceFragment extends Fragment
         this.view = view;
 
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        setProduitsDisponibles(produitViewModel);
-        setProduitsIndisponibles(produitViewModel);
+        setProduitsDisponibles(produitViewModel, "Nom");
+        setProduitsIndisponibles(produitViewModel, "Nom");
 
         TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +96,32 @@ public class PieceFragment extends Fragment
             }
         });
 
+        // Sortting by something
+        String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
+
+        TextView btn_sort_by = view.findViewById(R.id.sort_by_btn);
+        btn_sort_by.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                mBuilder.setTitle("Trier par");
+
+                mBuilder.setSingleChoiceItems(listSortingBy, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("dtp", "trier par : "+listSortingBy[i]);
+                        setProduitsDisponibles(produitViewModel, listSortingBy[i]);
+                        setProduitsIndisponibles(produitViewModel, listSortingBy[i]);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
+
         // Listener for the FAB
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
         add_fab.setOnClickListener(new View.OnClickListener() {
@@ -111,9 +140,28 @@ public class PieceFragment extends Fragment
     }
 
 
-    private void setProduitsDisponibles(ProduitViewModel produitViewModel) {
-        produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+    private void setProduitsDisponibles(ProduitViewModel produitViewModel, String trierPar) {
 
+        switch(trierPar){
+            case "Nom" :
+                produitViewModel.getProduitsDisponiblesParPieceTrierParNom(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+                break;
+
+            case"Rayon":
+                produitViewModel.getProduitsDisponiblesParPieceTrierParRayon(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+                break;
+
+            case"Date":
+                produitViewModel.getProduitsDisponiblesParPieceTrierParDate(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+                break;
+
+            case"Prix":
+                produitViewModel.getProduitsDisponiblesParPieceTrierParPrix(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+                break;
+
+            default:
+                break;
+        }
         setRecyclerViewProduitsDisponibles();
     }
 
@@ -130,8 +178,28 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void setProduitsIndisponibles(ProduitViewModel produitViewModel) {
-        produitViewModel.getProduitsDisponiblesParPiece(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+    private void setProduitsIndisponibles(ProduitViewModel produitViewModel, String trierPar) {
+        switch(trierPar){
+            case "Nom" :
+                produitViewModel.getProduitsIndisponiblesParPieceTrierParNom(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+                break;
+
+            case"Rayon":
+                produitViewModel.getProduitsIndisponiblesParPieceTrierParRayon(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+                break;
+
+            case"Date":
+                produitViewModel.getProduitsIndisponiblesParPieceTrierParDate(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+                break;
+
+            case"Prix":
+                produitViewModel.getProduitsIndisponiblesParPieceTrierParPrix(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+
+                break;
+
+            default:
+                break;
+        }
         setRecyclerViewProduitsIndisponibles();
     }
 
