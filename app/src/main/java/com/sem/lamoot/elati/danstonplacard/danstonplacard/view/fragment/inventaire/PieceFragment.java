@@ -83,8 +83,8 @@ public class PieceFragment extends Fragment
         this.view = view;
 
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        setProduitsDisponibles(produitViewModel, "Nom");
-        setProduitsIndisponibles(produitViewModel, "Nom");
+        setProduitsDisponibles(produitViewModel, "Nom", "ASC");
+        setProduitsIndisponibles(produitViewModel, "Nom", "ASC");
 
         TextView btn_hide_show_available_product = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
         btn_hide_show_available_product.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +128,8 @@ public class PieceFragment extends Fragment
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("dtp", "trier par : "+listSortingBy[i]);
-                        setProduitsDisponibles(produitViewModel, listSortingBy[i]);
-                        setProduitsIndisponibles(produitViewModel, listSortingBy[i]);
+                        setProduitsDisponibles(produitViewModel, listSortingBy[i], "ASC");
+                        setProduitsIndisponibles(produitViewModel, listSortingBy[i], "ASC");
                         dialogInterface.dismiss();
                     }
                 });
@@ -171,28 +171,9 @@ public class PieceFragment extends Fragment
     }
 
 
-    private void setProduitsDisponibles(ProduitViewModel produitViewModel, String trierPar) {
+    private void setProduitsDisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
 
-        switch(trierPar){
-            case "Nom" :
-                produitViewModel.getProduitsDisponiblesParPieceTrierParNom(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
-                break;
-
-            case"Rayon":
-                produitViewModel.getProduitsDisponiblesParPieceTrierParRayon(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
-                break;
-
-            case"Date":
-                produitViewModel.getProduitsDisponiblesParPieceTrierParDate(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
-                break;
-
-            case"Prix":
-                produitViewModel.getProduitsDisponiblesParPieceTrierParPrix(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
-                break;
-
-            default:
-                break;
-        }
+        produitViewModel.getProduitsDisponiblesTrierPar(mParam, colonne, trierPar).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
         setRecyclerViewProduitsDisponibles();
     }
 
@@ -209,28 +190,9 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void setProduitsIndisponibles(ProduitViewModel produitViewModel, String trierPar) {
-        switch(trierPar){
-            case "Nom" :
-                produitViewModel.getProduitsIndisponiblesParPieceTrierParNom(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
-                break;
+    private void setProduitsIndisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
 
-            case"Rayon":
-                produitViewModel.getProduitsIndisponiblesParPieceTrierParRayon(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
-                break;
-
-            case"Date":
-                produitViewModel.getProduitsIndisponiblesParPieceTrierParDate(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
-                break;
-
-            case"Prix":
-                produitViewModel.getProduitsIndisponiblesParPieceTrierParPrix(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
-
-                break;
-
-            default:
-                break;
-        }
+        produitViewModel.getProduitsIndisponiblesTrierPar(mParam, colonne, trierPar).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
         setRecyclerViewProduitsIndisponibles();
     }
 

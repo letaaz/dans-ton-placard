@@ -45,30 +45,68 @@ public interface ProduitDao {
     @Query("SELECT * from produit WHERE quantite = 0")
     List<Produit> getAllProduitsIndisponibles();
 
+
+    // TRI PRODUITS DISPONIBLES
     @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY nom ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNom(String piece);
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNomASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY nom DESC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNomDESC(String piece);
+
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY rayon ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayon(String piece);
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayonASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY rayon DESC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayonDESC(String piece);
+
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY dlc ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDate(String piece);
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDateASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY dlc DESC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDateDESC(String piece);
+
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY prix ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrix(String piece);
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrixASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY prix DESC")
+    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrixDESC(String piece);
 
 
+
+    // TRI PRODUITS INDISPONIBLES
     @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY nom ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNom(String piece);
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNomASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY nom DESC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNomDESC(String piece);
+
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY rayon ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayon(String piece);
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayonASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY rayon DESC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayonDESC(String piece);
+
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY dlc ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDate(String piece);
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDateASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY dlc DESC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDateDESC(String piece);
+
 
     @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY prix ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrix(String piece);
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrixASC(String piece);
+
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY prix DESC")
+    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrixDESC(String piece);
+
+
+
+
 
     @Query("SELECT * from produit WHERE id = :produitId")
     LiveData<Produit> findProduct(int produitId);
@@ -78,4 +116,5 @@ public interface ProduitDao {
 
     @Query("DELETE from produit WHERE id = :id")
     void deleteProductById(int id);
+
 }
