@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCour
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.ProduitAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +28,17 @@ import java.util.List;
 public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
     private ProduitDao produitDao;
+    private OnItemClickListener itemClickListener;
+    private ListeCoursesDao listeCoursesDao;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    private List<ListeCourses> data;
+
 
     public interface OnItemClickListener {
         void onItemClickListener(ListeCourses ldcDefaut);
     }
 
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private List<ListeCourses> data;
-    private OnItemClickListener itemClickListener;
-    private ListeCoursesDao listeCoursesDao;
 
     public LDCAdapter (Context context, OnItemClickListener listener) {
         this.mContext = context;
@@ -92,15 +92,15 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
                     alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-//                            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
-//                            for (Produit produit : listeCourses.getProduitsPris()) {
-//                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
-//                                produitDao.deleteProductById(produit.getId());
-//                            }
-//                            for (Produit produit : listeCourses.getProduitsAPrendre()) {
-//                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
-//                                produitDao.deleteProductById(produit.getId());
-//                            }
+                            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
+                            for (Produit produit : listeCourses.getProduitsPris()) {
+                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
+                                produitDao.deleteProductById(produit.getId());
+                            }
+                            for (Produit produit : listeCourses.getProduitsAPrendre()) {
+                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
+                                produitDao.deleteProductById(produit.getId());
+                            }
 
                             listeCoursesDao.deleteListeCoursesById(data.get(i).getId());
                         }
@@ -144,7 +144,8 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
         public void bind(ListeCourses value){
             if(value.getNom().equals(mContext.getResources().getString(R.string.label_titre_listecourse_auto_generee_automatique))){
-                itemView.setBackgroundColor(Color.LTGRAY);
+                ldcName.setTypeface(null, Typeface.ITALIC);
+     ///           itemView.setBackgroundColor(Color.LTGRAY);
             }
             ldcName.setText(value.getNom());
         }

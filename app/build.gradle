@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'io.fabric'
+
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
@@ -92,9 +95,24 @@ dependencies {
     // Animations
     implementation 'com.github.mancj:SlideUp-Android:2.2.8'
 
+    // Glide - https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    // CircleImageView - https://github.com/hdodenhof/CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+
+    // Crashlytics
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+
 
 }
 
 ext {
     supportLibVersion = '27.1.1'  // variable that can be referenced to keep support libs consistent
 }
+
+apply plugin: 'com.google.gms.google-services'

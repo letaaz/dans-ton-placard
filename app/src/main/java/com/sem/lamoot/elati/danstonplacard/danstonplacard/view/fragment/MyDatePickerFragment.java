@@ -6,13 +6,25 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.widget.Toast;
+
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
 import java.util.Calendar;
 
 public class MyDatePickerFragment extends DialogFragment {
 
     public final static String SELECTED_DATE = "com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.SELECTED_DATE";
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            (view, year, month, day) ->
+            {
+                String date  = view.getDayOfMonth() +
+                        "/" + (view.getMonth() + 1) +
+                        "/" + view.getYear();
+                Bundle bundle = new Bundle();
+                bundle.putString(SELECTED_DATE, date);
+                Intent intent = new Intent().putExtras(bundle);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+            };
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -22,18 +34,9 @@ public class MyDatePickerFragment extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+
+        return new DatePickerDialog(getActivity(), R.style.DialogTheme, dateSetListener, year, month, day);
     }
 
-    private DatePickerDialog.OnDateSetListener dateSetListener =
-            (view, year, month, day) ->
-                {
-                    String date  = view.getDayOfMonth() +
-                            "/" + (view.getMonth() + 1) +
-                            "/" + view.getYear();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(SELECTED_DATE, date);
-                    Intent intent = new Intent().putExtras(bundle);
-                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                };
+
 }

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterProduitFragment;
@@ -36,13 +38,11 @@ public class PieceFragment extends Fragment
     // RecyclerView + Adapter - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
     private ProduitAdapter produitsDisponiblesAdapter;
-    private RecyclerView.LayoutManager produitsDisponiblesLayoutManager;
 
 
     // RecyclerView + Adapter - produits indisponibles
     private RecyclerView produitsIndisponiblesRecyclerView;
     private ProduitAdapter produitsIndisponiblesAdapter;
-    private RecyclerView.LayoutManager produitsIndisponiblesLayoutManager;
     private ProduitViewModel produitViewModel;
     private ProduitViewModel produitViewModel2;
 
@@ -69,6 +69,14 @@ public class PieceFragment extends Fragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+        firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
+
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
 
@@ -78,12 +86,17 @@ public class PieceFragment extends Fragment
         setProduitsDisponibles(produitViewModel, "Nom");
         setProduitsIndisponibles(produitViewModel, "Nom");
 
-        TextView btn = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
-        btn.setOnClickListener(new View.OnClickListener() {
+        TextView btn_hide_show_available_product = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
+        btn_hide_show_available_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int visibilite = ((produitsDisponiblesRecyclerView.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
-                produitsDisponiblesRecyclerView.setVisibility(visibilite);
+                if (produitsDisponiblesRecyclerView.getVisibility() == View.GONE) {
+                    btn_hide_show_available_product.setText(getResources().getString(R.string.btn_hide_label));
+                    produitsDisponiblesRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    btn_hide_show_available_product.setText(getResources().getString(R.string.btn_show_label));
+                    produitsDisponiblesRecyclerView.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -91,8 +104,13 @@ public class PieceFragment extends Fragment
         btn_hide_show_unavailable_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int visibilite = ((produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
-                produitsIndisponiblesRecyclerView.setVisibility(visibilite);
+                if (produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) {
+                    btn_hide_show_unavailable_product.setText(getResources().getString(R.string.btn_hide_label));
+                    produitsIndisponiblesRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    btn_hide_show_unavailable_product.setText(getResources().getString(R.string.btn_show_label));
+                    produitsIndisponiblesRecyclerView.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -121,6 +139,8 @@ public class PieceFragment extends Fragment
             }
         });
 
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+
 
         // Listener for the FAB
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
@@ -133,6 +153,17 @@ public class PieceFragment extends Fragment
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    add_fab.hide();
+                } else {
+                    add_fab.show();
+                }
             }
         });
 
@@ -167,13 +198,13 @@ public class PieceFragment extends Fragment
 
     private void setRecyclerViewProduitsDisponibles() {
         // Set recyclerView + Adapter - Produits disponibles
-        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, -1);
         produitsDisponiblesAdapter.setOnProductItemClickListener(this::onProductItemClickListener);
         produitsDisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireDispo_recyclerview);
         produitsDisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsDisponiblesRecyclerView.setAdapter(produitsDisponiblesAdapter);
 
-        produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
@@ -205,13 +236,13 @@ public class PieceFragment extends Fragment
 
     private void setRecyclerViewProduitsIndisponibles() {
         // Set recyclerView + Adapter - Produits indisponibles
-        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this);
+        produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, -1);
         produitsIndisponiblesAdapter.setOnProductItemClickListener(this::onProductItemClickListener);
         produitsIndisponiblesRecyclerView = (RecyclerView) view.findViewById(R.id.inventaireIndispo_recyclerview);
         produitsIndisponiblesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         produitsIndisponiblesRecyclerView.setAdapter(produitsIndisponiblesAdapter);
 
-        produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
         produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
@@ -232,7 +263,7 @@ public class PieceFragment extends Fragment
     public void onProductItemClickListener(Produit produit) {
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        String[] params = new String[]{produit.getId()+"", mParam};
+        String[] params = new String[]{produit.getId()+"", "-1"};
         transaction.replace(R.id.root_inventaire_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);

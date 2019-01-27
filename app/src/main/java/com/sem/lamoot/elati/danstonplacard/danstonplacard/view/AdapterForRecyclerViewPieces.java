@@ -61,8 +61,8 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
 
     class PiecesViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView mPieceImage;
-        CardView mCardView;
+        private ImageView mPieceImage;
+        private CardView mCardView;
 
         PiecesViewHolder(View itemView) {
             super(itemView);

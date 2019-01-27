@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewLDC"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/greyback"
         android:scrollbarStyle="insideOverlay"
         android:visibility="visible">
 
@@ -20,51 +21,51 @@
                 android:id="@+id/section_ldc_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    style="@style/ListLabelStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_alignBaseline="@id/btn_expand_ldc_list"
                     android:duplicateParentState="true"
-                    android:text="@string/ldc_disponibles_label"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:text="@string/ldc_disponibles_label" />
 
-                <ImageButton
+                <TextView
                     android:id="@+id/btn_expand_ldc_list"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@color/transparent_background"
+                    style="@style/ListButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:duplicateParentState="true"
-                    android:src="@drawable/expand_arrow_gray" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@color/darkGray" />
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/btn_hide_label" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/default_background" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ldc_list_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
                 android:overScrollMode="never"
                 android:scrollbars="none"
                 android:visibility="visible"
@@ -79,50 +80,53 @@
                 android:id="@+id/section_history_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
+                android:padding="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ldc_list_recyclerview">
 
                 <TextView
+                    style="@style/ListLabelStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
+                    android:layout_alignBaseline="@id/btn_expand_history_list"
+                    android:layout_marginEnd="-8dp"
+                    android:layout_toStartOf="@+id/btn_expand_history_list"
                     android:duplicateParentState="true"
-                    android:text="@string/history_ldc_label"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:text="@string/history_ldc_label" />
 
-                <ImageButton
+                <TextView
                     android:id="@+id/btn_expand_history_list"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    style="@style/ListButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:duplicateParentState="true"
-                    android:src="@drawable/expand_arrow_gray"
-                    android:background="@color/transparent_background"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="8dp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/darkGray"/>
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/btn_hide_label" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/default_background" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/history_ldc_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@color/white"
+                android:elevation="2dp"
                 android:scrollbars="vertical"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -2,7 +2,6 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -154,13 +153,16 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }
         else
         {
+            Log.d("dtp", "Fetch idLDC = " + idDLC);
             Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage, 0, product_weight, product_date, product_rayon, 0, piece);
             long idProduct = produitDao.insert(product);
-
             product.setId((int) idProduct);
-            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idDLC);
-            listeCourses.getProduitsAPrendre().add(product);
-            listeCoursesDao.updateListe(listeCourses);
+
+            ListeCourses li = listeCoursesDao.getListeCoursesById(idDLC);
+            List<Produit> aPrendre = li.getProduitsAPrendre();
+            aPrendre.add(product);
+            li.setProduitsAPrendre(aPrendre);
+            listeCoursesDao.updateListe(li);
         }
     }
 

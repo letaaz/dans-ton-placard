@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">DansTonPlacard</string>
-    <string name="title_activity_setting">Dans Ton Placard</string>
+    <string name="title_activity_main">Dans ton placard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -25,26 +25,36 @@
     <string name="salle_de_bain">Salle de bain</string>
     <string name="app_label">Dans ton placard</string>
     <string name="search_hint">Chercher un produit</string>
-
     <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
     <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
+    <string name="msg_produit_ajoute_ldc">Le produit a été ajouté à la liste de course et dans la pièce Divers</string>
+
     <string name="voir">Voir</string>
     <string name="ldc_disponibles_label">Listes de courses disponibles</string>
-    <string name="history_ldc_label">Historique des listes de courses</string>
+    <string name="history_ldc_label">Historique des listes</string>
     <string name="msgAlertDialogSupprimerLdc">Êtes-vous sûr de vouloir supprimer la liste de courses suivante :</string>
     <string name="titleAlertDialogSupprimerLdc">Suppression de la liste de courses</string>
     <string name="archiver_ldc">Archiver</string>
-    <string name="label_quantité_ab">Qté :</string>
+    <string name="label_quantité_ab">Quantité :</string>
     <string name="label_prix_ab">Prix :</string>
     <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
     <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
     <string name="app_version_label">v1.0.0</string>
     <string name="app_logo_label">Logo application Dans Ton Placard</string>
     <string name="app_credit_label">Credits :</string>
-    <string name="credits_content">www.lunapik.com \nwww.icons8.com \nwww.flaticon.com</string>
+    <string name="credits_content">- <a href="http://www.lunapik.fr">Lunapik</a>\n- <a href="http://www.icons8.com">Icons8</a> \n- <a href="http://www.flaticon.com">Flaticon</a></string>
     <string name="facebook">Page Facebook</string>
     <string name="about">Informations</string>
     <string name="default_page_content">Désolé, la page est indisponible pour le moment.</string>
+    <string name="scan_product_indication">Appuyer sur l\'image pour scanner le produit</string>
+    <string name="recipe_default_content">Vos recettes personnalisées bientôt disponibles !</string>
+    <string name="promotions_default_content">Vos promotions en magasins bientôt disponibles !</string>
+    <string name="btn_show_label">Voir</string>
+    <string name="btn_hide_label">Masquer</string>
+    <string name="ldc_edit_default_content">Votre liste de courses est vide.</string>
+    <string name="hint_new_ldc_name">Nom de la liste</string>
+    <string name="err_msg_name">Entrer un nom pour votre liste</string>
+    <string name="ldc_detail_default_content">Aucun article à prendre.</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>
@@ -70,6 +80,7 @@
         <item name="epicerie_sucree">Épicerie sucrée</item>
         <item name="epicerie_salee">Épicerie salée</item>
         <item name="hygienes_beautes">Hygiènes et Beautés</item>
+        <item name="animaux">Animaux</item>
         <item name="divers">Divers</item>
     </string-array>
 

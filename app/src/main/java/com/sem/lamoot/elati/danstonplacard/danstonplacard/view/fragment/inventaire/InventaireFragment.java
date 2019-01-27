@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.PieceIcone;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.AdapterForRecyclerViewPieces;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
 import java.util.ArrayList;
 import java.util.List;

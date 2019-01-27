@@ -3,7 +3,6 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventa
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
@@ -16,19 +15,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AsyncTaskLoadImage;
+import com.bumptech.glide.Glide;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+
+import static com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.LDCFragment.removeProductFromList;
 
 public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitViewHolder> {
+
+    private OnMinusImageViewClickListener onMinusImageViewClickListener;
+    private OnAddImageViewClickListener onAddImageViewClickListener;
+    private OnProductItemClickListener onProductItemClickListener;
+    private List<Produit> data;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private int idLDC;
+
 
     public interface OnMinusImageViewClickListener{
         void onMinusImageViewClickListener(Produit produit);
@@ -42,20 +54,16 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         void onProductItemClickListener(Produit produit);
     }
 
-    private List<Produit> data;
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private OnMinusImageViewClickListener onMinusImageViewClickListener;
-    private OnAddImageViewClickListener onAddImageViewClickListener;
-    private OnProductItemClickListener onProductItemClickListener;
 
 
-    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener){
+
+    public ProduitAdapter(Context context, OnMinusImageViewClickListener minusListener, OnAddImageViewClickListener addListener, int idLDC){
         this.data = new ArrayList<>();
         this.context = context;
         this.onMinusImageViewClickListener = minusListener;
         this.onAddImageViewClickListener = addListener;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.idLDC = idLDC;
     }
 
     @NonNull
@@ -63,7 +71,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     public ProduitViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        final View view = inflater.inflate(R.layout.layout_liste_produits_inventaire, viewGroup, false);
+        final View view = inflater.inflate(R.layout.produits_inventaire_item, viewGroup, false);
 
         return new ProduitViewHolder(view);
     }
@@ -76,6 +84,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
         String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
+        ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(context).listeCoursesDao();
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
         produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -94,7 +103,20 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
+
+                        if(idLDC == -1) {
+                            produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
+                        }
+                        else
+                        {
+                            ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
+                            List<Produit> aPrendre = li.getProduitsAPrendre();
+                            Produit produit = data.get(produitViewHolder.getAdapterPosition());
+                            aPrendre = removeProductFromList(aPrendre,produit);
+                            li.setProduitsAPrendre(aPrendre);
+                            listeCoursesDao.updateListe(li);
+                            produitDao.deleteProductById(produit.getId());
+                        }
                     }
                 });
                 AlertDialog dialog = alertDialog.create();
@@ -102,8 +124,21 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 return true;
             }
         });
-    }
 
+//        produitViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+//                FragmentTransaction trans = manager.beginTransaction();
+//                String[] params = new String[]{data.get(produitViewHolder.getAdapterPosition()).getId()+"", "CUISINE"};
+//                trans.replace(R.id.root_ldc_frame, DetailProduitFragment.newInstance(params));
+//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                trans.addToBackStack(null);
+//                trans.commit();
+//            }
+//        });
+    }
 
     @Override
     public int getItemCount() {
@@ -132,21 +167,21 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView nom_produit, quantite, id_produit;
-        private ImageView imageProduit, retirerUnProduit, ajouterUnProduit, iconAlert;
+        private TextView nom_produit, quantite, prix;
+        private ImageView imageProduit, retirerUnProduit, ajouterUnProduit;
+        private View container;
 
         public ProduitViewHolder(View itemView) {
             super(itemView);
 
-            nom_produit = itemView.findViewById(R.id.produit);
-            quantite = itemView.findViewById(R.id.quantite_produit_textview);
-            id_produit = itemView.findViewById(R.id.id_product_txt);
+            container = itemView;
+            nom_produit = itemView.findViewById(R.id.inventaire_product_name);
+            quantite = itemView.findViewById(R.id.inventaire_product_quantite);
+            prix = itemView.findViewById(R.id.inventaire_product_price);
 
             imageProduit = itemView.findViewById(R.id.id_product_image);
             retirerUnProduit = itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
-
-            iconAlert = itemView.findViewById(R.id.alert_icon);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,24 +194,21 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
 
         public void bind(Produit produit) {
             if (produit != null) {
-
+                container.setBackgroundColor(context.getResources().getColor(Rayon.getRayonColor(produit.getRayon())));
                 if(produit.getMarque() != null)
                     nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
                 else
                     nom_produit.setText(produit.getNom());
 
-                quantite.setText("Quantité : " + String.valueOf(produit.getQuantite()));
-                id_produit.setText(String.valueOf(produit.getId()));
+                quantite.setText(String.valueOf(produit.getQuantite()));
+                prix.setText(produit.getPrix() + " €");
 
-                if(produit.getUrlImage() != null) {
+                if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
+                    imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+                }
+                else{
                     if(produit.getUrlImage().contains("http")) {
-                        try {
-                            Bitmap bitmap = new AsyncTaskLoadImage().execute(produit.getUrlImage()).get();
-                            imageProduit.setImageBitmap(bitmap);
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
-                            imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                        }
+                        Glide.with(context).load(produit.getUrlImage()).into(imageProduit);
                     }
                     else{
                         try {
@@ -188,8 +220,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                         }
                     }
                 }
-                else
-                    imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+
 
                 retirerUnProduit.setOnClickListener(v -> {
                     if (onMinusImageViewClickListener != null)

@@ -1,7 +1,5 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

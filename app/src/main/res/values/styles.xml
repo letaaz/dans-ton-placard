@@ -15,6 +15,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar2">
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!-- Spinner style -->
     <style name="SpinnerStyle">
         <item name="android:layout_width">wrap_content</item>
@@ -36,13 +40,37 @@
     </style>
 
     <style name="ListLabelStyle">
-        <item name="android:textColor">@color/darkGray</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_alignParentStart">true</item>
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
+        <item name="android:padding">3dp</item>
         <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="ListButtonStyle">
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ListItemTitle">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="ListItemInfo">
+        <item name="android:textColor">@color/text_lgray</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -51,6 +79,18 @@
 
     <style name="tabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#D81B60</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyEditTextTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
 </resources>

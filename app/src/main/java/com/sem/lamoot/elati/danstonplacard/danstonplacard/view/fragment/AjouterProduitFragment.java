@@ -1,7 +1,6 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,19 +16,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.FirebaseAnalyticsEvent;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ProduitDao;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ListeCourses;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
+import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,13 +83,20 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+        firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.ajouter_produit_fragment, container, false);
-        ImageView imageView3 = (ImageView) view.findViewById(R.id.imageView3);
+        ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
         imageView3.setOnClickListener(this);
 
         Toast.makeText(mContext, "idLDC = " + idLDC, Toast.LENGTH_SHORT).show();
@@ -114,18 +122,17 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
                 if(produit == null)
                 {
-                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.FRUITS_LEGUMES, Piece.DIVERS);
+                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.DIVERS);
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     long id_newProduit = produitDao.insert(newProduit);
-//                    Toast.makeText(mContext, "" + newProduit.getId(), Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(mContext, "" + id_newProduit, Toast.LENGTH_SHORT).show();
 
                     newProduit.setId((int) id_newProduit);
                     listeCourses.getProduitsAPrendre().add(newProduit);
                     listeCoursesDao.updateListe(listeCourses);
 
                     hideKeyboard();
-                    getActivity().onBackPressed();
+                    showSnackBar(R.string.msg_produit_ajoute_ldc);
+                    //getActivity().onBackPressed();
                 }
                 else
                 {
@@ -142,7 +149,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                     listeCoursesDao.updateListe(listeCourses);
 
                     hideKeyboard();
-                    getActivity().onBackPressed();
+                    showSnackBar(R.string.msg_produit_ajoute_ldc);
+                    //getActivity().onBackPressed();
                 }
                 else
                 {
@@ -150,13 +158,13 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 }
             });
         }
-        else
+        else // Ajouter produit à la LDC
         {
             actv.setOnItemClickListener((parent, view1, position, id) -> {
                 Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
                 if(produit == null)
                 {
-                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.FRUITS_LEGUMES, Piece.getPiece(mPiece));
+                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
                     newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                     produitDao.insert(newProduit);
 
@@ -208,6 +216,7 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 
         if (result != null) {
             if (result.getContents() == null) {
+                getActivity().onBackPressed();
             } else {
                 String data_product = "";
                 try {
@@ -221,8 +230,9 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
+                onClick(getView());
             }
-            getActivity().onBackPressed();
+
         }
     }
 

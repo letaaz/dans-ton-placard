@@ -23,9 +23,6 @@ import java.util.List;
 public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
     private static final String TAG = "SearchItemArrayAdapter";
 
-    private ProduitDefaut produit;
-    private TextView nomProduit;
-    private ImageView iconeProduit;
     private Context context;
 
     private List<ProduitDefaut> dataListAllItems;
@@ -71,13 +68,13 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
                 row = inflater.inflate(R.layout.search_listitem, parent, false);
             }
 
-            produit = this.produitsDefautsList.get(position);
+            ProduitDefaut produit = this.produitsDefautsList.get(position);
             String nom = produit.getNom();
-            nomProduit = (TextView) row.findViewById(R.id.nomProduit);
+            TextView nomProduit = (TextView) row.findViewById(R.id.nomProduit);
             nomProduit.setText(nom);
 
             // Get a reference to ImageView holder
-            iconeProduit = (ImageView) row.findViewById(R.id.iconeProduit);
+            ImageView iconeProduit = (ImageView) row.findViewById(R.id.iconeProduit);
 
             if(produit.getUrl_image().isEmpty())
             {
@@ -87,7 +84,7 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
             else {
                 InputStream is;
                 try {
-                    is = context.getAssets().open("icons_products/"+produit.getUrl_image());
+                    is = context.getAssets().open("icons_products/"+ produit.getUrl_image());
                     Drawable draw = Drawable.createFromStream(is, null);
                     iconeProduit.setImageDrawable(draw);
 

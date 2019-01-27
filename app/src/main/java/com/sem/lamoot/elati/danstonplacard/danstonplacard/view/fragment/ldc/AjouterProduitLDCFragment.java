@@ -15,11 +15,7 @@ import android.widget.ImageView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 
@@ -60,7 +56,7 @@ public class AjouterProduitLDCFragment extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ajouter_produit_fragment, container, false);
-        ImageView imageView3 = (ImageView) view.findViewById(R.id.imageView3);
+        ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
         imageView3.setOnClickListener(this);
 
         ImageView button_add = (ImageView) view.findViewById(R.id.button_add);

@@ -7,23 +7,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.AboutActivity;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SampleFragmentPagerAdapter;
 
@@ -77,11 +73,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                return;
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                return;
             }
         });
 
@@ -129,6 +126,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_notez_nous:
             case R.id.nav_deconnexion:
                 break;
+            default:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,6 +166,6 @@ public class MainActivity extends AppCompatActivity
 
     private void resetAllMenuItemsTextColor(NavigationView navigationView) {
         for (int i = 0; i < navigationView.getMenu().size(); i++)
-            setTextColorForMenuItem(navigationView.getMenu().getItem(i), R.color.nero);
+            setTextColorForMenuItem(navigationView.getMenu().getItem(i), R.color.text_black);
     }
 }
