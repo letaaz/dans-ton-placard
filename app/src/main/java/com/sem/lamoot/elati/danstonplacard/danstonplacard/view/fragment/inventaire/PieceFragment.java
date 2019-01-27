@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
@@ -83,29 +85,31 @@ public class PieceFragment extends Fragment
         setProduitsDisponibles(produitViewModel);
         setProduitsIndisponibles(produitViewModel);
 
-        TextView btn_hide_show_available_product = (TextView) view.findViewById(R.id.section_show_all_button_dispo);
-        btn_hide_show_available_product.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
+        ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
+        section_dispo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (produitsDisponiblesRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_available_product.setText(getResources().getString(R.string.btn_hide_label));
+                    btn_hide_show_available_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
                     produitsDisponiblesRecyclerView.setVisibility(View.VISIBLE);
                 } else {
-                    btn_hide_show_available_product.setText(getResources().getString(R.string.btn_show_label));
+                    btn_hide_show_available_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
                     produitsDisponiblesRecyclerView.setVisibility(View.GONE);
                 }
             }
         });
 
-        TextView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
-        btn_hide_show_unavailable_product.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout section_indispo = view.findViewById(R.id.section_produits_indispo);
+        ImageView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
+        section_indispo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_unavailable_product.setText(getResources().getString(R.string.btn_hide_label));
+                    btn_hide_show_unavailable_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
                     produitsIndisponiblesRecyclerView.setVisibility(View.VISIBLE);
                 } else {
-                    btn_hide_show_unavailable_product.setText(getResources().getString(R.string.btn_show_label));
+                    btn_hide_show_unavailable_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
                     produitsIndisponiblesRecyclerView.setVisibility(View.GONE);
                 }
             }

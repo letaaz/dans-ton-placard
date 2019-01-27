@@ -3,15 +3,16 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,17 +136,19 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
     public class LDCViewHolder extends RecyclerView.ViewHolder {
 
         private TextView ldcName;
+        private ImageView ldcIcon;
 
         public LDCViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ldcName = itemView.findViewById(R.id.ldc_name);
+            ldcIcon = itemView.findViewById(R.id.ldc_icon);
         }
 
         public void bind(ListeCourses value){
             if(value.getNom().equals(mContext.getResources().getString(R.string.label_titre_listecourse_auto_generee_automatique))){
                 ldcName.setTypeface(null, Typeface.ITALIC);
-     ///           itemView.setBackgroundColor(Color.LTGRAY);
+                ldcName.setTextColor(ContextCompat.getColor(mContext, R.color.text_red));
             }
             ldcName.setText(value.getNom());
         }
