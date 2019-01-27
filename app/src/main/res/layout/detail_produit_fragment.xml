@@ -4,7 +4,7 @@
     xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gridViewBackground">
+    android:background="@color/default_background">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout5"
@@ -20,20 +20,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!--<ImageView-->
-            <!--android:id="@+id/produit_image"-->
-            <!--android:layout_width="105dp"-->
-            <!--android:layout_height="92dp"-->
-            <!--android:layout_marginStart="55dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginBottom="8dp"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toStartOf="@+id/produit_nom"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--app:srcCompat="@drawable/ic_barcode" />-->
+        <!--android:id="@+id/produit_image"-->
+        <!--android:layout_width="105dp"-->
+        <!--android:layout_height="92dp"-->
+        <!--android:layout_marginStart="55dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/produit_nom"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/ic_barcode" />-->
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/produit_image"
             android:layout_width="105dp"
             android:layout_height="92dp"
@@ -44,7 +43,7 @@
             app:layout_constraintEnd_toStartOf="@+id/produit_nom"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_barcode"/>
+            app:srcCompat="@drawable/ic_barcode" />
 
         <TextView
             android:id="@+id/produit_nom"

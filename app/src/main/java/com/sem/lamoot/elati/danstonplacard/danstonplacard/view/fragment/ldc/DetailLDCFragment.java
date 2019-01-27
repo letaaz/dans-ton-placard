@@ -112,6 +112,11 @@ public class DetailLDCFragment extends Fragment{
             btnEditLdc.setVisibility(View.INVISIBLE);
         }
 
+        if(listeCourses.getEtat() == 1)
+        {
+            btnRecycleLdc.setVisibility(View.INVISIBLE);
+            btnEditLdc.setVisibility(View.INVISIBLE);
+        }
 
 
         setOnClickToBtnEditLdc(btnEditLdc);

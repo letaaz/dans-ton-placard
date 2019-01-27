@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/default_background">
 
     <RelativeLayout
         android:id="@+id/ldc_edit_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        android:elevation="2dp"
         android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputLayout
@@ -17,16 +25,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/btn_save_ldc_edit"
-            android:layout_marginEnd="8dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toLeftOf="@+id/btn_save_ldc_edit"
+            android:hint="@string/hint_new_ldc_name"
+            android:theme="@style/MyEditTextTheme">
 
             <EditText
                 android:id="@+id/ldc_edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_new_ldc_name"
                 android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/primaryTextColor"
@@ -38,38 +47,50 @@
             android:id="@+id/btn_save_ldc_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/caddie_checkout"
-            android:background="@color/transparent_background"
-            android:text="@string/archiver_ldc"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="12dp" />
+            android:layout_marginEnd="12dp"
+            android:background="@color/transparent_background"
+            android:src="@drawable/caddie_checkout"
+            android:text="@string/archiver_ldc" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/default_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ldc_edit_label" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ldc_product_edit_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        android:elevation="2dp"
         android:scrollbars="vertical"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ldc_edit_label" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <TextView
         android:id="@+id/ldc_edit_default_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
-        android:background="@color/default_background"
+        android:background="@color/white"
+        android:elevation="2dp"
         android:gravity="center_horizontal"
         android:padding="12sp"
         android:text="@string/ldc_edit_default_content"
@@ -79,7 +100,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ldc_edit_label" />
+        app:layout_constraintTop_toTopOf="@+id/ldc_product_edit_recyclerview" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/ldc_edit_ajout_produit_fab"
