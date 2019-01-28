@@ -11,9 +11,13 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
 import java.util.Calendar;
 
+/**
+ * Fragment representing a calendar allowing the selection of a date for the deadline of consumption of a product
+ */
 public class MyDatePickerFragment extends DialogFragment {
 
     public final static String SELECTED_DATE = "com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.SELECTED_DATE";
+
     private DatePickerDialog.OnDateSetListener dateSetListener =
             (view, year, month, day) ->
             {

@@ -11,7 +11,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ListeCourses
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment that contains the list of shopping lists
+ */
 public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListener {
 
     public static String ARGS = "ARGUMENTS_LDC_FRAG";
@@ -70,16 +72,96 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.ldc_fragment, container, false);
 
+        // Get DAO
         listeCoursesDao = RoomDB.getDatabase(getContext()).listeCoursesDao();
         produitDao = RoomDB.getDatabase(getContext()).produitDao();
+
+        // Get ViewModel
         listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
-        
+        // Gets items from layout
+        btn_create_ldc_fab = view.findViewById(R.id.ajout_ldc_fab);
+        NestedScrollView nestedScrollViewLDC = view.findViewById(R.id.nestedScrollViewLDC);
+        btn_hide_show_ldc = view.findViewById(R.id.btn_expand_ldc_list);
+        btn_hide_show_history = view.findViewById(R.id.btn_expand_history_list);
+        RelativeLayout sectionLdc = view.findViewById(R.id.section_ldc_list);
+        RelativeLayout sectionHistory = view.findViewById(R.id.section_history_list);
+
+
+
+
+
+        // Set datas LDC
         setLDC(listeCoursesViewModel);
-        
+        // Set datas LDC Archivees
         setLDCArchivees(listeCoursesViewModel);
 
-        btn_create_ldc_fab = view.findViewById(R.id.ajout_ldc_fab);
+
+        setOnClickBtnCreateLDC();
+        hideFloatingButtonWhenScrolling(nestedScrollViewLDC);
+
+
+
+        // Hide/Show buttons
+        setBehaviorToShowHideListOfShoppingLists(sectionLdc);
+        setBehaviorToShowHideListOfShoppingListArchived(sectionHistory);
+
+        return view;
+    }
+
+    /**
+     * Method called to set behavior when user click on button on the right of the title of the list of shopping list
+     * The list will be hide and recycler resize
+     * @param sectionHistory
+     */
+    private void setBehaviorToShowHideListOfShoppingListArchived(RelativeLayout sectionHistory) {
+        sectionHistory.setOnClickListener(v -> {
+            if (historyLdcRecyclerView.getVisibility() == View.GONE) {
+                btn_hide_show_history.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
+                historyLdcRecyclerView.setVisibility(View.VISIBLE);
+            } else { // Assuming the view is visible
+                btn_hide_show_history.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
+                historyLdcRecyclerView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    /**
+     * Method called to set behavior when user click on button on the right of the title of the list of shopping list archived
+     * The list will be hide and recycler resize
+     * @param sectionLdc
+     */
+    private void setBehaviorToShowHideListOfShoppingLists(RelativeLayout sectionLdc) {
+        sectionLdc.setOnClickListener(v -> {
+            if (ldcDisponiblesRecyclerView.getVisibility() == View.GONE) {
+                btn_hide_show_ldc.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
+                ldcDisponiblesRecyclerView.setVisibility(View.VISIBLE);
+            } else { // Assuming the view is visible
+                btn_hide_show_ldc.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
+                ldcDisponiblesRecyclerView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    /**
+     * Method called to hide the floating button when the user scrolls in the list of lists to prevent the button from hiding lists.
+     * @param nestedScrollViewLDC
+     */
+    private void hideFloatingButtonWhenScrolling(NestedScrollView nestedScrollViewLDC) {
+        nestedScrollViewLDC.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) {
+                btn_create_ldc_fab.hide();
+            } else {
+                btn_create_ldc_fab.show();
+            }
+        });
+    }
+
+    /**
+     * Method called to set behavior to floating button
+     * Method will call Fragment LDCEditFragment
+     */
+    private void setOnClickBtnCreateLDC() {
         btn_create_ldc_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,54 +173,12 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                 transaction.commit();
             }
         });
-
-        NestedScrollView nestedScrollViewLDC = view.findViewById(R.id.nestedScrollViewLDC);
-        nestedScrollViewLDC.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > oldScrollY) {
-                    btn_create_ldc_fab.hide();
-                } else {
-                    btn_create_ldc_fab.show();
-                }
-            }
-        });
-
-        // Hide/Show buttons
-        btn_hide_show_ldc = view.findViewById(R.id.btn_expand_ldc_list);
-        btn_hide_show_history = view.findViewById(R.id.btn_expand_history_list);
-
-        RelativeLayout sectionLdc = view.findViewById(R.id.section_ldc_list);
-        sectionLdc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ldcDisponiblesRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_ldc.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
-                    ldcDisponiblesRecyclerView.setVisibility(View.VISIBLE);
-                } else { // Assuming the view is visible
-                    btn_hide_show_ldc.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
-                    ldcDisponiblesRecyclerView.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        RelativeLayout sectionHistory = view.findViewById(R.id.section_history_list);
-        sectionHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (historyLdcRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_history.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
-                    historyLdcRecyclerView.setVisibility(View.VISIBLE);
-                } else { // Assuming the view is visible
-                    btn_hide_show_history.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
-                    historyLdcRecyclerView.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        return view;
     }
 
+    /**
+     * Set LDC Archivees datas to RecyclerView
+     * @param listeCoursesViewModel
+     */
     private void setLDCArchivees(ListeCoursesViewModel listeCoursesViewModel) {
         // RecyclerView hist LDC
         LDCAdapter historyAdapter = new LDCAdapter(mContext, this);
@@ -148,6 +188,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
 
     }
 
+    /**
+     * Set recyclerView of LDC Archivees
+     * @param historyAdapter
+     */
     private void setRecyclerForLDCArchivees(LDCAdapter historyAdapter) {
         historyLdcRecyclerView = view.findViewById(R.id.history_ldc_recyclerview);
 
@@ -159,6 +203,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         historyLdcRecyclerView.setNestedScrollingEnabled(false);
     }
 
+    /**
+     * Set LDC to RecyclerView
+     * @param listeCoursesViewModel
+     */
     private void setLDC(ListeCoursesViewModel listeCoursesViewModel) {
         LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
         listeCoursesViewModel.getListesCoursesDisponibles().observe(this, ldc_disponibles -> ldcAdapter.setData(ldc_disponibles));
@@ -166,6 +214,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         setRecyclerForLDC(ldcAdapter);
     }
 
+    /**
+     * Set REcyclerView of LDC
+     * @param ldcAdapter
+     */
     private void setRecyclerForLDC(LDCAdapter ldcAdapter) {
         // RecyclerView LDC
         ldcDisponiblesRecyclerView = view.findViewById(R.id.ldc_list_recyclerview);
@@ -210,7 +262,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         produitsInLDC.addAll(estPris);
         boolean allIndispoContainsProductLDC = checkIfProductsListsAreSame(produitsInLDC, allIndispos);
 
-        if(! allIndispoContainsProductLDC){ //Les deux listes sont différents - il faut mettre jour aPrendre et estPris
+        if(! allIndispoContainsProductLDC){ //Les deux listes sont différentes - il faut mettre jour aPrendre et estPris
             List<Integer> idInLDC = new ArrayList<>();
             List<Integer> idInIndispo = new ArrayList<>();
             for(Produit produit : allIndispos){ idInIndispo.add(produit.getId());}
@@ -229,12 +281,10 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                     }
                     else
                     {
-                        for(Produit p : aPrendre)
-                        {
+                        for(Produit p : aPrendre) {
                             if(p.getId() == id){aPrendre.remove(p); break;}
                         }
-                        for(Produit p : estPris)
-                        {
+                        for(Produit p : estPris) {
                             if(p.getId() == id){estPris.remove(p); break;}
                         }
                     }
@@ -249,7 +299,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                 for(Integer id : idInIndispo) {
                     produit = produitDao.findProductById(id);
                     aPrendre.add(produit);
-                    Log.d("dtp", produit.getNom());
                 }
                 li.setProduitsAPrendre(aPrendre);
                 listeCoursesDao.updateListe(li);

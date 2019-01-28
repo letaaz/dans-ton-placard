@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
+/**
+ * Fragment that will contain all the fragment of LDC Feature
+ */
 public class RootLDCFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";

@@ -3,7 +3,6 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ArrayAdapter use to found default product in searchBar
+ */
 public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
     private static final String TAG = "SearchItemArrayAdapter";
 
@@ -30,71 +32,72 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
 
     private ListFilter listFilter = new ListFilter();
 
-        /**
-         *
-         * @param context
-         * @param textViewResourceId
-         * @param objects
-         */
-        public SearchItemArrayAdapter(Context context, int textViewResourceId, List<ProduitDefaut> objects)
-        {
-            super(context, textViewResourceId, objects);
-            this.context = context;
-            produitsDefautsList = objects;
+    /**
+     * @param context
+     * @param textViewResourceId
+     * @param objects
+     */
+    public SearchItemArrayAdapter(Context context, int textViewResourceId, List<ProduitDefaut> objects) {
+        super(context, textViewResourceId, objects);
+        this.context = context;
+        produitsDefautsList = objects;
+    }
+
+    @Override
+    public int getCount() {
+        return this.produitsDefautsList.size();
+    }
+
+    @Override
+    public ProduitDefaut getItem(int position) {
+        ProduitDefaut produit = this.produitsDefautsList.get(position);
+        return produit;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View row = convertView;
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        if (row == null) {
+            row = inflater.inflate(R.layout.search_listitem, parent, false);
         }
 
-        @Override
-        public int getCount()
-        {
-            return this.produitsDefautsList.size();
-        }
+        ProduitDefaut produit = this.produitsDefautsList.get(position);
+        String nom = produit.getNom();
+        TextView nomProduit = (TextView) row.findViewById(R.id.nomProduit);
+        nomProduit.setText(nom);
 
-        @Override
-        public ProduitDefaut getItem(int position)
-        {
-            ProduitDefaut produit = this.produitsDefautsList.get(position);
-            Log.d(TAG, "*-> Retrieving JournalEntry @ position: " + String.valueOf(position) + " : " +  produit.toString());
-            return produit;
-        }
+        // Get a reference to ImageView holder
+        ImageView iconeProduit = (ImageView) row.findViewById(R.id.iconeProduit);
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-            View row = convertView;
-            LayoutInflater inflater = LayoutInflater.from(getContext());
+        // Set image Product
+        setImageProduct(produit, iconeProduit);
 
-            if (row == null)
-            {
-                row = inflater.inflate(R.layout.search_listitem, parent, false);
-            }
+        return row;
+    }
 
-            ProduitDefaut produit = this.produitsDefautsList.get(position);
-            String nom = produit.getNom();
-            TextView nomProduit = (TextView) row.findViewById(R.id.nomProduit);
-            nomProduit.setText(nom);
+    /**
+     * Method called to set image to product in searchBar
+     * @param produit
+     * @param iconeProduit
+     */
+    private void setImageProduct(ProduitDefaut produit, ImageView iconeProduit) {
+        if (produit.getUrl_image().isEmpty()) {
+            iconeProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+        } else {
+            InputStream is;
+            try {
+                is = context.getAssets().open("icons_products/" + produit.getUrl_image());
+                Drawable draw = Drawable.createFromStream(is, null);
+                iconeProduit.setImageDrawable(draw);
 
-            // Get a reference to ImageView holder
-            ImageView iconeProduit = (ImageView) row.findViewById(R.id.iconeProduit);
-
-            if(produit.getUrl_image().isEmpty())
-            {
+            } catch (IOException e) {
+                e.printStackTrace();
                 iconeProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-
             }
-            else {
-                InputStream is;
-                try {
-                    is = context.getAssets().open("icons_products/"+ produit.getUrl_image());
-                    Drawable draw = Drawable.createFromStream(is, null);
-                    iconeProduit.setImageDrawable(draw);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    iconeProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                }
-            }
-            return row;
         }
+    }
 
     @NonNull
     @Override
@@ -140,7 +143,7 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values != null) {
-                produitsDefautsList = (ArrayList<ProduitDefaut>)results.values;
+                produitsDefautsList = (ArrayList<ProduitDefaut>) results.values;
             } else {
                 produitsDefautsList = null;
             }

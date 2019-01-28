@@ -78,71 +78,67 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     @Override
     public void onBindViewHolder(@NonNull final ProduitViewHolder produitViewHolder, int i) {
 
-        String alertMsg = this.context.getResources().getString(R.string.msgAlertDialogSupprimerProduit);
-        String title = this.context.getResources().getString(R.string.titleAlterDialogSupprimerProduit);
-        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
-        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
+        // Get DAO
         ProduitDao produitDao = RoomDB.getDatabase(produitViewHolder.itemView.getContext()).produitDao();
         ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(context).listeCoursesDao();
 
         produitViewHolder.bind(data.get(produitViewHolder.getAdapterPosition()));
-        produitViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-                alertDialog.setTitle(title);
 
-                alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
-                alertDialog.setNegativeButton(negativeButtonTxt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        if(idLDC == -1) {
-                            produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
-                        }
-                        else
-                        {
-                            ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
-                            List<Produit> aPrendre = li.getProduitsAPrendre();
-                            Produit produit = data.get(produitViewHolder.getAdapterPosition());
-                            aPrendre = removeProductFromList(aPrendre,produit);
-                            li.setProduitsAPrendre(aPrendre);
-                            listeCoursesDao.updateListe(li);
-                            produitDao.deleteProductById(produit.getId());
-                        }
+        setOnLongClickOnProduct(produitViewHolder, i, produitDao, listeCoursesDao);
+
+    }
+
+    /**
+     * Called method when the user presses a product long
+     * Allows users to remove the product from the list of available or unavailable products
+     * @param produitViewHolder
+     * @param i position of the item
+     * @param produitDao
+     * @param listeCoursesDao
+     */
+    private void setOnLongClickOnProduct(ProduitViewHolder produitViewHolder, int i, ProduitDao produitDao, ListeCoursesDao listeCoursesDao) {
+
+        String alertMsg = this.context.getResources().getString(R.string.msgAlertDialogSupprimerProduit);
+        String title = this.context.getResources().getString(R.string.titleAlterDialogSupprimerProduit);
+        String positiveButtonTxt = this.context.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
+        String negativeButtonTxt = this.context.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
+
+        produitViewHolder.itemView.setOnLongClickListener(v -> {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+            alertDialog.setTitle(title);
+
+            alertDialog.setMessage(Html.fromHtml(alertMsg + " <b> " + data.get(i).getNom() + "</b>"));
+            alertDialog.setNegativeButton(negativeButtonTxt, (dialog, which) -> dialog.cancel());
+            alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if(idLDC == -1) {
+                        produitDao.deleteProductById(data.get(produitViewHolder.getAdapterPosition()).getId());
                     }
-                });
-                AlertDialog dialog = alertDialog.create();
-                dialog.show();
-                return true;
-            }
+                    else {
+                        ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
+                        List<Produit> aPrendre = li.getProduitsAPrendre();
+                        Produit produit = data.get(produitViewHolder.getAdapterPosition());
+                        aPrendre = removeProductFromList(aPrendre,produit);
+                        li.setProduitsAPrendre(aPrendre);
+                        listeCoursesDao.updateListe(li);
+                        produitDao.deleteProductById(produit.getId());
+                    }
+                }
+            });
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+            return true;
         });
-
-//        produitViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
-//                FragmentTransaction trans = manager.beginTransaction();
-//                String[] params = new String[]{data.get(produitViewHolder.getAdapterPosition()).getId()+"", "CUISINE"};
-//                trans.replace(R.id.root_ldc_frame, DetailProduitFragment.newInstance(params));
-//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                trans.addToBackStack(null);
-//                trans.commit();
-//            }
-//        });
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
+
 
     public void setData(List<Produit> newData)
     {
@@ -160,6 +156,10 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
         }
     }
 
+    /**
+     * Call when user click on product
+     * @param onProductItemClickListener
+     */
     public void setOnProductItemClickListener(OnProductItemClickListener onProductItemClickListener) {
         this.onProductItemClickListener = onProductItemClickListener;
     }
@@ -182,54 +182,66 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             retirerUnProduit = itemView.findViewById(R.id.minus_button);
             ajouterUnProduit = itemView.findViewById(R.id.add_button);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onProductItemClickListener != null)
-                        onProductItemClickListener.onProductItemClickListener(data.get(getAdapterPosition()));
-                }
+            itemView.setOnClickListener(v -> {
+                if (onProductItemClickListener != null)
+                    onProductItemClickListener.onProductItemClickListener(data.get(getAdapterPosition()));
             });
         }
 
         public void bind(Produit produit) {
             if (produit != null) {
-                container.setBackgroundColor(context.getResources().getColor(Rayon.getRayonColor(produit.getRayon())));
-                if(produit.getMarque() != null)
-                    nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
-                else
-                    nom_produit.setText(produit.getNom());
 
+                // Set background color - Represent Shelf of the Product
+                container.setBackgroundColor(context.getResources().getColor(Rayon.getRayonColor(produit.getRayon())));
+
+                // Set name of the product
+                // Brand + Name or Name
+                if(produit.getMarque() != null) {
+                    nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
+                }else {
+                    nom_produit.setText(produit.getNom());
+                }
+
+                // Set Quantity
                 quantite.setText(String.valueOf(produit.getQuantite()));
+
+                // Set Price
                 prix.setText(produit.getPrix() + " €");
 
-                if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
-                    imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
-                }
-                else{
-                    if(produit.getUrlImage().contains("http")) {
-                        Glide.with(context).load(produit.getUrlImage()).into(imageProduit);
-                    }
-                    else{
-                        try {
-                            InputStream is = context.getAssets().open("icons_products/"+produit.getUrlImage());
-                            Drawable draw = Drawable.createFromStream(is, null);
-                            imageProduit.setImageDrawable(draw);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                // Set Image
+                setImageToProduct(produit);
 
-
+                // Set method on (-) btn
                 retirerUnProduit.setOnClickListener(v -> {
                     if (onMinusImageViewClickListener != null)
                         onMinusImageViewClickListener.onMinusImageViewClickListener(produit);
                 });
 
+                // Set method on (+) btn
                 ajouterUnProduit.setOnClickListener(v -> {
                     if (onAddImageViewClickListener != null)
                         onAddImageViewClickListener.onAddImageViewClickListener(produit);
                 });
+            }
+        }
+
+        private void setImageToProduct(Produit produit) {
+            if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
+                imageProduit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_barcode));
+            }
+            else{
+                if(produit.getUrlImage().contains("http")) {
+                    Glide.with(context).load(produit.getUrlImage()).into(imageProduit);
+                }
+                else{
+                    try {
+                        InputStream is = context.getAssets().open("icons_products/"+produit.getUrlImage());
+                        Drawable draw = Drawable.createFromStream(is, null);
+                        imageProduit.setImageDrawable(draw);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 

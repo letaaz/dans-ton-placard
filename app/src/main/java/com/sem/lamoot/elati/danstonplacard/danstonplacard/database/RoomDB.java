@@ -51,7 +51,6 @@ public abstract class RoomDB extends RoomDatabase {
                                 public void run() {
                                     ListeCourses listeCourses = new ListeCourses(context.getResources().getString(R.string.label_titre_listecourse_auto_generee_automatique));
                                     getDatabase(context).listeCoursesDao().insert(listeCourses);
-                                    Log.i("dtp", "Liste automatique ajouté en BDD");
                                 }
                             });
                         }

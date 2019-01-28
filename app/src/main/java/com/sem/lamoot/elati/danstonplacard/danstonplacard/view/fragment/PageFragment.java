@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
+/**
+ * Fragment that creates and calls the correct fragment based on the tabLayout tab
+ */
 public class PageFragment extends Fragment{
 
     public static final String ARG_PAGE = "ARG_PAGE";

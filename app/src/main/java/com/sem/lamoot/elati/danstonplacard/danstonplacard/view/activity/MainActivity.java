@@ -22,6 +22,9 @@ import android.view.MenuItem;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SampleFragmentPagerAdapter;
 
+/**
+ * Main activity of the application - Contains the toolbar - the fragments - Navigation Drawer
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -46,21 +49,29 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         /* content_main xml */ /* Help : https://guides.codepath.com/android/Google-Play-Style-Tabs-using-TabLayout#sliding-tabs-layout*/
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(), this));
 
-        // Pour générer les "onglets"
+        /* Set the tabLayout of the application*/
+        setTabLayout(viewPager);
+    }
+
+    /**
+     * Set the tabLayout
+     * @param viewPager The ViewPager which contains the TabLayout
+     */
+    private void setTabLayout(ViewPager viewPager) {
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        /* Set icons to TabLayout */
         int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_list, R.drawable.ic_recipe_book, R.drawable.ic_discount};
         for(int i = 0; i < imageResId.length; i++)
         {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);
         }
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
@@ -78,7 +89,6 @@ public class MainActivity extends AppCompatActivity
                 return;
             }
         });
-
     }
 
     @Override
@@ -97,6 +107,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Method that manages the different actions to be performed by the items in the navigation drawer
+     * @param item The menuItem selected by the user
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -132,6 +147,10 @@ public class MainActivity extends AppCompatActivity
         return selected;
     }
 
+    /**
+     * Method used to open a web page in a browser
+     * @param url the address link to open
+     */
     private void openPage(String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -139,6 +158,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    /**
+     * Get the link to Facebook Page of the Application - In the format compatible with the mobile application Facebook
+     * @param context Context of the activity
+     * @return valid address
+     */
     private String getFacebookPageURL(Context context) {
         PackageManager packageManager = context.getPackageManager();
         String FACEBOOK_URL = "https://www.facebook.com/danstonplacardapp/";

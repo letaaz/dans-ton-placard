@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
@@ -26,6 +25,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter of list of LDC
+ */
 public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
 
     private ProduitDao produitDao;
@@ -58,22 +60,30 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull LDCAdapter.LDCViewHolder ldcViewHolder, int i) {
 
+        // Get DAO
         listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
         produitDao = RoomDB.getDatabase(mContext).produitDao();
 
+
+        ldcViewHolder.bind(data.get(i));
+        ldcViewHolder.itemView.setOnClickListener(v -> {
+            if (itemClickListener != null)
+                itemClickListener.onItemClickListener(data.get(i));
+        });
+
+        setOnLongClickToLDC(ldcViewHolder, i);
+    }
+
+    /**
+     * Method called to set behavior when user LongClick on a LDC
+     * @param ldcViewHolder
+     * @param i
+     */
+    private void setOnLongClickToLDC(LDCViewHolder ldcViewHolder, int i){
         String alertMsg = mContext.getResources().getString(R.string.msgAlertDialogSupprimerLdc);
         String title = mContext.getResources().getString(R.string.titleAlertDialogSupprimerLdc);
         String positiveButtonTxt = mContext.getResources().getString(R.string.positiveButtonAlertDialogSupprimer);
         String negativeButtonTxt = mContext.getResources().getString(R.string.negativeButtonAlertDialogSupprimer);
-
-        ldcViewHolder.bind(data.get(i));
-        ldcViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (itemClickListener != null)
-                    itemClickListener.onItemClickListener(data.get(i));
-            }
-        });
 
         ldcViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -93,15 +103,13 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
                     alertDialog.setPositiveButton(positiveButtonTxt, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
-                            for (Produit produit : listeCourses.getProduitsPris()) {
-                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
-                                produitDao.deleteProductById(produit.getId());
-                            }
-                            for (Produit produit : listeCourses.getProduitsAPrendre()) {
-                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
-                                produitDao.deleteProductById(produit.getId());
-                            }
+//                            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
+//                            for (Produit produit : listeCourses.getProduitsPris()) {
+//                                produitDao.deleteProductById(produit.getId());
+//                            }
+//                            for (Produit produit : listeCourses.getProduitsAPrendre()) {
+//                                produitDao.deleteProductById(produit.getId());
+//                            }
 
                             listeCoursesDao.deleteListeCoursesById(data.get(i).getId());
                         }
