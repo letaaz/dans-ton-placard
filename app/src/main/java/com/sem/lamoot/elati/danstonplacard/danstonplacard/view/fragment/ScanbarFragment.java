@@ -2,6 +2,7 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,7 +24,10 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchDa
 
 import java.util.concurrent.ExecutionException;
 
+import es.dmoral.toasty.Toasty;
+
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
+import static com.sem.lamoot.elati.danstonplacard.danstonplacard.R.raw.beep1caissemoney;
 
 public class ScanbarFragment extends Fragment {
     private CodeScanner mCodeScanner;
@@ -58,7 +62,7 @@ public class ScanbarFragment extends Fragment {
         View root = inflater.inflate(R.layout.scanbar, container, false);
         CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
-        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
+        mCodeScanner.setScanMode(ScanMode.SINGLE);
         //mCodeScanner.setFormats(listOf(BarcodeFormat.EAN_13));
         
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -67,7 +71,10 @@ public class ScanbarFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, result.getText(), Toast.LENGTH_SHORT).show();
+                        //Toasty.success(mContext, "Produit récupéré : " + result.getText(), Toast.LENGTH_SHORT, true).show();
+                        mCodeScanner.releaseResources();
+                        final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.beepsound3);
+                        mp.start();
                         getProduct(result.getText());
                     }
                 });
@@ -79,8 +86,11 @@ public class ScanbarFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity.getApplicationContext(), "La caméra n'a pas pu être initialisée.",
-                                Toast.LENGTH_LONG).show();                    }
+//                        Toast.makeText(activity.getApplicationContext(), "La caméra n'a pas pu être initialisée.",
+//                                Toast.LENGTH_LONG).show();
+                        Toasty.error(mContext, "La caméra n'a pas pu être initialisée.", Toast.LENGTH_SHORT, true).show();
+
+                    }
                 });
             }
         });
@@ -106,6 +116,7 @@ public class ScanbarFragment extends Fragment {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        mCodeScanner.startPreview();
 
     }
 

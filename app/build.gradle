@@ -96,6 +96,16 @@ dependencies {
     // scanbar - https://github.com/yuriy-budiyev/code-scanner
     implementation 'com.budiyev.android:code-scanner:2.1.0'
 
+    // Mobile Vision (use for ScannerOverlay)
+    implementation 'com.google.android.gms:play-services-vision:16.2.0'
+
+    // Barcode-Reader - https://github.com/ravi8x/Barcode-Reader (use for ScannerOverlay)
+    implementation 'info.androidhive:barcode-reader:1.1.5'
+
+    // Toasty - https://github.com/GrenderG/Toasty
+    implementation 'com.github.GrenderG:Toasty:1.4.0'
+
+
 }
 
 ext {

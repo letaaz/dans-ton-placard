@@ -216,11 +216,21 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 //        integrator.initiateScan();
         getFragmentManager().popBackStack();
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.root_inventaire_frame, ScanbarFragment.newInstance(mPiece, idLDC));
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if(idLDC == -1) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.root_inventaire_frame, ScanbarFragment.newInstance(mPiece, idLDC));
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else
+        {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.root_ldc_frame, ScanbarFragment.newInstance(mPiece, idLDC));
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
 
     }
 

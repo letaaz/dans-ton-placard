@@ -21,4 +21,14 @@
         app:frameSize="0.75"
         app:frameThickness="2dp"
         app:maskColor="#77000000"/>
+
+    <info.androidhive.barcode.ScannerOverlay
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#44000000"
+        app:line_color="@android:color/holo_red_dark"
+        app:line_speed="6"
+        app:line_width="4"
+        app:square_height="300"
+        app:square_width="300"/>
 </FrameLayout>

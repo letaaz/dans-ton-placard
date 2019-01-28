@@ -27,6 +27,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class FetchData extends AsyncTask<String, Void, String> {
 
     private int idDLC;
@@ -55,7 +57,8 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         if("".equals(data))
         {
-            Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
+            Toasty.error(mContext, "Le produit scanné n'a pas été trouvé : " + this.contents, Toast.LENGTH_SHORT, true).show();
             return;
         }
 
@@ -89,7 +92,9 @@ public class FetchData extends AsyncTask<String, Void, String> {
             product_name = productJSONObject.getString("product_name_fr");
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
+            Toasty.error(mContext, "Le produit scanné n'a pas été trouvé : " + this.contents, Toast.LENGTH_SHORT, true).show();
+
             return;
         }
 
@@ -132,7 +137,9 @@ public class FetchData extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
 
-        Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
+        Toasty.success(mContext, "Produit ajouté à l'inventaire : " + product_brand + " - " + product_name, Toast.LENGTH_SHORT, true).show();
+
 
         ProduitDao produitDao = RoomDB.getDatabase(this.mContext).produitDao();
         ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(this.mContext).listeCoursesDao();
