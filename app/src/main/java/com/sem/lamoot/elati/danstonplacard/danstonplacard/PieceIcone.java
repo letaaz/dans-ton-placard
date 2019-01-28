@@ -2,6 +2,9 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 
+/**
+ * Class that represents the defaults products that are displayed during a search in the suggested products bar.
+ */
 public class PieceIcone {
 
     private int idDrawable;

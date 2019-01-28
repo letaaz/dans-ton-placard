@@ -27,6 +27,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter that displays the products in the detail of a shopping list
+ */
 public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LDCProductViewHolder> {
 
     private Context mContext;
@@ -84,9 +87,12 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
         public LDCProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // Get DAO
             ListeCoursesDao listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
+            // Get LDC
             ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
 
+            // Get items from Layout
             ldc_product_name = itemView.findViewById(R.id.ldc_product_name);
             ldc_product_quantity = itemView.findViewById(R.id.ldc_product_quantity);
             ldc_product_price = itemView.findViewById(R.id.prix_produit);
@@ -96,47 +102,48 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
             ldc_product_checked = itemView.findViewById(R.id.ldc_product_checked);
             ldc_product_quantity_label = itemView.findViewById(R.id.ldc_product_quantity_label);
 
-            if(li.getEtat() == 1)
-            {
+            // If LDC archived - Product can't be checked
+            if(li.getEtat() == 1){
                 ldc_product_checked.setEnabled(false);
             }
 
+            setCheckedChangeListenerOnProduct();
+        }
 
-            ldc_product_checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        private void setCheckedChangeListenerOnProduct() {
+            ldc_product_checked.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // Get DAO
+                ListeCoursesDao ldcDao = RoomDB.getDatabase(mContext).listeCoursesDao();
 
-                    ListeCoursesDao ldcDao = RoomDB.getDatabase(mContext).listeCoursesDao();
-                    ListeCourses ldc = ldcDao.getListeCoursesById(idLDC);
-                    List<Produit> produitsAprendre = ldc.getProduitsAPrendre();
-                    List<Produit> produitsPris = ldc.getProduitsPris();
+                // Get LDC
+                ListeCourses ldc = ldcDao.getListeCoursesById(idLDC);
+                // Gets Lists of Products (Take and Taken)
+                List<Produit> produitsAprendre = ldc.getProduitsAPrendre();
+                List<Produit> produitsPris = ldc.getProduitsPris();
 
-                    if(isChecked && aPrendre)
-                    {
-                        for(Produit produit : produitsAprendre) {
-                            if(produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
-                                produitsAprendre.remove(produit);
-                                produitsPris.add(produit);
-                                ldc.setProduitsPris(produitsPris);
-                                ldc.setProduitsAPrendre(produitsAprendre);
-                                ldcDao.updateListe(ldc);
-                                break;
-                            }
+                if(isChecked && aPrendre) { // Product will be move to "estPris"
+                    for(Produit produit : produitsAprendre) {
+                        if(produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
+                            produitsAprendre.remove(produit);
+                            produitsPris.add(produit);
+                            ldc.setProduitsPris(produitsPris);
+                            ldc.setProduitsAPrendre(produitsAprendre);
+                            ldcDao.updateListe(ldc);
+                            break;
                         }
                     }
-                    else if(!isChecked && !aPrendre)
-                    {
-                        for(Produit produit : produitsPris) {
-                            if (produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
-                                produitsPris.remove(produit);
-                                produitsAprendre.add(produit);
+                }
+                else if(!isChecked && !aPrendre) { // Product will be move to "aPrendre"
+                    for(Produit produit : produitsPris) {
+                        if (produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
+                            produitsPris.remove(produit);
+                            produitsAprendre.add(produit);
 
-                                ldc.setProduitsPris(produitsPris);
-                                ldc.setProduitsAPrendre(produitsAprendre);
+                            ldc.setProduitsPris(produitsPris);
+                            ldc.setProduitsAPrendre(produitsAprendre);
 
-                                ldcDao.updateListe(ldc);
-                                break;
-                            }
+                            ldcDao.updateListe(ldc);
+                            break;
                         }
                     }
                 }
@@ -145,26 +152,29 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
         public void bind(Produit product) {
 
+            // Set background color - Represent color of Rayon
             itemView.setBackgroundColor(mContext.getResources().getColor(Rayon.getRayonColor(product.getRayon())));
 
+            // Set Brand + name of product
             if(product.getMarque() != null) {
                 ldc_product_name.setText(product.getMarque() + " - " + product.getNom());
             }
-            else{
-                ldc_product_name.setText(product.getNom());}
+            else {
+                ldc_product_name.setText(product.getNom());
+            }
 
-
+            // Set quantity
             ldc_product_quantity.setText(product.getQuantite() + "");
+            // Set price
             ldc_product_price.setText(product.getPrix() + " €");
+            // Set id product
             id_product_ldc_item.setText(String.valueOf(product.getId()));
 
 
-            if(aPrendre)
-            {
+            if(aPrendre) { // If product in aPrendre - it can't be checked
                 ldc_product_checked.setChecked(false);
             }
-            else
-            {
+            else { // If product checked - Crossed product informations
                 ldc_product_name.setPaintFlags(ldc_product_name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 ldc_product_price.setPaintFlags(ldc_product_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 ldc_product_price_label.setPaintFlags(ldc_product_price_label.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -173,6 +183,15 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
                 ldc_product_checked.setChecked(true);
             }
 
+            // Set image of product
+            setImageProduct(product);
+        }
+
+        /**
+         * Method called to set image to product
+         * @param product
+         */
+        private void setImageProduct(Produit product) {
             if(product.getUrlImage() != null) {
                 if(product.getUrlImage().contains("http")) {
                     Glide.with(mContext).load(product.getUrlImage()).into(ldc_product_image);

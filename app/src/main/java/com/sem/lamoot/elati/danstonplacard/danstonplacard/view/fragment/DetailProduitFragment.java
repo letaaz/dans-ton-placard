@@ -42,6 +42,9 @@ import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
+/**
+ * Fragment that displays the detail of a product
+ */
 public class DetailProduitFragment extends Fragment {
 
     final static String ARG_PROD = "";
@@ -83,13 +86,16 @@ public class DetailProduitFragment extends Fragment {
             mParam = args[0];
             idLDC = Integer.valueOf(args[1]);
         }
+
+        // Get DAO
         listeCoursesDao = RoomDB.getDatabase(mContext).listeCoursesDao();
         detailProduitViewModel = ViewModelProviders.of(this).get(DetailProduitViewModel.class);
 
-        if(idLDC != -1) {
+        if(idLDC != -1) { // Called in LDC -
             ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
             mProduct = foundProduitInListeAPrendre(li.getProduitsAPrendre(), Integer.parseInt(mParam));
-        } else {
+
+        } else { // Called in Inventaire
             detailProduitViewModel.getProduit(Integer.parseInt(mParam))
                     .observe(this, result -> {
                         if (result != null) {
@@ -108,9 +114,14 @@ public class DetailProduitFragment extends Fragment {
         super.onResume();
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
-
     }
 
+    /**
+     * Method called to retrieve a product from the list of products to take from a shopping list
+     * @param produitsAPrendre List of products to take
+     * @param idProduit if of product to found
+     * @return Product if product found - null otherwise
+     */
     private Produit foundProduitInListeAPrendre(List<Produit> produitsAPrendre, int idProduit) {
         for(int i = 0; i < produitsAPrendre.size(); i++) {
             if(produitsAPrendre.get(i).getId() == idProduit){
@@ -151,21 +162,31 @@ public class DetailProduitFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Method called when the user clicks the Save button from LDC
+     */
     private void OnClickListenerUpdateProductInLDC() {
         saveBtn.setOnClickListener(view1 -> {
             String pieceItemName = getResources().getStringArray(R.array.pieces)[produitPiece.getSelectedItemPosition()];
-            Piece piece = Piece.getPiece(pieceItemName);
             String rayonItemName = getResources().getStringArray(R.array.rayons)[produitRayon.getSelectedItemPosition()];
+
+            // Get DAO
+            ProduitDao produitDao = RoomDB.getDatabase(mContext).produitDao();
+
+            // Get piece
+            Piece piece = Piece.getPiece(pieceItemName);
+            // Get Rayon
             Rayon rayon = Rayon.getRayon(rayonItemName);
+
             // Form controls ?
+            // Change information of the product
             mProduct.setPiece(piece);
             mProduct.setRayon(rayon);
             mProduct.setQuantite(produitQuantite.getValue());
             mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
             mProduct.setDlc(dlc);
 
-
-            /* Update in LDC */
+            /* Update product in LDC */
             ListeCourses li = listeCoursesDao.getListeCoursesById(idLDC);
             List<Produit> aPrendre = li.getProduitsAPrendre();
             aPrendre.remove(idxProdInAPrendre);
@@ -173,8 +194,7 @@ public class DetailProduitFragment extends Fragment {
             li.setProduitsAPrendre(aPrendre);
             listeCoursesDao.updateListe(li);
 
-            /* Update in inventory */
-            ProduitDao produitDao = RoomDB.getDatabase(mContext).produitDao();
+            /* Update product in inventory */
             Produit productFromInventaire = produitDao.findProductById(mProduct.getId());
             productFromInventaire.setPiece(mProduct.getPiece());
             productFromInventaire.setPrix(mProduct.getPrix());
@@ -214,17 +234,50 @@ public class DetailProduitFragment extends Fragment {
     }
 
     private void updateFields(Produit produit){
+
+        int piece = produit.getPiece().ordinal();
+        int rayon = produit.getRayon().ordinal();
+        dlc = produit.getDlc();
+
+
+        // Set image of product
+        setImageProduct(produit);
+
+        // Set brand - name of product
+        if(produit.getMarque() != null) {
+            produitNom.setText(produit.getMarque() + " - " + produit.getNom());
+        }
+        else{
+            produitNom.setText(produit.getNom());
+        }
+
+        // Set poids of product
+        produitPoids.setText(produit.getPoids() + " g");
+        // Set Piece of product
+        produitPiece.setSelection(piece);
+        // Set Rayon of product
+        produitRayon.setSelection(rayon);
+        // Set quantity of product
+        produitQuantite.setValue(produit.getQuantite());
+        // Set price of product
+        produitPrix.setText(produit.getPrix() + "");
+        // set DLC of product
+        produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(produit.getDlc()));
+    }
+
+    /**
+     * Called method to display the product image
+     * @param produit
+     */
+    private void setImageProduct(Produit produit) {
         if(produit.getUrlImage() == null || produit.getUrlImage().isEmpty()){
             produitImage.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_barcode));
         }
         else{
-            if(produit.getUrlImage().contains("http"))
-            {
-
+            if(produit.getUrlImage().contains("http")) {
                 Glide.with(mContext).load(produit.getUrlImage()).into(produitImage);
             }
-            else
-            {
+            else {
                 InputStream is;
                 try {
                     is = getContext().getAssets().open("icons_products/"+produit.getUrlImage());
@@ -235,25 +288,12 @@ public class DetailProduitFragment extends Fragment {
                 }
             }
         }
-
-
-        if(produit.getMarque() != null) {
-            produitNom.setText(produit.getMarque() + " - " + produit.getNom());
-        }
-        else{
-            produitNom.setText(produit.getNom());
-    }
-        produitPoids.setText(produit.getPoids() + " g");
-        int piece = produit.getPiece().ordinal();
-        produitPiece.setSelection(piece);
-        int rayon = produit.getRayon().ordinal();
-        produitRayon.setSelection(rayon);
-        produitQuantite.setValue(produit.getQuantite());
-        produitPrix.setText(produit.getPrix() + "");
-        dlc = produit.getDlc();
-        produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(produit.getDlc()));
     }
 
+    /**
+     * Method used to open a new fragment that allows you to select the product's expiration date
+     * @param v
+     */
     public void showDatePicker(View v) {
         DialogFragment newFragment = new MyDatePickerFragment();
         newFragment.setTargetFragment(this, DATE_PICKER_REQUEST_CODE);
@@ -283,35 +323,25 @@ public class DetailProduitFragment extends Fragment {
      * this method will also go to modify the corresponding product in the shopping list.
      */
     private void updateProductInLDCAfterInventory() {
-        for(ListeCourses ldc : listeCoursesDao.getAllListeCourses())
-        {
+        for(ListeCourses ldc : listeCoursesDao.getAllListeCourses()) {
             List<Produit> aPrendre = ldc.getProduitsAPrendre();
             List<Produit> estPris = ldc.getProduitsPris();
-
-            for(int i = 0; i < aPrendre.size(); i++)
-            {
-                if(aPrendre.get(i).getId() == mProduct.getId())
-                {
+            for(int i = 0; i < aPrendre.size(); i++) {
+                if(aPrendre.get(i).getId() == mProduct.getId()) {
                     aPrendre.remove(i);
                     aPrendre.add(mProduct);
                     ldc.setProduitsAPrendre(aPrendre);
                     listeCoursesDao.updateListe(ldc);
                 }
             }
-            for(int i = 0; i < estPris.size(); i++)
-            {
-                if(estPris.get(i).getId() == mProduct.getId())
-                {
+            for(int i = 0; i < estPris.size(); i++) {
+                if(estPris.get(i).getId() == mProduct.getId()) {
                     estPris.remove(i);
                     estPris.add(mProduct);
                     ldc.setProduitsPris(estPris);
                     listeCoursesDao.updateListe(ldc);
-
                 }
             }
-
         }
-
     }
-
 }

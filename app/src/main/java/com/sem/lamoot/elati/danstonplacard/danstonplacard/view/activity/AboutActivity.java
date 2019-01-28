@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
+/**
+ * Activity accessible from the navigation drawer showing the credits of the application.
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @Override

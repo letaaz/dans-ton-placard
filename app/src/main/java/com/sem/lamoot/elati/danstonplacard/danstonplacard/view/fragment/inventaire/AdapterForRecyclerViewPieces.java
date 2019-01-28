@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.view;
+package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -14,10 +14,12 @@ import android.widget.ImageView;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.PieceIcone;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.PieceFragment;
 
 import java.util.List;
 
+/**
+ * Adapt the recycle view of the parts screen (Contains the images / icons of each room)
+ */
 public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterForRecyclerViewPieces.PiecesViewHolder> {
 
     private Context mContext;
@@ -38,11 +40,15 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
     public void onBindViewHolder(final PiecesViewHolder holder, int position) {
         holder.mPieceImage.setImageDrawable(mContext.getResources().getDrawable(mPiecesIntDrawables.get(position).getIdDrawable()));
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When users click on image of Room - Launch the Fragment corresponding to the Room
+             * @param view View that contains images
+             */
             @Override
             public void onClick(View view) {
-
                 String piece = Piece.pieceToString(mPiecesIntDrawables.get(position).getPiece());
 
+                // Start Fragment PieceFragment
                 FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
                 trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece));
@@ -60,13 +66,11 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
     }
 
     class PiecesViewHolder extends RecyclerView.ViewHolder {
-
         private ImageView mPieceImage;
         private CardView mCardView;
 
         PiecesViewHolder(View itemView) {
             super(itemView);
-
             mPieceImage = itemView.findViewById(R.id.ivImage);
             mCardView = itemView.findViewById(R.id.cardview);
         }

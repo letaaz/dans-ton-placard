@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -18,10 +17,7 @@ import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
-import com.budiyev.android.codescanner.DecodeCallback;
-import com.budiyev.android.codescanner.ErrorCallback;
 import com.budiyev.android.codescanner.ScanMode;
-import com.google.zxing.Result;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
 
@@ -63,43 +59,23 @@ public class ScanbarFragment extends Fragment {
         final Activity activity = getActivity();
         View root = inflater.inflate(R.layout.scanbar, container, false);
         CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
+
+        // Set the Scanner bar code
         mCodeScanner = new CodeScanner(activity, scannerView);
         mCodeScanner.setScanMode(ScanMode.SINGLE);
-        //mCodeScanner.setFormats(listOf(BarcodeFormat.EAN_13));
-        
-        mCodeScanner.setDecodeCallback(new DecodeCallback() {
-            @Override
-            public void onDecoded(@NonNull final Result result) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Toasty.success(mContext, "Produit récupéré : " + result.getText(), Toast.LENGTH_SHORT, true).show();
-                        mCodeScanner.releaseResources();
-                        final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.beepsound3);
-                        mp.start();
-                        getProduct(result.getText());
-                    }
-                });
-            }
-        });
-        mCodeScanner.setErrorCallback(new ErrorCallback() {
-            @Override
-            public void onError(@androidx.annotation.NonNull Exception error) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toasty.error(mContext, "La caméra n'a pas pu être initialisée.", Toast.LENGTH_SHORT, true).show();
 
-                    }
-                });
-            }
-        });
-        scannerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCodeScanner.startPreview();
-            }
-        });
+        // Set method called when barcode is decoded
+        mCodeScanner.setDecodeCallback(result -> activity.runOnUiThread(() -> {
+            //Toasty.success(mContext, "Produit récupéré : " + result.getText(), Toast.LENGTH_SHORT, true).show();
+            mCodeScanner.releaseResources();
+            final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.beepsound3);
+            mp.start();
+            getProduct(result.getText());
+        }));
+
+        // Set method called when scanner barcode can't be load
+        mCodeScanner.setErrorCallback(error -> activity.runOnUiThread(() -> Toasty.error(mContext, "La caméra n'a pas pu être initialisée.", Toast.LENGTH_SHORT, true).show()));
+        scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
         return root;
     }
 
@@ -115,13 +91,17 @@ public class ScanbarFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Get product from API and add it to database
+     * @param text Barcode of the product (in text format)
+     */
     private void getProduct(String text) {
         String data_product = "";
         try {
-            if(idLDC != -1) {
+            if(idLDC != -1) { // Add product in LDC
                 data_product = new FetchData(getActivity().getApplicationContext(), text, "DIVERS", idLDC).execute(text).get();
             }
-            else {
+            else { // Add product in inventory
                 data_product = new FetchData(getActivity().getApplicationContext(), text,  mPiece, -1).execute(text).get();
             }
         } catch (ExecutionException | InterruptedException e) {
@@ -130,9 +110,11 @@ public class ScanbarFragment extends Fragment {
         mCodeScanner.startPreview();
     }
 
+    /**
+     * Method called to verify that the user has given the permissions to use on the camera
+     */
     private void checkCameraPermissions() {
-        if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-        {
+        if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
         }
     }
