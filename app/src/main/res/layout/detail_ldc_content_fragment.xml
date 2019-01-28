@@ -39,9 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
-            android:layout_toLeftOf="@id/btn_archive_ldc"
+            android:padding="2dp"
+            android:layout_toStartOf="@id/btn_archive_ldc"
             android:background="@color/transparent_background"
-            android:src="@drawable/edit_24" />
+            android:src="@drawable/ldc_edit_icon" />
 
         <ImageButton
             android:id="@+id/btn_archive_ldc"
@@ -50,8 +51,9 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
+            android:padding="2dp"
             android:background="@color/transparent_background"
-            android:src="@drawable/recycle_gray"
+            android:src="@drawable/ldc_archived"
             android:text="@string/archiver_ldc" />
     </RelativeLayout>
 
