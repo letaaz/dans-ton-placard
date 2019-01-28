@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,10 +226,12 @@ public class DetailLDCFragment extends Fragment{
                 listeCoursesDao.updateListe(li);
 
                 for (Produit produit : li.getProduitsPris()) {
-                    if(produit.getQuantite() != 0)
+                    if(produit.getQuantite() != 0) {
                         produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
-                    else
+                    }
+                    else {
                         produitDao.updateQuantityById(produit.getId(), 1);
+                    }
                 }
             }
             getFragmentManager().popBackStack();

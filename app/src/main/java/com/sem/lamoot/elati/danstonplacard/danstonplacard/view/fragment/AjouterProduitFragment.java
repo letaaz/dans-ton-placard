@@ -221,7 +221,8 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
             Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
             if(produit == null) {
                 Produit newProduit = new Produit(actv.getText().toString(), 0, Rayon.DIVERS, Piece.DIVERS);
-                produitDao.insert(newProduit);
+                long id_newProduit = produitDao.insert(newProduit);
+                newProduit.setId((int) id_newProduit);
                 listeCourses.getProduitsAPrendre().add(newProduit);
                 listeCoursesDao.updateListe(listeCourses);
 
