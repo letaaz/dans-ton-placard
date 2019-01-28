@@ -94,7 +94,6 @@ public class DetailProduitFragment extends Fragment {
                     .observe(this, result -> {
                         if (result != null) {
                             mProduct = result;
-                            Toast.makeText(mContext, "" + mProduct.getId(), Toast.LENGTH_SHORT).show();
                             updateFields(result);
                         } else {
                             Log.d("DETAIL_PRODUCT", "ERROR WHILE RETRIEVING PRODUCT FROM DATABASE ID := " + mParam);
@@ -164,7 +163,6 @@ public class DetailProduitFragment extends Fragment {
             mProduct.setQuantite(produitQuantite.getValue());
             mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
             mProduct.setDlc(dlc);
-            Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
 
 
             /* Update in LDC */
@@ -204,7 +202,6 @@ public class DetailProduitFragment extends Fragment {
             mProduct.setQuantite(produitQuantite.getValue());
             mProduct.setPrix(Float.parseFloat(produitPrix.getText().toString()));
             mProduct.setDlc(dlc);
-            Log.d("DETAIL_PRODUCT", "update product's dlc with := " + dlc);
 
             /* Update product in inventory */
             detailProduitViewModel.updateProduct(mProduct);
@@ -271,10 +268,8 @@ public class DetailProduitFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK)
                 if (data.getExtras().containsKey(MyDatePickerFragment.SELECTED_DATE)) {
                     try {
-                        Log.d("DETAIL_PRODUCT", "data retrieved := " + data.getExtras().getString(MyDatePickerFragment.SELECTED_DATE));
                         String picked = data.getExtras().getString(MyDatePickerFragment.SELECTED_DATE);
                         dlc = DateTypeConverter.DATE_FORMATTER.parse(picked);
-                        Log.d("DETAIL_PRODUCT", "date parsing worked := " + dlc.toString());
                         produitDlc.setText(DateTypeConverter.DATE_FORMATTER.format(dlc));
                     } catch (ParseException e) {
                         Toast.makeText(getActivity(), "Impossible de convertir la date", Toast.LENGTH_SHORT).show();
@@ -301,7 +296,6 @@ public class DetailProduitFragment extends Fragment {
                     aPrendre.add(mProduct);
                     ldc.setProduitsAPrendre(aPrendre);
                     listeCoursesDao.updateListe(ldc);
-                    Toast.makeText(mContext, "UPDATED", Toast.LENGTH_SHORT).show();
                 }
             }
             for(int i = 0; i < estPris.size(); i++)

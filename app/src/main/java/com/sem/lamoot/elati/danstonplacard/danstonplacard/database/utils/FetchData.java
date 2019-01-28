@@ -57,7 +57,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
 
         if("".equals(data))
         {
-            //Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
             Toasty.error(mContext, "Le produit scanné n'a pas été trouvé : " + this.contents, Toast.LENGTH_SHORT, true).show();
             return;
         }
@@ -92,7 +91,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
             product_name = productJSONObject.getString("product_name_fr");
         } catch (JSONException e) {
             e.printStackTrace();
-            //Toast.makeText(this.mContext, "Le produit n'existe pas : " + this.contents, Toast.LENGTH_LONG).show();
             Toasty.error(mContext, "Le produit scanné n'a pas été trouvé : " + this.contents, Toast.LENGTH_SHORT, true).show();
 
             return;
@@ -137,7 +135,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
 
-        //Toast.makeText(this.mContext, "Produit trouvé : " + product_name + " / Rayon : "+product_rayon.toString(), Toast.LENGTH_SHORT).show();
         Toasty.success(mContext, "Produit ajouté à l'inventaire : " + product_brand + " - " + product_name, Toast.LENGTH_SHORT, true).show();
 
 
@@ -151,16 +148,13 @@ public class FetchData extends AsyncTask<String, Void, String> {
             if (!products.isEmpty()) {
                 Produit product_found = products.get(0);
                 produitDao.updateQuantityById(product_found.getId(), product_found.getQuantite() + 1);
-                Log.d("dtp", "PRODUCT QUANTITY UPDATED BY 1");
             } else {
                 Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage, 1, product_weight, product_date, product_rayon, 0, piece);
                 produitDao.insert(product);
-                Log.d("dtp", "PRODUCT INSERTED");
             }
         }
         else
         {
-            Log.d("dtp", "Fetch idLDC = " + idDLC);
             Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage, 0, product_weight, product_date, product_rayon, 0, piece);
             long idProduct = produitDao.insert(product);
             product.setId((int) idProduct);
@@ -196,7 +190,6 @@ public class FetchData extends AsyncTask<String, Void, String> {
                 return "";
         }
 
-        Log.i("dtp", "urlLink = " + urlLink);
         String data = "";
         try {
             URL url = new URL(urlLink);

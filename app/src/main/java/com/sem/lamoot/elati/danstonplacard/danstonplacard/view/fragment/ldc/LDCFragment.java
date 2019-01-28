@@ -249,7 +249,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
                 for(Integer id : idInIndispo) {
                     produit = produitDao.findProductById(id);
                     aPrendre.add(produit);
-                    Log.d("dtp", produit.getNom());
                 }
                 li.setProduitsAPrendre(aPrendre);
                 listeCoursesDao.updateListe(li);

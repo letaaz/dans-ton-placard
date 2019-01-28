@@ -95,11 +95,9 @@ public class LDCAdapter extends RecyclerView.Adapter<LDCAdapter.LDCViewHolder> {
                         public void onClick(DialogInterface dialog, int which) {
                             ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(data.get(i).getId());
                             for (Produit produit : listeCourses.getProduitsPris()) {
-                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
                                 produitDao.deleteProductById(produit.getId());
                             }
                             for (Produit produit : listeCourses.getProduitsAPrendre()) {
-                                Toast.makeText(mContext, "" + produit.getId(), Toast.LENGTH_SHORT).show();
                                 produitDao.deleteProductById(produit.getId());
                             }
 

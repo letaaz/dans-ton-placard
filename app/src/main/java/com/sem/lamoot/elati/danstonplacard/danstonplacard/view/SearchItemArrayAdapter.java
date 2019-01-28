@@ -53,7 +53,6 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
         public ProduitDefaut getItem(int position)
         {
             ProduitDefaut produit = this.produitsDefautsList.get(position);
-            Log.d(TAG, "*-> Retrieving JournalEntry @ position: " + String.valueOf(position) + " : " +  produit.toString());
             return produit;
         }
 

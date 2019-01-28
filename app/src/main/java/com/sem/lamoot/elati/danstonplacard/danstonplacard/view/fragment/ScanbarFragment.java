@@ -88,8 +88,6 @@ public class ScanbarFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        Toast.makeText(activity.getApplicationContext(), "La caméra n'a pas pu être initialisée.",
-//                                Toast.LENGTH_LONG).show();
                         Toasty.error(mContext, "La caméra n'a pas pu être initialisée.", Toast.LENGTH_SHORT, true).show();
 
                     }
@@ -120,8 +118,7 @@ public class ScanbarFragment extends Fragment {
     private void getProduct(String text) {
         String data_product = "";
         try {
-            if(idLDC != -1)
-            {
+            if(idLDC != -1) {
                 data_product = new FetchData(getActivity().getApplicationContext(), text, "DIVERS", idLDC).execute(text).get();
             }
             else {

@@ -114,10 +114,8 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
                     if(isChecked && aPrendre)
                     {
-                        Toast.makeText(mContext, "Produit coché", Toast.LENGTH_SHORT).show();
                         for(Produit produit : produitsAprendre) {
                             if(produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
-                                Toast.makeText(mContext, "inside", Toast.LENGTH_SHORT).show();
                                 produitsAprendre.remove(produit);
                                 produitsPris.add(produit);
                                 ldc.setProduitsPris(produitsPris);
@@ -129,7 +127,6 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
                     }
                     else if(!isChecked && !aPrendre)
                     {
-                        Toast.makeText(mContext, "Produit décoché", Toast.LENGTH_SHORT).show();
                         for(Produit produit : produitsPris) {
                             if (produit.getId() == Integer.parseInt(id_product_ldc_item.getText().toString())) {
                                 produitsPris.remove(produit);

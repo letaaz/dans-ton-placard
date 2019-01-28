@@ -104,8 +104,6 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
         imageView3.setOnClickListener(this);
 
-        Toast.makeText(mContext, "idLDC = " + idLDC, Toast.LENGTH_SHORT).show();
-
         ImageView button_add = (ImageView) view.findViewById(R.id.button_add);
 
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(),"products_FR_fr.json");
@@ -206,15 +204,9 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        Log.d("dtp", "onclickImageview3");
-//        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
-//        integrator.setPrompt("Scan a barcode or QRcode");
-//        integrator.setOrientationLocked(false);
-//        integrator.initiateScan();
         getFragmentManager().popBackStack();
 
         if (isNetworkAvailable()) {
-            Log.d("dtp", "onclickImageview3");
             launchScanbarFragment();
         } else {
             String alertMsg = mContext.getResources().getString(R.string.msgAlertDialogInternetConnection);
