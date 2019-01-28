@@ -37,6 +37,8 @@ public class PieceFragment extends Fragment
     private Context mContext = null;
     private String mParam = null;
     private String mPiece = null;
+    private String colonneTri = "Nom";
+    private int checkedItemSort = 0;
 
     // RecyclerView + Adapter - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
@@ -86,8 +88,8 @@ public class PieceFragment extends Fragment
         this.view = view;
 
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        setProduitsDisponibles(produitViewModel, "Nom", "ASC");
-        setProduitsIndisponibles(produitViewModel, "Nom", "ASC");
+        setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
+        setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
 
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
@@ -119,7 +121,7 @@ public class PieceFragment extends Fragment
             }
         });
 
-        // Sortting by something
+        // Sortting products by something (name, ray, price or date)
         String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
 
         TextView btn_sort_by = view.findViewById(R.id.sort_by_btn);
@@ -129,10 +131,12 @@ public class PieceFragment extends Fragment
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 mBuilder.setTitle("Trier par");
 
-                mBuilder.setSingleChoiceItems(listSortingBy, -1, new DialogInterface.OnClickListener() {
+                mBuilder.setSingleChoiceItems(listSortingBy, checkedItemSort, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("dtp", "trier par : "+listSortingBy[i]);
+                        colonneTri = listSortingBy[i];
+                        checkedItemSort = i;
                         setProduitsDisponibles(produitViewModel, listSortingBy[i], "ASC");
                         setProduitsIndisponibles(produitViewModel, listSortingBy[i], "ASC");
                         dialogInterface.dismiss();
@@ -219,11 +223,16 @@ public class PieceFragment extends Fragment
     public void onMinusImageViewClickListener(Produit produit) {
         if(produit.getQuantite() > 0)
             produitViewModel.updateProduit(produit.getId(), produit.getQuantite() - 1);
+            setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
+            setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
+
     }
 
     @Override
     public void onAddImageViewClickListener(Produit produit) {
         produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
+        setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
+        setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
     }
 
     @Override
