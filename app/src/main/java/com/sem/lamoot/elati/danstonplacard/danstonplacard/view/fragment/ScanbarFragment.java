@@ -1,12 +1,16 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import es.dmoral.toasty.Toasty;
 
 public class ScanbarFragment extends Fragment {
+    private int MY_PERMISSIONS_REQUEST_CAMERA;
     private CodeScanner mCodeScanner;
     private Context mContext;
     private int idLDC;
@@ -48,6 +53,7 @@ public class ScanbarFragment extends Fragment {
             mPiece = getArguments().getString("mPiece");
             idLDC = getArguments().getInt("idLDC");
         }
+        checkCameraPermissions();
     }
 
     @Nullable
@@ -99,6 +105,18 @@ public class ScanbarFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCodeScanner.startPreview();
+    }
+
+    @Override
+    public void onPause() {
+        mCodeScanner.releaseResources();
+        super.onPause();
+    }
+
     private void getProduct(String text) {
         String data_product = "";
         try {
@@ -113,18 +131,12 @@ public class ScanbarFragment extends Fragment {
             e.printStackTrace();
         }
         mCodeScanner.startPreview();
-
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mCodeScanner.startPreview();
-    }
-
-    @Override
-    public void onPause() {
-        mCodeScanner.releaseResources();
-        super.onPause();
+    private void checkCameraPermissions() {
+        if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+        }
     }
 }
