@@ -78,7 +78,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
     public class LDCProductViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView ldc_product_name, ldc_product_quantity, ldc_product_price, ldc_product_price_label, id_product_ldc_item;
+        private TextView ldc_product_name, ldc_product_quantity, ldc_product_price, ldc_product_price_label, id_product_ldc_item, ldc_product_quantity_label;
         private CheckBox ldc_product_checked;
         private ImageView ldc_product_image;
 
@@ -95,6 +95,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
             ldc_product_price_label = itemView.findViewById(R.id.ldc_product_price_label);
             id_product_ldc_item = itemView.findViewById(R.id.id_product_ldc_item);
             ldc_product_checked = itemView.findViewById(R.id.ldc_product_checked);
+            ldc_product_quantity_label = itemView.findViewById(R.id.ldc_product_quantity_label);
 
             if(li.getEtat() == 1)
             {
@@ -171,6 +172,8 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
                 ldc_product_name.setPaintFlags(ldc_product_name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 ldc_product_price.setPaintFlags(ldc_product_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 ldc_product_price_label.setPaintFlags(ldc_product_price_label.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                ldc_product_quantity.setPaintFlags(ldc_product_quantity.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                ldc_product_quantity_label.setPaintFlags(ldc_product_quantity_label.getPaintFlags() |Paint.STRIKE_THRU_TEXT_FLAG);
                 ldc_product_checked.setChecked(true);
             }
 

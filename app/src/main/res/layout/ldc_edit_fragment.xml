@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background">
@@ -50,6 +49,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="12dp"
+            android:padding="2dp"
             android:background="@color/transparent_background"
             android:src="@drawable/caddie_checkout"
             android:text="@string/archiver_ldc" />
@@ -110,7 +110,7 @@
         android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/ic_plus_white"
         android:visibility="visible"
         app:backgroundTint="@color/colorTabLayoutBackground"
         app:backgroundTintMode="src_over"

@@ -17,7 +17,6 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ErrorCallback;
 import com.budiyev.android.codescanner.ScanMode;
-import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
@@ -25,9 +24,6 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchDa
 import java.util.concurrent.ExecutionException;
 
 import es.dmoral.toasty.Toasty;
-
-import static com.google.android.gms.common.util.CollectionUtils.listOf;
-import static com.sem.lamoot.elati.danstonplacard.danstonplacard.R.raw.beep1caissemoney;
 
 public class ScanbarFragment extends Fragment {
     private CodeScanner mCodeScanner;

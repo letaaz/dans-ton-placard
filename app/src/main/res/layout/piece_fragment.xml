@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/relativeLayout"
+                android:id="@+id/section_produits_dispo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -43,16 +43,15 @@
                     android:paddingBottom="10dp"
                     android:text="Produits disponibles" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/section_show_all_button_dispo"
-                    style="@style/ListButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:duplicateParentState="true"
+                    android:layout_alignParentEnd="true"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:text="@string/btn_hide_label" />
+                    android:src="@drawable/drag_list_down_dark" />
 
             </RelativeLayout>
 
@@ -74,16 +73,16 @@
                 android:elevation="2dp"
                 android:scrollbars="vertical"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
+                app:layout_constraintBottom_toTopOf="@+id/section_produits_indispo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+                app:layout_constraintTop_toBottomOf="@+id/section_produits_dispo"
                 app:layout_constraintVertical_bias="0.055" />
 
 
             <RelativeLayout
-                android:id="@+id/relativeLayout2"
+                android:id="@+id/section_produits_indispo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -109,16 +108,15 @@
                     android:paddingBottom="10dp"
                     android:text="Produits indisponibles" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/section_show_all_button_indispo"
-                    style="@style/ListButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:duplicateParentState="true"
+                    android:layout_alignParentEnd="true"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:text="@string/btn_hide_label" />
+                    android:src="@drawable/drag_list_down_dark" />
 
             </RelativeLayout>
 
@@ -143,7 +141,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/section_produits_indispo" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
@@ -156,7 +154,7 @@
         android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/ic_plus_white"
         android:visibility="visible"
         app:backgroundTint="@color/colorTabLayoutBackground"
         app:backgroundTintMode="src_over"

@@ -1,12 +1,16 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +18,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.zxing.Result;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
@@ -30,7 +31,6 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 
 import org.json.JSONArray;
@@ -40,9 +40,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import androidx.annotation.NonNull;
 
 public class AjouterProduitFragment extends Fragment implements View.OnClickListener{
 
@@ -216,6 +213,30 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
 //        integrator.initiateScan();
         getFragmentManager().popBackStack();
 
+        if (isNetworkAvailable()) {
+            Log.d("dtp", "onclickImageview3");
+            launchScanbarFragment();
+        } else {
+            String alertMsg = mContext.getResources().getString(R.string.msgAlertDialogInternetConnection);
+            String title = mContext.getResources().getString(R.string.titleAlertDialogInternetConnection);
+            String buttonText = mContext.getResources().getString(R.string.buttonAlertDialogInternetConnection);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+            alertDialog.setTitle(title);
+
+            alertDialog.setMessage(Html.fromHtml(alertMsg));
+            alertDialog.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+        }
+    }
+
+    private void launchScanbarFragment() {
         if(idLDC == -1) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_inventaire_frame, ScanbarFragment.newInstance(mPiece, idLDC));
@@ -231,7 +252,14 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
             transaction.addToBackStack(null);
             transaction.commit();
         }
+    }
 
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 
 
