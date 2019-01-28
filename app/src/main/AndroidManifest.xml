@@ -29,6 +29,9 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
+        <activity android:name=".view.activity.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar2" />
     </application>
 
 </manifest>
