@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sem.lamoot.elati.danstonplacard.danstonplacard">
+    package="com.danstonplacard">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name="com.danstonplacard.view.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -29,7 +29,7 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-        <activity android:name=".view.activity.AboutActivity"
+        <activity android:name="com.danstonplacard.view.activity.AboutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar2" />
     </application>
