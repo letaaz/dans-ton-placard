@@ -2,7 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.activity.MainActivity"
+    tools:context="com.danstonplacard.view.activity.MainActivity"
     android:layout_height="match_parent">
 
     <include
