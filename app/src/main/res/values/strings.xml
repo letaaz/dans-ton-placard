@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">DansTonPlacard</string>
+    <string name="title_activity_main">Dans ton placard</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="accueil">Accueil</string>
+    <string name="blog">Blog</string>
+    <string name="notifications">Notifications</string>
+    <string name="deconnexion">Déconnexion</string>
+    <string name="parametres">Paramètres</string>
+    <string name="notez_nous">Notez-nous !</string>
+    <string name="autres">Autres</string>
+
+    <string name="titleAlterDialogSupprimerProduit">Suppression du produit</string>
+    <string name="msgAlertDialogSupprimerProduit">Êtes-vous sûr de vouloir supprimer le produit suivant de votre inventaire :</string>
+    <string name="positiveButtonAlertDialogSupprimer">Supprimer</string>
+    <string name="negativeButtonAlertDialogSupprimer">Conserver</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cuisine">Cuisine</string>
+    <string name="salle_de_bain">Salle de bain</string>
+    <string name="app_label">Dans ton placard</string>
+    <string name="search_hint">Chercher un produit</string>
+    <string name="msg_produit_ajoute">Le produit a été ajouté à l\'inventaire.</string>
+    <string name="msg_produit_miseajour">La quantité du produit a été mis dans l\'inventaire.</string>
+    <string name="msg_produit_ajoute_ldc">Le produit a été ajouté à la liste de course et dans la pièce Divers</string>
+
+    <string name="voir">Voir</string>
+    <string name="ldc_disponibles_label">Listes de courses disponibles</string>
+    <string name="history_ldc_label">Historique des listes</string>
+    <string name="msgAlertDialogSupprimerLdc">Êtes-vous sûr de vouloir supprimer la liste de courses suivante :</string>
+    <string name="titleAlertDialogSupprimerLdc">Suppression de la liste de courses</string>
+    <string name="archiver_ldc">Archiver</string>
+    <string name="label_quantité_ab">Quantité :</string>
+    <string name="label_prix_ab">Prix :</string>
+    <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
+    <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
+    <string name="app_version_label">v1.0.0</string>
+    <string name="app_logo_label">Logo application Dans Ton Placard</string>
+    <string name="app_credit_label">Credits :</string>
+    <string name="credits_content">- <a href="http://www.lunapik.fr">Lunapik</a>\n- <a href="http://www.icons8.com">Icons8</a> \n- <a href="http://www.flaticon.com">Flaticon</a></string>
+    <string name="facebook">Page Facebook</string>
+    <string name="about">Informations</string>
+    <string name="default_page_content">Désolé, la page est indisponible pour le moment.</string>
+    <string name="scan_product_indication">Appuyer sur l\'image pour scanner le produit</string>
+    <string name="recipe_default_content">Vos recettes personnalisées bientôt disponibles !</string>
+    <string name="promotions_default_content">Vos promotions en magasins bientôt disponibles !</string>
+    <string name="btn_show_label">Voir</string>
+    <string name="btn_hide_label">Masquer</string>
+    <string name="ldc_edit_default_content">Votre liste de courses est vide.</string>
+    <string name="hint_new_ldc_name">Nom de la liste</string>
+    <string name="err_msg_name">Entrer un nom pour votre liste</string>
+    <string name="ldc_detail_default_content">Aucun article à prendre.</string>
+    <string name="msgAlertDialogInternetConnection">Le scan nécessite une connexion internet active pour fonctionner, penser à l\'activer.</string>
+    <string name="titleAlertDialogInternetConnection">Aucune connexion internet détectée</string>
+    <string name="buttonAlertDialogInternetConnection">OK</string>
+
+    <string-array name="pieces">
+        <item name="cuisine">Cuisine</item>
+        <item name="salle_de_bain">Salle de bain</item>
+        <item name="salle_a_manger">Séjour</item>
+        <item name="cave">Cave</item>
+        <item name="chambre">Chambre</item>
+        <item name="garage">Garage</item>
+        <item name="divers">Divers</item>
+    </string-array>
+
+    <string-array name="rayons">
+        <item name="animaux">Animaux</item>
+        <item name="bio">Bio</item>
+        <item name="boissons">Boissons</item>
+        <item name="boulangerie_patisserie">Boulangerie et Patisserie</item>
+        <item name="cremerie">Crémerie</item>
+        <item name="divers">Divers</item>
+        <item name="epicerie_salee">Épicerie salée</item>
+        <item name="epicerie_sucree">Épicerie sucrée</item>
+        <item name="fromages">Fromages</item>
+        <item name="fruits_legumes">Fruits et Légumes</item>
+        <item name="hygienes_beautes">Hygiènes et Beautés</item>
+        <item name="poissons_crustaces">Poissons et Crustaces</item>
+        <item name="surgele">Surgelés</item>
+        <item name="viandes">Viandes</item>
+        <item name="yaourts_desserts">Yaourts et Desserts</item>
+    </string-array>
+
+    <string-array name="sort_by">
+        <item name="nom">Nom [A-Z]</item>
+        <item name="nom">Nom [Z-A]</item>
+        <item name="rayon">Rayon [A-Z]</item>
+        <item name="rayon">Rayon [Z-A]</item>
+        <item name="date">Date [- récent]</item>
+        <item name="date">Date [+ récent]</item>
+        <item name="prix">Prix [croissant]</item>
+        <item name="prix">Prix [décroissant]</item>
+    </string-array>
+</resources>

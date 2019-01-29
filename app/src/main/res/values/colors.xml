@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2877E8</color>
+    <color name="colorPrimaryShade">#552877e8</color>
+    <color name="colorPrimaryDark">#1663d0</color>
+    <color name="colorAccent">#f8d81b4d</color>
+    <color name="colorTabLayoutBackground">#2877e8</color>
+    <color name="colorPrimaryText">#1E2D3E</color>
+
+
+    <color name="colorBackgroundPiece">#f8f8f8</color>
+    <color name="kitchen_background">#DDA853</color>
+    <color name="bathroom_background">#beae76</color>
+    <color name="dinner_background">#7A80FF</color>
+    <color name="cellar_background">#0FA663</color>
+    <color name="transparent_background">#00ffffff</color>
+
+    <color name="rayon_bio">#689F38</color>
+    <color name="rayon_surgeles">#90A4AE</color>
+    <color name="rayon_fruits_legumes">#FF5722</color>
+    <color name="rayon_boissons">#424242</color>
+    <color name="rayon_boulangeries_patisseries">#BF360C</color>
+    <color name="rayon_viandes">#D50000</color>
+    <color name="rayon_poissons_crustaces">#0D47A1</color>
+    <color name="cremerie">#90CAF9</color>
+    <color name="yaourts_desserts">#BDBDBD</color>
+    <color name="fromages">#FFEE58</color>
+    <color name="epicerie_sucree">#FF7043</color>
+    <color name="epicerie_salee">#CDDC39</color>
+    <color name="epicerie_hygiene_beaute">#AD1457</color>
+    <color name="divers">#8D6E63</color>
+
+    <color name="empty">#f0f0f0</color>
+    <color name="black">#000</color>
+    <color name="white">#ffffff</color>
+    <color name="lightGray">#99d1cccc</color>
+    <color name="darkGray">#605f5f</color>
+    <color name="gridViewBackground">#dedede</color>
+    <!-- <color name="default_background">#FAFAFA</color>-->
+    <color name="default_background">#f2f2f2</color>
+
+    <color name="text_lgray">#737373</color>
+    <color name="text_black">#202020</color>
+    <color name="text_red">#d50000</color>
+
+    <color name="greyback">#f2f2f2</color>
+
+</resources>
