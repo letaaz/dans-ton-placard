@@ -156,7 +156,7 @@ public class LDCProductAdapter extends RecyclerView.Adapter<LDCProductAdapter.LD
 
             // Set Brand + name of product
             if(product.getMarque() != null) {
-                ldc_product_name.setText(product.getMarque() + " - " + product.getNom());
+                ldc_product_name.setText(product.getNom()+ " - " +product.getMarque());
             }
             else {
                 ldc_product_name.setText(product.getNom());

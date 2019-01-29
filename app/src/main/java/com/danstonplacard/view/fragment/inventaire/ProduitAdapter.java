@@ -197,7 +197,7 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
                 // Set name of the product
                 // Brand + Name or Name
                 if(produit.getMarque() != null) {
-                    nom_produit.setText(produit.getMarque() + " - " + produit.getNom());
+                    nom_produit.setText(produit.getNom()+ " - " +produit.getMarque());
                 }else {
                     nom_produit.setText(produit.getNom());
                 }

@@ -14,6 +14,10 @@ public class RayonCategories {
     private static RayonCategories INSTANCE = new RayonCategories();
 
 
+    public static HashMap<List<String>, Rayon> getListRayonCategories() {
+        return listRayonCategories;
+    }
+
     private RayonCategories() {
 
         // BIO
@@ -242,6 +246,7 @@ public class RayonCategories {
     public Rayon findRayonByCategory(String[] categories) {
         Rayon rayon = Rayon.DIVERS;
 
+
         for (String categorie : categories) {
             for (List<String> cats : this.getKeys()) {
                 if (cats.contains(categorie.trim())) {
@@ -254,8 +259,9 @@ public class RayonCategories {
         return rayon;
     }
 
-    private List<List<String>> getKeys () {
+    public List<List<String>> getKeys () {
         List<List<String>> keys = new ArrayList<List<String>>();
+
         for (List<String> key : this.listRayonCategories.keySet()) {
             keys.add(key);
         }

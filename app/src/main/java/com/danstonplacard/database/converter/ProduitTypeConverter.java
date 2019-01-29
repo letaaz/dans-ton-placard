@@ -1,6 +1,7 @@
 package com.danstonplacard.database.converter;
 
 import android.arch.persistence.room.TypeConverter;
+import android.util.Log;
 
 import com.danstonplacard.database.model.Produit;
 import com.google.gson.Gson;
@@ -30,6 +31,7 @@ public class ProduitTypeConverter {
 //        return gson.toJson(produitList, type);
 
         Gson gson = new Gson();
+        System.out.println(gson.toJson(produitList));
         return gson.toJson(produitList);
 
     }

@@ -245,7 +245,7 @@ public class DetailProduitFragment extends Fragment {
 
         // Set brand - name of product
         if(produit.getMarque() != null) {
-            produitNom.setText(produit.getMarque() + " - " + produit.getNom());
+            produitNom.setText(produit.getNom()+ " - " +produit.getMarque());
         }
         else{
             produitNom.setText(produit.getNom());
