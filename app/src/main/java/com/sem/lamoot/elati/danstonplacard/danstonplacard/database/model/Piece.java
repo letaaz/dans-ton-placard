@@ -1,7 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
 public enum Piece {
-    CUISINE, SALLE_DE_BAIN, CAVE, GARAGE, SALLE_A_MANGER, CHAMBRE, DIVERS;
+    CUISINE, SALLE_DE_BAIN, SALLE_A_MANGER, CAVE, CHAMBRE, GARAGE, DIVERS;
 
     public static Piece getPiece(String piece) {
         switch (piece) {

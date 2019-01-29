@@ -62,28 +62,28 @@
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>
         <item name="salle_de_bain">Salle de bain</item>
-        <item name="cave">Cave</item>
-        <item name="garage">Garage</item>
         <item name="salle_a_manger">Séjour</item>
+        <item name="cave">Cave</item>
         <item name="chambre">Chambre</item>
+        <item name="garage">Garage</item>
         <item name="divers">Divers</item>
     </string-array>
 
     <string-array name="rayons">
-        <item name="surgele">Surgelés</item>
+        <item name="animaux">Animaux</item>
         <item name="bio">Bio</item>
-        <item name="fruits_legumes">Fruits et Légumes</item>
         <item name="boissons">Boissons</item>
         <item name="boulangerie_patisserie">Boulangerie et Patisserie</item>
-        <item name="cremerie">Crèmerie</item>
-        <item name="yaourts_desserts">Yaourts et Desserts</item>
-        <item name="fromages">Fromages</item>
-        <item name="viandes">Viandes</item>
-        <item name="poissons_crustaces">Poissons et Crustaces</item>
-        <item name="epicerie_sucree">Épicerie sucrée</item>
-        <item name="epicerie_salee">Épicerie salée</item>
-        <item name="hygienes_beautes">Hygiènes et Beautés</item>
-        <item name="animaux">Animaux</item>
+        <item name="cremerie">Crémerie</item>
         <item name="divers">Divers</item>
+        <item name="epicerie_salee">Épicerie salée</item>
+        <item name="epicerie_sucree">Épicerie sucrée</item>
+        <item name="fromages">Fromages</item>
+        <item name="fruits_legumes">Fruits et Légumes</item>
+        <item name="hygienes_beautes">Hygiènes et Beautés</item>
+        <item name="poissons_crustaces">Poissons et Crustaces</item>
+        <item name="surgele">Surgelés</item>
+        <item name="viandes">Viandes</item>
+        <item name="yaourts_desserts">Yaourts et Desserts</item>
     </string-array>
 </resources>

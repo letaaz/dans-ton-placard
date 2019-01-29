@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
 
         /* Set icons to TabLayout */
-        int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_list, R.drawable.ic_recipe_book, R.drawable.ic_discount};
+//        int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_list, R.drawable.ic_recipe_book, R.drawable.ic_discount};
+        int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_list};
         for(int i = 0; i < imageResId.length; i++)
         {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);

@@ -14,8 +14,10 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.Root
  */
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 4;
-    private String tabTitle[]= new String[] {"Inventaire", "Listes", "Recettes", "Promotions"};
+    //final int PAGE_COUNT = 4;
+    final int PAGE_COUNT = 2;
+    //private String tabTitle[]= new String[] {"Inventaire", "Listes", "Recettes", "Promotions"};
+    private String tabTitle[]= new String[] {"Inventaire", "Listes"};
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
