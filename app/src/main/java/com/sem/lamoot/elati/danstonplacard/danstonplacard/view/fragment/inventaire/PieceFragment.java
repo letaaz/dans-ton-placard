@@ -94,6 +94,8 @@ public class PieceFragment extends Fragment
         setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
         setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
 
+        TextView textViewPiece = view.findViewById(R.id.piece_name_piecefragment);
+        textViewPiece.setText("" + getPiece(mPiece));
 
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
@@ -146,6 +148,27 @@ public class PieceFragment extends Fragment
         hideFloatingButton(nestedScrollView, add_fab);
 
         return view;
+    }
+
+    private String getPiece(String mPiece) {
+            switch(mPiece){
+                case "CUISINE":
+                    return "Cuisine";
+                case "SALLE_DE_BAIN":
+                    return "Salle de bain";
+                case "CAVE":
+                    return "Cave";
+                case "GARAGE":
+                    return "Garage";
+                case "SALLE_A_MANGER":
+                    return "Séjour";
+                case "CHAMBRE":
+                    return "Chambre";
+                case "DIVERS":
+                    return "Divers";
+                default:
+                    return "Divers";
+            }
     }
 
     /**
