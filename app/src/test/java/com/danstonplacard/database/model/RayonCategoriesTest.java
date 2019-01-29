@@ -1,18 +1,15 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
+package com.danstonplacard.database.model;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 public class RayonCategoriesTest {
 
     private RayonCategories rayonCategories;
-
-
 
     @Before
     public void setUp() throws Exception {
@@ -25,13 +22,12 @@ public class RayonCategoriesTest {
         assertNotNull(rayonCategories.getListRayonCategories());
         assertEquals(12, rayonCategories.getListRayonCategories().size());
     }
-
     @Test
     public void testGetKeys(){
         assertNotNull(rayonCategories);
         assertFalse(rayonCategories.getKeys().isEmpty());
         assertEquals(12, rayonCategories.getKeys().size());
-    }
+        }
 
 /*    @Test
     public void testFindRayonByCategory(){
@@ -53,6 +49,5 @@ public class RayonCategoriesTest {
         assertEquals(Rayon.DIVERS, rayonCategories.findRayonByCategory(categoriesThree));
 
     }*/
-
 
 }

@@ -1,16 +1,14 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter;
+package com.danstonplacard.database.converter;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
+import com.danstonplacard.database.model.Piece;
+import com.danstonplacard.database.model.Produit;
+import com.danstonplacard.database.model.Rayon;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class ProduitTypeConverterTest {
 

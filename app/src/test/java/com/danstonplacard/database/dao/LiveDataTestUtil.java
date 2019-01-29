@@ -1,4 +1,4 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao;
+package com.danstonplacard.database.converter.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;

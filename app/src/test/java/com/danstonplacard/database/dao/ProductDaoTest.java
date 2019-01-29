@@ -1,24 +1,12 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao;
+package com.danstonplacard.database.converter.dao;
 
-
-import android.app.Application;
-import android.arch.persistence.room.Room;
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 

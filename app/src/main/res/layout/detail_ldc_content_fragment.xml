@@ -28,9 +28,9 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="Liste de courses"
+            android:text="Liste de courses de produits manquants"
             android:textColor="@android:color/black"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <ImageButton
             android:id="@+id/btn_edit_ldc"

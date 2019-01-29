@@ -142,11 +142,17 @@ public class DetailLDCFragment extends Fragment{
         float prix_total = 0;
         for(Produit produit : produitsAPrendre)
         {
-            prix_total += (produit.getPrix() * produit.getQuantite());
+            if (produit.getQuantite() == 0)
+                prix_total += produit.getPrix();
+            else
+                prix_total += (produit.getPrix() * produit.getQuantite());
         }
         for(Produit produit : produitsPris)
         {
-            prix_total += (produit.getPrix() * produit.getQuantite());
+            if (produit.getQuantite() == 0)
+                prix_total += produit.getPrix();
+            else
+                prix_total += (produit.getPrix() * produit.getQuantite());
         }
         return prix_total;
     }
@@ -289,7 +295,10 @@ public class DetailLDCFragment extends Fragment{
             float prix_estPris = 0;
             for(Produit produit : estPris)
             {
-                prix_estPris += (produit.getPrix() * produit.getQuantite());
+                if (produit.getQuantite() == 0)
+                    prix_estPris += produit.getPrix();
+                else
+                    prix_estPris += (produit.getPrix() * produit.getQuantite());
             }
             TextView price_caddie = view.findViewById(R.id.price_product_caddie);
             DecimalFormat df = new DecimalFormat("###.##");

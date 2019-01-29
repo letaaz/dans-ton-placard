@@ -1,10 +1,10 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter;
+package com.danstonplacard.database.converter;
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
+import com.danstonplacard.database.model.Piece;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PieceTypeConverterTest {
 

@@ -1,10 +1,10 @@
-package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
+package com.danstonplacard.database.model;
 
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RayonTest {
 
