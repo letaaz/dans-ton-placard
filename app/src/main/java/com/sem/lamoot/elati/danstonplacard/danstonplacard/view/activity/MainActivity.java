@@ -137,7 +137,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(it);
                 break;
             case R.id.nav_notez_nous:
-            case R.id.nav_deconnexion:
+                String googlePlayRedirect = "market://details?id=" + getPackageName();
+                openPage(googlePlayRedirect);
                 break;
             default:
                 break;

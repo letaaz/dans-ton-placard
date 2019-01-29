@@ -32,10 +32,10 @@
             android:id="@+id/nav_notez_nous"
             android:icon="@drawable/ic_like_fb_24dp"
             android:title="@string/notez_nous" />
-        <item
+        <!-- <item
             android:id="@+id/nav_deconnexion"
             android:icon="@drawable/ic_sign_out_option_24dp"
-            android:title="@string/deconnexion" />
+            android:title="@string/deconnexion" /> -->
     </group>
 
 </menu>

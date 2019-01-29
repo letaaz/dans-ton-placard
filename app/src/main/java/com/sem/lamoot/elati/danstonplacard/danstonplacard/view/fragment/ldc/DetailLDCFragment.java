@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,11 +142,11 @@ public class DetailLDCFragment extends Fragment{
         float prix_total = 0;
         for(Produit produit : produitsAPrendre)
         {
-            prix_total += produit.getPrix();
+            prix_total += (produit.getPrix() * produit.getQuantite());
         }
         for(Produit produit : produitsPris)
         {
-            prix_total += produit.getPrix();
+            prix_total += (produit.getPrix() * produit.getQuantite());
         }
         return prix_total;
     }
@@ -290,7 +289,7 @@ public class DetailLDCFragment extends Fragment{
             float prix_estPris = 0;
             for(Produit produit : estPris)
             {
-                prix_estPris += produit.getPrix();
+                prix_estPris += (produit.getPrix() * produit.getQuantite());
             }
             TextView price_caddie = view.findViewById(R.id.price_product_caddie);
             DecimalFormat df = new DecimalFormat("###.##");
