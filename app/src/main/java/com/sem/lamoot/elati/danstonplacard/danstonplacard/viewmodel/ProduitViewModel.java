@@ -27,25 +27,25 @@ public class ProduitViewModel extends AndroidViewModel {
     public LiveData<List<Produit>> getProduitsDisponiblesTrierPar(String piece, String colonne, String trierPar){
         switch(colonne){
             case "Nom" :
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[A-Z]"))
                     return getProduitsDisponiblesParPieceTrierParNomASC(piece);
                 else
                     return getProduitsDisponiblesParPieceTrierParNomDESC(piece);
 
             case"Rayon":
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[A-Z]"))
                     return getProduitsDisponiblesParPieceTrierParRayonASC(piece);
                 else
                     return getProduitsDisponiblesParPieceTrierParRayonDESC(piece);
 
             case"Date":
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[+ récent]"))
                     return getProduitsDisponiblesParPieceTrierParDateASC(piece);
                 else
                     return getProduitsDisponiblesParPieceTrierParDateDESC(piece);
 
             case"Prix":
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[croissant]"))
                     return getProduitsDisponiblesParPieceTrierParPrixASC(piece);
                 else
                     return getProduitsDisponiblesParPieceTrierParPrixDESC(piece);
@@ -59,25 +59,25 @@ public class ProduitViewModel extends AndroidViewModel {
     public LiveData<List<Produit>> getProduitsIndisponiblesTrierPar(String piece, String colonne, String trierPar){
         switch(colonne){
             case "Nom" :
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[A-Z]"))
                     return getProduitsIndisponiblesParPieceTrierParNomASC(piece);
                 else
                     return getProduitsIndisponiblesParPieceTrierParNomDESC(piece);
 
             case"Rayon":
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[A-Z]"))
                     return getProduitsIndisponiblesParPieceTrierParRayonASC(piece);
                 else
                     return getProduitsIndisponiblesParPieceTrierParRayonDESC(piece);
 
             case"Date":
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[+ récent]"))
                     return getProduitsIndisponiblesParPieceTrierParDateASC(piece);
                 else
                     return getProduitsIndisponiblesParPieceTrierParDateDESC(piece);
 
             case"Prix":
-                if(trierPar.equals("ASC"))
+                if(trierPar.equals("[croissant]"))
                     return getProduitsIndisponiblesParPieceTrierParPrixASC(piece);
                 else
                     return getProduitsIndisponiblesParPieceTrierParPrixDESC(piece);

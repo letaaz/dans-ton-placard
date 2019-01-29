@@ -88,9 +88,13 @@
     </string-array>
 
     <string-array name="sort_by">
-        <item name="nom">Nom</item>
-        <item name="rayon">Rayon</item>
-        <item name="date">Date</item>
-        <item name="prix">Prix</item>
+        <item name="nom">Nom [A-Z]</item>
+        <item name="nom">Nom [Z-A]</item>
+        <item name="rayon">Rayon [A-Z]</item>
+        <item name="rayon">Rayon [Z-A]</item>
+        <item name="date">Date [- récent]</item>
+        <item name="date">Date [+ récent]</item>
+        <item name="prix">Prix [croissant]</item>
+        <item name="prix">Prix [décroissant]</item>
     </string-array>
 </resources>

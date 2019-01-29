@@ -41,6 +41,7 @@ public class PieceFragment extends Fragment
     private String mParam = null;
     private String mPiece = null;
     private String colonneTri = "Nom";
+    private String trierPar = "[A-Z]";
     private int checkedItemSort = 0;
 
     // RecyclerView + Adapter - produits disponibles
@@ -90,8 +91,8 @@ public class PieceFragment extends Fragment
 
         // Set RecyclerView + Set Datas (Products Availables and unavailables)
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
-        setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
+        setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+        setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
 
 
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
@@ -115,10 +116,13 @@ public class PieceFragment extends Fragment
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("dtp", "trier par : "+listSortingBy[i]);
-                        colonneTri = listSortingBy[i];
                         checkedItemSort = i;
-                        setProduitsDisponibles(produitViewModel, listSortingBy[i], "ASC");
-                        setProduitsIndisponibles(produitViewModel, listSortingBy[i], "ASC");
+                        String[] parts = listSortingBy[checkedItemSort].split(" ");
+                        Log.d("dtp", "Tri par "+colonneTri+" "+trierPar);
+                        colonneTri = parts[0];
+                        trierPar = parts[1];
+                        setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+                        setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
                         dialogInterface.dismiss();
                     }
                 });
@@ -279,8 +283,8 @@ public class PieceFragment extends Fragment
     public void onMinusImageViewClickListener(Produit produit) {
         if(produit.getQuantite() > 0)
             produitViewModel.updateProduit(produit.getId(), produit.getQuantite() - 1);
-            setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
-            setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
+            setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+            setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
 
     }
 
@@ -291,8 +295,8 @@ public class PieceFragment extends Fragment
     @Override
     public void onAddImageViewClickListener(Produit produit) {
         produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
-        setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
-        setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
+        setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+        setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
     }
 
     /**
