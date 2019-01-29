@@ -1,4 +1,4 @@
-package com.danstonplacard.database.converter.dao;
+package com.danstonplacard.database.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;

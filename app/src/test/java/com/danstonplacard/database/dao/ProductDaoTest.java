@@ -1,14 +1,10 @@
-package com.danstonplacard.database.converter.dao;
+package com.danstonplacard.database.dao;
 
 
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
+import com.danstonplacard.database.RoomDB;
+import com.danstonplacard.database.model.Produit;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 
 public class ProductDaoTest {
