@@ -1,7 +1,9 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -12,11 +14,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
@@ -36,6 +40,9 @@ public class PieceFragment extends Fragment
     private Context mContext = null;
     private String mParam = null;
     private String mPiece = null;
+    private String colonneTri = "Nom";
+    private String trierPar = "[A-Z]";
+    private int checkedItemSort = 0;
 
     // RecyclerView + Adapter - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
@@ -84,9 +91,11 @@ public class PieceFragment extends Fragment
 
         // Set RecyclerView + Set Datas (Products Availables and unavailables)
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
-        setProduitsDisponibles(produitViewModel);
-        setProduitsIndisponibles(produitViewModel);
+        setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+        setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
 
+        TextView textViewPiece = view.findViewById(R.id.piece_name_piecefragment);
+        textViewPiece.setText("" + getPiece(mPiece));
 
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
@@ -95,7 +104,35 @@ public class PieceFragment extends Fragment
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
 
+        // Sortting products by something (name, ray, price or date)
+        String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
 
+        TextView btn_sort_by = view.findViewById(R.id.sort_by_btn);
+        btn_sort_by.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                mBuilder.setTitle("Trier par");
+
+                mBuilder.setSingleChoiceItems(listSortingBy, checkedItemSort, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("dtp", "trier par : "+listSortingBy[i]);
+                        checkedItemSort = i;
+                        String[] parts = listSortingBy[checkedItemSort].split(" ");
+                        Log.d("dtp", "Tri par "+colonneTri+" "+trierPar);
+                        colonneTri = parts[0];
+                        trierPar = parts[1];
+                        setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+                        setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
 
         // Implementation of the behavior to close down / reduce the list of available products
         setOnClickOnBtnShowAllProduitsDispos(section_dispo, btn_hide_show_available_product);
@@ -113,6 +150,27 @@ public class PieceFragment extends Fragment
         return view;
     }
 
+    private String getPiece(String mPiece) {
+            switch(mPiece){
+                case "CUISINE":
+                    return "Cuisine";
+                case "SALLE_DE_BAIN":
+                    return "Salle de bain";
+                case "CAVE":
+                    return "Cave";
+                case "GARAGE":
+                    return "Garage";
+                case "SALLE_A_MANGER":
+                    return "Séjour";
+                case "CHAMBRE":
+                    return "Chambre";
+                case "DIVERS":
+                    return "Divers";
+                default:
+                    return "Divers";
+            }
+    }
+
     /**
      * Hides the floating button when the user moves down the list -
      * prevents the button from being above the (-) and (+) buttons of a product
@@ -128,6 +186,12 @@ public class PieceFragment extends Fragment
             }
         });
     }
+
+
+
+
+
+
 
     /**
      * Set onClick Behavor for Floating Button
@@ -181,13 +245,13 @@ public class PieceFragment extends Fragment
     }
 
 
+
     /**
      * Set Produits Disponibles in RecyclerView
      * @param produitViewModel
      */
-    private void setProduitsDisponibles(ProduitViewModel produitViewModel) {
-        produitViewModel.getProduitsIndisponiblesParPiece(mParam).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
-
+    private void setProduitsDisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
+        produitViewModel.getProduitsDisponiblesTrierPar(mParam, colonne, trierPar).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
         setRecyclerViewProduitsDisponibles();
     }
 
@@ -207,12 +271,13 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
 
+
     /**
      * Set Products Indisponibles in RecyclerView
      * @param produitViewModel
      */
-    private void setProduitsIndisponibles(ProduitViewModel produitViewModel) {
-        produitViewModel.getProduitsDisponiblesParPiece(mParam).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+    private void setProduitsIndisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
+        produitViewModel.getProduitsIndisponiblesTrierPar(mParam, colonne, trierPar).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
         setRecyclerViewProduitsIndisponibles();
     }
 
@@ -241,6 +306,9 @@ public class PieceFragment extends Fragment
     public void onMinusImageViewClickListener(Produit produit) {
         if(produit.getQuantite() > 0)
             produitViewModel.updateProduit(produit.getId(), produit.getQuantite() - 1);
+            setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+            setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
+
     }
 
     /**
@@ -250,6 +318,8 @@ public class PieceFragment extends Fragment
     @Override
     public void onAddImageViewClickListener(Produit produit) {
         produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
+        setProduitsDisponibles(produitViewModel, colonneTri, trierPar);
+        setProduitsIndisponibles(produitViewModel, colonneTri, trierPar);
     }
 
     /**

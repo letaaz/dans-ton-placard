@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background">
@@ -17,6 +18,119 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/piece_name_piecefragment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Pièce"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"
+                    android:typeface="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/sort_by_btn"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/rounded_corner_sort"
+                    android:clickable="true"
+                    android:elevation="2dp"
+                    android:focusable="true"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="8dp"
+                    android:text="Trier par"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.96"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--<TextView-->
+                    <!--android:id="@+id/empty"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginEnd="8dp"-->
+                    <!--android:layout_marginBottom="4dp"-->
+                    <!--android:background="@drawable/rounded_corner_sort"-->
+                    <!--android:clickable="true"-->
+                    <!--android:elevation="2dp"-->
+                    <!--android:focusable="true"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:paddingTop="8dp"-->
+                    <!--android:paddingRight="15dp"-->
+                    <!--android:paddingBottom="8dp"-->
+                    <!--android:text="Trier par"-->
+                    <!--android:textAlignment="center"-->
+                    <!--android:textAllCaps="true"-->
+                    <!--android:textColor="@android:color/white"-->
+                    <!--android:textSize="12sp"-->
+                    <!--android:visibility="gone"-->
+                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--app:layout_constraintEnd_toStartOf="@+id/empty2"-->
+                    <!--app:layout_constraintStart_toEndOf="@+id/sort_by_btn"-->
+                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/empty2"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="32dp"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginEnd="8dp"-->
+                    <!--android:layout_marginBottom="4dp"-->
+                    <!--android:background="@drawable/rounded_corner_sort"-->
+                    <!--android:clickable="true"-->
+                    <!--android:elevation="2dp"-->
+                    <!--android:focusable="true"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:paddingTop="8dp"-->
+                    <!--android:paddingRight="15dp"-->
+                    <!--android:paddingBottom="8dp"-->
+                    <!--android:text="Trier par"-->
+                    <!--android:textAlignment="center"-->
+                    <!--android:textAllCaps="true"-->
+                    <!--android:textColor="@android:color/white"-->
+                    <!--android:textSize="12sp"-->
+                    <!--android:visibility="gone"-->
+                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintStart_toEndOf="@+id/empty"-->
+                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+            </android.support.constraint.ConstraintLayout>
+
+
             <RelativeLayout
                 android:id="@+id/section_produits_dispo"
                 android:layout_width="match_parent"
@@ -31,6 +145,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+
                 <TextView
                     android:id="@+id/section_label"
                     style="@style/ListLabelStyle"
@@ -41,7 +156,9 @@
                     android:paddingStart="3dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="Produits disponibles" />
+                    android:text="Produits disponibles"
+                    android:textSize="17sp" />
+
 
                 <ImageView
                     android:id="@+id/section_show_all_button_dispo"
@@ -52,6 +169,9 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:src="@drawable/drag_list_down_dark" />
+
+
+
 
             </RelativeLayout>
 
@@ -106,7 +226,8 @@
                     android:paddingStart="3dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="Produits indisponibles" />
+                    android:text="Produits indisponibles"
+                    android:textSize="17sp" />
 
                 <ImageView
                     android:id="@+id/section_show_all_button_indispo"

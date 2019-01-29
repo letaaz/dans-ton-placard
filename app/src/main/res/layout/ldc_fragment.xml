@@ -37,7 +37,8 @@
                     android:layout_height="match_parent"
                     android:layout_alignBaseline="@id/btn_expand_ldc_list"
                     android:duplicateParentState="true"
-                    android:text="@string/ldc_disponibles_label" />
+                    android:text="@string/ldc_disponibles_label"
+                    android:textSize="17sp" />
 
                 <ImageView
                     android:id="@+id/btn_expand_ldc_list"
@@ -98,7 +99,8 @@
                     android:layout_marginEnd="-8dp"
                     android:layout_toStartOf="@+id/btn_expand_history_list"
                     android:duplicateParentState="true"
-                    android:text="@string/history_ldc_label" />
+                    android:text="@string/history_ldc_label"
+                    android:textSize="17sp" />
 
                 <ImageView
                     android:id="@+id/btn_expand_history_list"

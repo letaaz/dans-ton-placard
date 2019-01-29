@@ -1,6 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter;
 
 import android.arch.persistence.room.TypeConverter;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,6 +31,7 @@ public class ProduitTypeConverter {
 //        return gson.toJson(produitList, type);
 
         Gson gson = new Gson();
+        System.out.println(gson.toJson(produitList));
         return gson.toJson(produitList);
 
     }

@@ -154,7 +154,7 @@ public class FetchData extends AsyncTask<String, Void, String> {
         }
         else
         {
-            Produit product = new Produit(product_name, this.contents, product_brand, product_urlImage, 0, product_weight, product_date, product_rayon, 0, piece);
+            Produit product = new Produit(product_name.toLowerCase(), this.contents, product_brand.toLowerCase(), product_urlImage, 0, product_weight, product_date, product_rayon, 0, piece);
             long idProduct = produitDao.insert(product);
             product.setId((int) idProduct);
 

@@ -41,7 +41,7 @@ public enum Rayon {
                 return EPICERIE_SUCREE;
             case "EPICERIE SALEE": case "Épicerie salée":
                 return EPICERIE_SALEE;
-            case "HYGIENES_BEAUTES": case "Hygiènes et beautés":
+            case "HYGIENES ET BEAUTES": case "Hygiènes et beautés":
                 return HYGIENES_BEAUTES;
             case "ANIMAUX": case "Animaux":
                 return ANIMAUX;
