@@ -2,7 +2,6 @@ package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventa
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +11,13 @@ import android.view.ViewGroup;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.PieceIcone;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.AdapterForRecyclerViewPieces;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment that contains the icons that represent the available pieces
+ */
 public class InventaireFragment extends Fragment {
 
     public static String ARGS = "ARGUMENTS_PIECES_FRAG";
@@ -35,13 +36,14 @@ public class InventaireFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
-
         this.setRecyclerViewPiece(view);
-
-        //initImageButton(view);
         return view;
     }
 
+    /**
+     * Set the RecyclerView to put Rooms and Icons
+     * @param view
+     */
     private void setRecyclerViewPiece(View view)
     {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.piece_recyclerview);
@@ -51,9 +53,25 @@ public class InventaireFragment extends Fragment {
         List<PieceIcone> pieces = this.getDrawablesIntPieces();
 
         this.setAdapterToRecyclerViewPieces(recyclerView, pieces);
-
     }
 
+
+    /**
+     * Set adapter to the RecyclerView
+     * @param recyclerView
+     * @param pieces
+     */
+    public void setAdapterToRecyclerViewPieces(RecyclerView recyclerView, List<PieceIcone> pieces)
+    {
+        AdapterForRecyclerViewPieces adapterForRecyclerViewPieces = new AdapterForRecyclerViewPieces(this.getContext(), pieces);
+        recyclerView.setAdapter(adapterForRecyclerViewPieces);
+    }
+
+
+    /**
+     * Get the list of available rooms associated with its image / icon
+     * @return list of PieceIcone
+     */
     public List<PieceIcone> getDrawablesIntPieces()
     {
         List<PieceIcone> pieces = new ArrayList<>();
@@ -68,17 +86,5 @@ public class InventaireFragment extends Fragment {
         return pieces;
     }
 
-    public void setAdapterToRecyclerViewPieces(RecyclerView recyclerView, List<PieceIcone> pieces)
-    {
-        AdapterForRecyclerViewPieces adapterForRecyclerViewPieces = new AdapterForRecyclerViewPieces(this.getContext(), pieces);
-        recyclerView.setAdapter(adapterForRecyclerViewPieces);
-    }
 
-    private void showPieceFragment(String piece) {
-        FragmentTransaction trans = getFragmentManager().beginTransaction();
-        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece));
-        trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        trans.addToBackStack(null);
-        trans.commit();
-    }
 }

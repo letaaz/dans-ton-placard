@@ -9,7 +9,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.PageFrag
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.inventaire.RootInventaireFragment;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.ldc.RootLDCFragment;
 
-
+/**
+ * Adapter for TabLayout
+ */
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 4;
@@ -20,7 +22,6 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         FragmentManager mFragmentManager = fm;
         Context mContext = context;
     }
-
 
     @Override
     public Fragment getItem(int i) {

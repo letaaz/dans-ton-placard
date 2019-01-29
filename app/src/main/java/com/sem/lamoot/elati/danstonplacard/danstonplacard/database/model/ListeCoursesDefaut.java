@@ -1,12 +1,5 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.DateTypeConverter;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.converter.ProduitTypeConverter;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;

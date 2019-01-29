@@ -29,6 +29,9 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.AjouterP
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.fragment.DetailProduitFragment;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.viewmodel.ProduitViewModel;
 
+/**
+ * Fragment that contains the available and unavailable products depending on the selected room
+ */
 public class PieceFragment extends Fragment
         implements ProduitAdapter.OnMinusImageViewClickListener, ProduitAdapter.OnAddImageViewClickListener,
         ProduitAdapter.OnProductItemClickListener {
@@ -50,7 +53,6 @@ public class PieceFragment extends Fragment
     private ProduitAdapter produitsIndisponiblesAdapter;
     private ProduitViewModel produitViewModel;
     private ProduitViewModel produitViewModel2;
-
 
     private View view;
 
@@ -84,42 +86,20 @@ public class PieceFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
-
         this.view = view;
 
+        // Set RecyclerView + Set Datas (Products Availables and unavailables)
         produitViewModel = ViewModelProviders.of(this).get(ProduitViewModel.class);
         setProduitsDisponibles(produitViewModel, colonneTri, "ASC");
         setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
 
+
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
-        section_dispo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (produitsDisponiblesRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_available_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
-                    produitsDisponiblesRecyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    btn_hide_show_available_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
-                    produitsDisponiblesRecyclerView.setVisibility(View.GONE);
-                }
-            }
-        });
-
         RelativeLayout section_indispo = view.findViewById(R.id.section_produits_indispo);
         ImageView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
-        section_indispo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) {
-                    btn_hide_show_unavailable_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
-                    produitsIndisponiblesRecyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    btn_hide_show_unavailable_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
-                    produitsIndisponiblesRecyclerView.setVisibility(View.GONE);
-                }
-            }
-        });
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
 
         // Sortting products by something (name, ray, price or date)
         String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
@@ -148,44 +128,109 @@ public class PieceFragment extends Fragment
             }
         });
 
-        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        // Implementation of the behavior to close down / reduce the list of available products
+        setOnClickOnBtnShowAllProduitsDispos(section_dispo, btn_hide_show_available_product);
+
+        // Setting up the behavior to close down / reduce the list of unavailable products
+        setOnClickOnBtnShowAllProduitsIndispos(section_indispo, btn_hide_show_unavailable_product);
+
+        // Setting behavior to floating button
+        setOnClickToFloatingButton(add_fab);
 
 
-        // Listener for the FAB
-        FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
-        add_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Launch the view for adding a product to the current piece
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.root_inventaire_frame, AjouterProduitFragment.newInstance(mPiece));
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > oldScrollY) {
-                    add_fab.hide();
-                } else {
-                    add_fab.show();
-                }
-            }
-        });
+        // Hide floating button when scroll in list of product
+        hideFloatingButton(nestedScrollView, add_fab);
 
         return view;
     }
 
+    /**
+     * Hides the floating button when the user moves down the list -
+     * prevents the button from being above the (-) and (+) buttons of a product
+     * @param nestedScrollView
+     * @param add_fab
+     */
+    private void hideFloatingButton(NestedScrollView nestedScrollView, FloatingActionButton add_fab){
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) {
+                add_fab.hide();
+            } else {
+                add_fab.show();
+            }
+        });
+    }
 
+
+
+
+
+
+
+    /**
+     * Set onClick Behavor for Floating Button
+     * Open new Fragment - AjouterProduitFragment to add new Product
+     * @param add_fab
+     */
+    private void setOnClickToFloatingButton(FloatingActionButton add_fab) {
+        add_fab.setOnClickListener(view1 -> {
+            // Launch the view for adding a product to the current piece
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.root_inventaire_frame, AjouterProduitFragment.newInstance(mPiece));
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+    }
+
+    /**
+     *
+     * @param section_indispo
+     * @param btn_hide_show_unavailable_product
+     */
+    private void setOnClickOnBtnShowAllProduitsIndispos(RelativeLayout section_indispo, ImageView btn_hide_show_unavailable_product) {
+        section_indispo.setOnClickListener(v -> {
+            if (produitsIndisponiblesRecyclerView.getVisibility() == View.GONE) {
+                btn_hide_show_unavailable_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
+                produitsIndisponiblesRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                btn_hide_show_unavailable_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
+                produitsIndisponiblesRecyclerView.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    /**
+     *
+     * @param section_dispo
+     * @param btn_hide_show_available_product
+     */
+    private void setOnClickOnBtnShowAllProduitsDispos(RelativeLayout section_dispo, ImageView btn_hide_show_available_product) {
+        section_dispo.setOnClickListener(v -> {
+            if (produitsDisponiblesRecyclerView.getVisibility() == View.GONE) {
+                btn_hide_show_available_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_down_dark));
+                produitsDisponiblesRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                btn_hide_show_available_product.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.drag_list_up_dark));
+                produitsDisponiblesRecyclerView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
+
+    /**
+     * Set Produits Disponibles in RecyclerView
+     * @param produitViewModel
+     */
     private void setProduitsDisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
-
         produitViewModel.getProduitsDisponiblesTrierPar(mParam, colonne, trierPar).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
         setRecyclerViewProduitsDisponibles();
     }
 
+    /**
+     * Set RecyclerView of Produits Disponibles
+     */
     private void setRecyclerViewProduitsDisponibles() {
         // Set recyclerView + Adapter - Produits disponibles
         produitsDisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, -1);
@@ -199,12 +244,19 @@ public class PieceFragment extends Fragment
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void setProduitsIndisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
 
+    /**
+     * Set Products Indisponibles in RecyclerView
+     * @param produitViewModel
+     */
+    private void setProduitsIndisponibles(ProduitViewModel produitViewModel, String colonne, String trierPar) {
         produitViewModel.getProduitsIndisponiblesTrierPar(mParam, colonne, trierPar).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
         setRecyclerViewProduitsIndisponibles();
     }
 
+    /**
+     * Set RecyclerView of Produits Indisponibles
+     */
     private void setRecyclerViewProduitsIndisponibles() {
         // Set recyclerView + Adapter - Produits indisponibles
         produitsIndisponiblesAdapter = new ProduitAdapter(this.mContext, this, this, -1);
@@ -219,6 +271,10 @@ public class PieceFragment extends Fragment
     }
 
 
+    /**
+     * Method called when (-) button on a product is clicked
+     * @param produit
+     */
     @Override
     public void onMinusImageViewClickListener(Produit produit) {
         if(produit.getQuantite() > 0)
@@ -228,6 +284,10 @@ public class PieceFragment extends Fragment
 
     }
 
+    /**
+     * Method called when (+) button on a product is clicked
+     * @param produit
+     */
     @Override
     public void onAddImageViewClickListener(Produit produit) {
         produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
@@ -235,6 +295,10 @@ public class PieceFragment extends Fragment
         setProduitsIndisponibles(produitViewModel, colonneTri, "ASC");
     }
 
+    /**
+     * Method called when clicking on a product - Opens DetailProduitFragment
+     * @param produit
+     */
     @Override
     public void onProductItemClickListener(Produit produit) {
         // Launch the view for product's detail

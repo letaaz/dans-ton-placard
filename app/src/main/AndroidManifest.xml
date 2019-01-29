@@ -3,6 +3,7 @@
     package="com.sem.lamoot.elati.danstonplacard.danstonplacard">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
@@ -16,8 +17,8 @@
             android:name=".view.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +31,7 @@
         </activity>
         <activity android:name=".view.activity.AboutActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar2"/>
+            android:theme="@style/AppTheme.NoActionBar2" />
     </application>
 
 </manifest>

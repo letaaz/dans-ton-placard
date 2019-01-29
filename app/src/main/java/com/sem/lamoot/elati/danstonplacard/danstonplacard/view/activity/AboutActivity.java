@@ -1,7 +1,7 @@
 package com.sem.lamoot.elati.danstonplacard.danstonplacard.view.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 
+/**
+ * Activity accessible from the navigation drawer showing the credits of the application.
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @Override

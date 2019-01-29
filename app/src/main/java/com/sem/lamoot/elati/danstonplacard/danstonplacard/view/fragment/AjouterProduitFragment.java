@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.R;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.RoomDB;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.dao.ListeCoursesDao;
@@ -33,7 +29,6 @@ import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Piece;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Produit;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.ProduitDefaut;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.model.Rayon;
-import com.sem.lamoot.elati.danstonplacard.danstonplacard.database.utils.FetchData;
 import com.sem.lamoot.elati.danstonplacard.danstonplacard.view.SearchItemArrayAdapter;
 
 import org.json.JSONArray;
@@ -43,8 +38,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
+/**
+ * Fragment that adds products to inventory or shopping lists
+ */
 public class AjouterProduitFragment extends Fragment implements View.OnClickListener{
 
     public static String ARGS = "";
@@ -54,7 +51,6 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
     private ProduitDao produitDao = null;
     private ListeCoursesDao listeCoursesDao = null;
     private Piece piece = null;
-    private boolean isLDC = false;
 
     public static Fragment newInstance(String params) {
         Bundle args = new Bundle();
@@ -92,126 +88,167 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         super.onResume();
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
-
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.ajouter_produit_fragment, container, false);
+
         ImageView imageView3 = (ImageView) view.findViewById(R.id.image_view_scan_codebarre);
-        imageView3.setOnClickListener(this);
-
-        Toast.makeText(mContext, "idLDC = " + idLDC, Toast.LENGTH_SHORT).show();
-
+        AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
         ImageView button_add = (ImageView) view.findViewById(R.id.button_add);
 
+        // Get DAO
+        produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
+        listeCoursesDao = RoomDB.getDatabase(view.getContext()).listeCoursesDao();
+
+
+        // Get Piece
+        piece = Piece.getPiece(mPiece);
+
+
+        // Set Method onClick to imageView (scanbar img)
+        imageView3.setOnClickListener(this);
+
+        // Get Produit Defaut
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(),"products_FR_fr.json");
-        AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
+
         ArrayAdapter<ProduitDefaut> adapter = new SearchItemArrayAdapter(mContext,R.layout.search_listitem, produits);
         actv.setAdapter(adapter);
         actv.setThreshold(1);
 
-        produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
-        piece = Piece.getPiece(mPiece);
-
 
         if(idLDC != -1) // Ajout produit à LDC
         {
-            listeCoursesDao = RoomDB.getDatabase(view.getContext()).listeCoursesDao();
-            ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
-
-            actv.setOnItemClickListener((parent, view1, position, id) -> {
-                Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
-                if(produit == null)
-                {
-                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.DIVERS);
-                    newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
-                    long id_newProduit = produitDao.insert(newProduit);
-
-                    newProduit.setId((int) id_newProduit);
-                    listeCourses.getProduitsAPrendre().add(newProduit);
-                    listeCoursesDao.updateListe(listeCourses);
-
-                    hideKeyboard();
-                    showSnackBar(R.string.msg_produit_ajoute_ldc);
-                    //getActivity().onBackPressed();
-                }
-                else
-                {
-                    //Update
-                }
-            });
-
-            button_add.setOnClickListener(v -> {
-                Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
-                if(produit == null) {
-                    Produit newProduit = new Produit(actv.getText().toString(), 0, Rayon.DIVERS, Piece.DIVERS);
-                    produitDao.insert(newProduit);
-                    listeCourses.getProduitsAPrendre().add(newProduit);
-                    listeCoursesDao.updateListe(listeCourses);
-
-                    hideKeyboard();
-                    showSnackBar(R.string.msg_produit_ajoute_ldc);
-                    //getActivity().onBackPressed();
-                }
-                else
-                {
-                    // Update
-                }
-            });
+            ajouterProduitsDefautsALDC(actv, adapter, button_add);
         }
-        else // Ajouter produit à la LDC
+        else // Ajouter produit à l'inventaire
         {
-            actv.setOnItemClickListener((parent, view1, position, id) -> {
-                Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
-                if(produit == null)
-                {
-                    Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
-                    newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
-                    produitDao.insert(newProduit);
-
-                    hideKeyboard();
-                    showSnackBar(R.string.msg_produit_ajoute);
-                }
-                else
-                {
-                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
-                    hideKeyboard();
-                    showSnackBar(R.string.msg_produit_miseajour);
-                }
-            });
-
-            button_add.setOnClickListener(v -> {
-                Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
-                if(produit == null) {
-                    Produit newProduit = new Produit(actv.getText().toString(), 1, Rayon.DIVERS, piece);
-                    produitDao.insert(newProduit);
-                    hideKeyboard();
-                    showSnackBar(R.string.msg_produit_ajoute);
-                }
-                else
-                {
-                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite()+1);
-                    hideKeyboard();
-                    showSnackBar(R.string.msg_produit_miseajour);
-                }
-            });
+            ajouterProduitDefautAInventaire(actv, adapter, button_add);
         }
 
         return view;
     }
 
+    /**
+     * Method called to add a default product to the inventory
+     * @param actv
+     * @param adapter
+     * @param button_add
+     */
+    private void ajouterProduitDefautAInventaire(AutoCompleteTextView actv, ArrayAdapter<ProduitDefaut> adapter, ImageView button_add) {
+        actv.setOnItemClickListener((parent, view1, position, id) -> {
+
+            // Check if product exists
+            Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
+            if(produit == null) { // Product not exists
+                // Insert new product to BDD
+                Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
+                newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
+                produitDao.insert(newProduit);
+
+                hideKeyboard();
+                showSnackBar(R.string.msg_produit_ajoute);
+            }
+            else { // Products exists
+                // Update product
+                produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
+                hideKeyboard();
+                showSnackBar(R.string.msg_produit_miseajour);
+            }
+        });
+
+
+        button_add.setOnClickListener(v -> {
+            Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
+            // Check if products exists in BDD
+            if(produit == null) { // Product not exists
+                // Insert product in BDD
+                Produit newProduit = new Produit(actv.getText().toString(), 1, Rayon.DIVERS, piece);
+                produitDao.insert(newProduit);
+                hideKeyboard();
+                showSnackBar(R.string.msg_produit_ajoute);
+            }
+            else { // Product exists
+                // Update products
+                produitDao.updateQuantityById(produit.getId(), produit.getQuantite()+1);
+                hideKeyboard();
+                showSnackBar(R.string.msg_produit_miseajour);
+            }
+        });
+    }
+
+    /**
+     * Method called to add a default product to the shopping list
+     * @param actv
+     * @param adapter
+     * @param button_add
+     */
+    private void ajouterProduitsDefautsALDC(AutoCompleteTextView actv, ArrayAdapter<ProduitDefaut> adapter, ImageView button_add) {
+        ListeCourses listeCourses = listeCoursesDao.getListeCoursesById(idLDC);
+
+        actv.setOnItemClickListener((parent, view1, position, id) -> {
+            Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
+            if(produit == null)
+            {
+                Produit newProduit = new Produit(adapter.getItem(position).getNom(), 0, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.DIVERS);
+                newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
+                long id_newProduit = produitDao.insert(newProduit);
+
+                newProduit.setId((int) id_newProduit);
+                listeCourses.getProduitsAPrendre().add(newProduit);
+                listeCoursesDao.updateListe(listeCourses);
+
+                hideKeyboard();
+                showSnackBar(R.string.msg_produit_ajoute_ldc);
+                //getActivity().onBackPressed();
+            }
+            else
+            {
+                //Update
+            }
+        });
+
+        button_add.setOnClickListener(v -> {
+            Produit produit = produitDao.findProductByNom(actv.getText().toString(), mPiece);
+            if(produit == null) {
+                Produit newProduit = new Produit(actv.getText().toString(), 0, Rayon.DIVERS, Piece.DIVERS);
+                long id_newProduit = produitDao.insert(newProduit);
+                newProduit.setId((int) id_newProduit);
+                listeCourses.getProduitsAPrendre().add(newProduit);
+                listeCoursesDao.updateListe(listeCourses);
+
+                hideKeyboard();
+                showSnackBar(R.string.msg_produit_ajoute_ldc);
+                //getActivity().onBackPressed();
+            }
+            else
+            {
+                // Update
+            }
+        });
+    }
+
+    /**
+     * Method called when the user clicks on the bar scan image.
+     * @param v
+     */
     @Override
     public void onClick(View v) {
+        getFragmentManager().popBackStack();
+
+        // Check if internet is available
         if (isNetworkAvailable()) {
-            Log.d("dtp", "onclickImageview3");
-            IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
-            integrator.setPrompt("Scan a barcode or QRcode");
-            integrator.setOrientationLocked(false);
-            integrator.initiateScan();
-        } else {
+            launchScanbarFragment();
+        } else { // Show alert dialog to put on internet connection
             String alertMsg = mContext.getResources().getString(R.string.msgAlertDialogInternetConnection);
             String title = mContext.getResources().getString(R.string.titleAlertDialogInternetConnection);
             String buttonText = mContext.getResources().getString(R.string.buttonAlertDialogInternetConnection);
@@ -231,6 +268,31 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         }
     }
 
+    /**
+     * Method called to launch the barcode scanner
+     */
+    private void launchScanbarFragment() {
+        if(idLDC == -1) { // If Scanbar in LDC - Replace root_inventaire_frame
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.root_inventaire_frame, ScanbarFragment.newInstance(mPiece, idLDC));
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        else { // If Scanbar in Inventaire - Replace root_ldc_frame
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.root_ldc_frame, ScanbarFragment.newInstance(mPiece, idLDC));
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+
+    /**
+     * Method that verifies that the internet connection is active
+     * @return true if internet is available - false otherwise
+     */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -238,33 +300,12 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         return activeNetworkInfo != null;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
-        if (result != null) {
-            if (result.getContents() == null) {
-                getActivity().onBackPressed();
-            } else {
-                String data_product = "";
-                try {
-                    if(idLDC != -1)
-                    {
-                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), "DIVERS", idLDC).execute(result.getContents()).get();
-                    }
-                    else {
-                        data_product = new FetchData(getActivity().getApplicationContext(), result.getContents(), mPiece, -1).execute(result.getContents()).get();
-                    }
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                onClick(getView());
-            }
-
-        }
-    }
-
+    /**
+     * Called method to load defaults products from a JSON file contained in assets folder
+     * @param context
+     * @param fileName
+     * @return
+     */
     public String loadJSONFromAsset(Context context, String fileName) {
         String json;
         try {
@@ -282,6 +323,12 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
     }
 
 
+    /**
+     * Method called to obtain a list of commodities / default (unbranded)
+     * @param context context of the activity
+     * @param fileName name of the JSON file that contains defaults products
+     * @return List of ProductDefaut
+     */
     public ArrayList<ProduitDefaut> getProduitsDefaults(Context context, String fileName)
     {
         ArrayList<ProduitDefaut> produits = new ArrayList<>();
@@ -303,12 +350,19 @@ public class AjouterProduitFragment extends Fragment implements View.OnClickList
         return produits;
     }
 
+    /**
+     * Method called to hide the keyboard
+     */
     public void hideKeyboard()
     {
         InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
     }
 
+    /**
+     * Method called to display a snackbar when a product is added to the inventory
+     * @param msg Message in R.String to show
+     */
     public void showSnackBar(int msg)
     {
         Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);

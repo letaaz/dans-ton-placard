@@ -11,6 +11,11 @@ import java.util.List;
 
 public class IngredientTypeConverter {
 
+    /**
+     * Return a list of ingredients from a list of ingredients in JSON format
+     * @param ingredientList List of ingredients (JSON Format)
+     * @return Converted ingredient List in List<T> Format
+     */
     @TypeConverter
     public static List<Ingredient> toIngredientList(String ingredientList){
         Gson gson = new Gson();
@@ -19,6 +24,11 @@ public class IngredientTypeConverter {
         return json;
     }
 
+    /**
+     * Return a list of ingredients in JSON format from a list of ingredients in List <Ingredients> format
+     * @param ingredientList List of Ingredients
+     * @return Converted ingredient list in JSON Format
+     */
     @TypeConverter
     public static String fromIngredientList(List<Ingredient> ingredientList){
         Gson gson = new Gson();
