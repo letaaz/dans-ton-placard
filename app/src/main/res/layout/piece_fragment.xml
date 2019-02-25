@@ -72,20 +72,81 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />
 
-                <SearchView
-                    android:id="@+id/searchViewPieceFragment"
+                <!--<SearchView-->
+                    <!--android:id="@+id/searchViewPieceFragment"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginEnd="8dp"-->
+                    <!--android:layout_marginBottom="4dp"-->
+                    <!--android:background="@drawable/corners"-->
+                    <!--android:elevation="2dp"-->
+                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />-->
+
+
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/corners"
                     android:elevation="2dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />
+                    app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment">
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_searching_magnifying_glass" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="Chercher un produit..."
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                        app:layout_constraintStart_toEndOf="@+id/imageView7"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/autoCompleteTextView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/close" />
+
+                </android.support.constraint.ConstraintLayout>
 
                 <ImageView
                     android:id="@+id/left_arrow"
@@ -110,62 +171,6 @@
                     app:layout_constraintStart_toEndOf="@+id/piece_name_piecefragment"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_right_arrow" />
-
-                <!--<TextView-->
-                    <!--android:id="@+id/empty"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentEnd="true"-->
-                    <!--android:layout_marginStart="8dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:layout_marginEnd="8dp"-->
-                    <!--android:layout_marginBottom="4dp"-->
-                    <!--android:background="@drawable/rounded_corner_sort"-->
-                    <!--android:clickable="true"-->
-                    <!--android:elevation="2dp"-->
-                    <!--android:focusable="true"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingTop="8dp"-->
-                    <!--android:paddingRight="15dp"-->
-                    <!--android:paddingBottom="8dp"-->
-                    <!--android:text="Trier par"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textAllCaps="true"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="12sp"-->
-                    <!--android:visibility="gone"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toStartOf="@+id/empty2"-->
-                    <!--app:layout_constraintStart_toEndOf="@+id/sort_by_btn"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/empty2"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="32dp"-->
-                    <!--android:layout_alignParentEnd="true"-->
-                    <!--android:layout_marginStart="8dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:layout_marginEnd="8dp"-->
-                    <!--android:layout_marginBottom="4dp"-->
-                    <!--android:background="@drawable/rounded_corner_sort"-->
-                    <!--android:clickable="true"-->
-                    <!--android:elevation="2dp"-->
-                    <!--android:focusable="true"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingTop="8dp"-->
-                    <!--android:paddingRight="15dp"-->
-                    <!--android:paddingBottom="8dp"-->
-                    <!--android:text="Trier par"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textAllCaps="true"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="12sp"-->
-                    <!--android:visibility="gone"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toEndOf="@+id/empty"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
             </android.support.constraint.ConstraintLayout>
 

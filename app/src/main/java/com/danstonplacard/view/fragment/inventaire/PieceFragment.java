@@ -17,25 +17,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danstonplacard.database.RoomDB;
+import com.danstonplacard.database.dao.ProduitDao;
 import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.database.model.Produit;
+import com.danstonplacard.database.model.ProduitDefaut;
+import com.danstonplacard.database.model.Rayon;
+import com.danstonplacard.view.SearchItemArrayAdapter;
 import com.danstonplacard.view.fragment.AjouterProduitFragment;
 import com.danstonplacard.view.fragment.DetailProduitFragment;
 import com.danstonplacard.viewmodel.ProduitViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.danstonplacard.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Fragment that contains the available and unavailable products depending on the selected room
@@ -112,12 +129,40 @@ public class PieceFragment extends Fragment
         ImageView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
-
         ImageView leftArrow = view.findViewById(R.id.left_arrow);
         ImageView rightArrow = view.findViewById(R.id.right_arrow);
+        AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
 
         setOnClickOnArrow(leftArrow, rightArrow);
 
+        // Get Produit Defaut
+        ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(), "products_FR_fr.json");
+
+        ArrayAdapter<ProduitDefaut> adapter = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
+        actv.setAdapter(adapter);
+        actv.setThreshold(1);
+
+        ajouterProduitDefautAInventaire(actv, adapter);
+
+        actv.addTextChangedListener(new TextWatcher() {
+                                        @Override
+                                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                        }
+
+                                        @Override
+                                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                            String searchWord = s.toString().trim();
+                                            setProduitsDisponibles(colonneTri, trierPar, searchWord);
+                                            setProduitsIndisponibles(colonneTri, trierPar, searchWord);
+                                        }
+
+                                        @Override
+                                        public void afterTextChanged(Editable s) {
+
+                                        }
+                                    }
+        );
 
         // Sortting products by something (name, ray, price or date)
         String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
@@ -157,11 +202,42 @@ public class PieceFragment extends Fragment
 
 
         /**/
-        SearchView searchView = (SearchView) view.findViewById(R.id.searchViewPieceFragment);
-        setSearchView(searchView);
+//        SearchView searchView = (SearchView) view.findViewById(R.id.searchViewPieceFragment);
+//        setSearchView(searchView);
 
         return view;
     }
+
+    /**
+     * Method called to add a default product to the inventory
+     *
+     * @param actv
+     * @param adapter
+     */
+    private void ajouterProduitDefautAInventaire(AutoCompleteTextView actv, ArrayAdapter<ProduitDefaut> adapter) {
+        actv.setOnItemClickListener((parent, view1, position, id) -> {
+
+            ProduitDao produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
+
+            // Check if product exists
+            Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
+            if (produit == null) { // Product not exists
+                // Insert new product to BDD
+                Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
+                newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
+                produitDao.insert(newProduit);
+//
+//                    hideKeyboard();
+//                    showSnackBar(R.string.msg_produit_ajoute);
+            } else { // Products exists
+                // Update product
+                produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
+//                    hideKeyboard();
+//                    showSnackBar(R.string.msg_produit_miseajour);
+            }
+        });
+    }
+
 
     private void setOnClickOnArrow(ImageView leftArrow, ImageView rightArrow) {
         String[] piecesStringFormat = getResources().getStringArray(R.array.pieces_format);
@@ -447,5 +523,55 @@ public class PieceFragment extends Fragment
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    /**
+     * Called method to load defaults products from a JSON file contained in assets folder
+     *
+     * @param context
+     * @param fileName
+     * @return
+     */
+    public String loadJSONFromAsset(Context context, String fileName) {
+        String json;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+
+    /**
+     * Method called to obtain a list of commodities / default (unbranded)
+     *
+     * @param context  context of the activity
+     * @param fileName name of the JSON file that contains defaults products
+     * @return List of ProductDefaut
+     */
+    public ArrayList<ProduitDefaut> getProduitsDefaults(Context context, String fileName) {
+        ArrayList<ProduitDefaut> produits = new ArrayList<>();
+        String data = loadJSONFromAsset(context, fileName);
+        try {
+            JSONObject defaultProducts = new JSONObject(data);
+            JSONArray products = defaultProducts.getJSONArray("products");
+            for (int i = 0; i < products.length(); i++) {
+                String nom = products.getJSONObject(i).getString("name");
+                String url_image = products.getJSONObject(i).getString("img_url");
+                String rayon = products.getJSONObject(i).getString("rayon");
+                ProduitDefaut produit = new ProduitDefaut(nom, rayon, url_image);
+                produits.add(produit);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return produits;
     }
 }
