@@ -1,5 +1,6 @@
 package com.danstonplacard.view.fragment.inventaire;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -8,9 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +22,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.view.fragment.AjouterProduitFragment;
 import com.danstonplacard.view.fragment.DetailProduitFragment;
@@ -60,7 +66,7 @@ public class PieceFragment extends Fragment
     private View view;
     private int mPosition;
 
-    public static Fragment newInstance(String param){
+    public static Fragment newInstance(String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PIECE, param);
         args.putString("PIECE", param);
@@ -107,6 +113,12 @@ public class PieceFragment extends Fragment
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
 
+        ImageView leftArrow = view.findViewById(R.id.left_arrow);
+        ImageView rightArrow = view.findViewById(R.id.right_arrow);
+
+        setOnClickOnArrow(leftArrow, rightArrow);
+
+
         // Sortting products by something (name, ray, price or date)
         String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
 
@@ -151,6 +163,40 @@ public class PieceFragment extends Fragment
         return view;
     }
 
+    private void setOnClickOnArrow(ImageView leftArrow, ImageView rightArrow) {
+        String[] piecesStringFormat = getResources().getStringArray(R.array.pieces_format);
+
+        leftArrow.setOnClickListener(v -> {
+            for (int i = 0; i < piecesStringFormat.length; i++) {
+                if (piecesStringFormat[i].equals(mParam)) {
+                    if (i > 0) {
+                        openAnOtherPieces(piecesStringFormat[i - 1]);
+                    }
+                }
+            }
+        });
+
+        rightArrow.setOnClickListener(v -> {
+            for (int i = 0; i < piecesStringFormat.length; i++) {
+                if (piecesStringFormat[i].equals(mParam)) {
+                    if (i < piecesStringFormat.length - 1) {
+                        openAnOtherPieces(piecesStringFormat[i + 1]);
+                    }
+                }
+            }
+        });
+    }
+
+    private void openAnOtherPieces(String pieceToOpen) {
+        getFragmentManager().popBackStack();
+        FragmentManager manager = ((AppCompatActivity) mContext).getSupportFragmentManager();
+        FragmentTransaction trans = manager.beginTransaction();
+        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(pieceToOpen));
+        trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        trans.addToBackStack(null);
+        trans.commit();
+    }
+
     private void setSearchView(SearchView searchView) {
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnClickListener(v -> searchView.setIconified(false));
@@ -162,76 +208,96 @@ public class PieceFragment extends Fragment
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                setProduitsDisponibles(colonneTri, trierPar, newText);
+                setProduitsDisponibles(colonneTri, trierPar, newText.trim());
+                setProduitsIndisponibles(colonneTri, trierPar, newText.trim());
                 return false;
             }
         });
 
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                searchView.setIconified(true);
-                NestedScrollView nsv = view.findViewById(R.id.nestedScrollView);
-                nsv.scrollTo(0,0);
+                Log.d("dtp", "!hasFocus");
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                if (inputMethodManager.isActive()) {
+                    inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
+                } else {
+                    Log.d("dtp", "else");
+                    searchView.setIconified(true);
+                    NestedScrollView nsv = view.findViewById(R.id.nestedScrollView);
+                    nsv.scrollTo(0, 0);
+                }
+
             }
         });
     }
 
     private void refreshSortCriteria(String[] parts) {
-        switch(parts[0]){
+        switch (parts[0]) {
             case "Nom":
-                this.colonneTri = "nom"; break;
+                this.colonneTri = "nom";
+                break;
             case "Rayon":
-                this.colonneTri = "rayon"; break;
+                this.colonneTri = "rayon";
+                break;
             case "Date":
-                this.colonneTri = "dlc"; break;
+                this.colonneTri = "dlc";
+                break;
             case "Prix":
-                this.colonneTri = "prix"; break;
+                this.colonneTri = "prix";
+                break;
 
         }
-        switch (parts[1]){
+        switch (parts[1]) {
             case "[A-Z]":
-                this.trierPar = "ASC"; break;
-            case "[Z-A]" :
-                this.trierPar = "DESC"; break;
+                this.trierPar = "ASC";
+                break;
+            case "[Z-A]":
+                this.trierPar = "DESC";
+                break;
             case "[- récent]":
-                this.trierPar = "ASC"; break;
+                this.trierPar = "ASC";
+                break;
             case "[+ récent]":
-                this.trierPar = "DESC"; break;
+                this.trierPar = "DESC";
+                break;
             case "[croissant]":
-                this.trierPar = "ASC"; break;
+                this.trierPar = "ASC";
+                break;
             case "[décroissant]":
-                this.trierPar = "DESC"; break;
+                this.trierPar = "DESC";
+                break;
         }
     }
 
     private String getPiece(String mPiece) {
-            switch(mPiece){
-                case "CUISINE":
-                    return "Cuisine";
-                case "SALLE_DE_BAIN":
-                    return "Salle de bain";
-                case "CAVE":
-                    return "Cave";
-                case "GARAGE":
-                    return "Garage";
-                case "SALLE_A_MANGER":
-                    return "Séjour";
-                case "CHAMBRE":
-                    return "Chambre";
-                case "DIVERS":
-                    return "Divers";
-                default:
-                    return "Divers";
-            }
+        switch (mPiece) {
+            case "CUISINE":
+                return "Cuisine";
+            case "SALLE_DE_BAIN":
+                return "Salle de bain";
+            case "CAVE":
+                return "Cave";
+            case "GARAGE":
+                return "Garage";
+            case "SALLE_A_MANGER":
+                return "Séjour";
+            case "CHAMBRE":
+                return "Chambre";
+            case "DIVERS":
+                return "Divers";
+            default:
+                return "Divers";
+        }
     }
 
     /**
      * Hides the floating button when the user moves down the list -
      * prevents the button from being above the (-) and (+) buttons of a product
+     *
      * @param nestedScrollView
      * @param add_fab
      */
-    private void hideFloatingButton(NestedScrollView nestedScrollView, FloatingActionButton add_fab){
+    private void hideFloatingButton(NestedScrollView nestedScrollView, FloatingActionButton add_fab) {
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > oldScrollY) {
                 add_fab.hide();
@@ -241,15 +307,10 @@ public class PieceFragment extends Fragment
         });
     }
 
-
-
-
-
-
-
     /**
      * Set onClick Behavor for Floating Button
      * Open new Fragment - AjouterProduitFragment to add new Product
+     *
      * @param add_fab
      */
     private void setOnClickToFloatingButton(FloatingActionButton add_fab) {
@@ -264,7 +325,6 @@ public class PieceFragment extends Fragment
     }
 
     /**
-     *
      * @param section_indispo
      * @param btn_hide_show_unavailable_product
      */
@@ -282,7 +342,6 @@ public class PieceFragment extends Fragment
     }
 
     /**
-     *
      * @param section_dispo
      * @param btn_hide_show_available_product
      */
@@ -297,7 +356,6 @@ public class PieceFragment extends Fragment
             }
         });
     }
-
 
 
     /**
@@ -352,34 +410,39 @@ public class PieceFragment extends Fragment
 
     /**
      * Method called when (-) button on a product is clicked
+     *
      * @param produit
      */
     @Override
     public void onMinusImageViewClickListener(Produit produit) {
-        if(produit.getQuantite() > 0)
+        if (produit.getQuantite() > 0)
             produitViewModel.updateProduit(produit.getId(), produit.getQuantite() - 1);
-        }
+    }
 
     /**
      * Method called when (+) button on a product is clicked
+     *
      * @param produit
      */
     @Override
     public void onAddImageViewClickListener(Produit produit) {
         int quantity = produit.getQuantite();
         produitViewModel.updateProduit(produit.getId(), produit.getQuantite() + 1);
-        if(quantity == 0){setProduitsDisponibles(colonneTri, trierPar, "");}
+        if (quantity == 0) {
+            setProduitsDisponibles(colonneTri, trierPar, "");
+        }
     }
 
     /**
      * Method called when clicking on a product - Opens DetailProduitFragment
+     *
      * @param produit
      */
     @Override
     public void onProductItemClickListener(Produit produit) {
         // Launch the view for product's detail
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        String[] params = new String[]{produit.getId()+"", "-1"};
+        String[] params = new String[]{produit.getId() + "", "-1"};
         transaction.replace(R.id.root_inventaire_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);

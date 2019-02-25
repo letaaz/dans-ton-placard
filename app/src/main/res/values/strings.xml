@@ -69,6 +69,16 @@
         <item name="divers">Divers</item>
     </string-array>
 
+    <string-array name="pieces_format">
+        <item name="CUISINE">CUISINE</item>
+        <item name="SALLE_DE_BAIN">SALLE_DE_BAIN</item>
+        <item name="SALLE_A_MANGER">SALLE_A_MANGER</item>
+        <item name="CAVE">CAVE</item>
+        <item name="CHAMBRE">CHAMBRE</item>
+        <item name="GARAGE">GARAGE</item>
+        <item name="DIVERS">DIVERS</item>
+    </string-array>
+
     <string-array name="rayons">
         <item name="animaux">Animaux</item>
         <item name="bio">Bio</item>

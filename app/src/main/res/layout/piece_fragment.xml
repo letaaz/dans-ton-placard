@@ -25,12 +25,11 @@
 
                 <TextView
                     android:id="@+id/piece_name_piecefragment"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
                     android:fontFamily="sans-serif"
                     android:text="Pièce"
                     android:textAlignment="textStart"
@@ -39,10 +38,10 @@
                     android:textSize="18sp"
                     android:textStyle="bold|italic"
                     android:typeface="normal"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toTopOf="@+id/sort_by_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/right_arrow"
+                    app:layout_constraintStart_toEndOf="@+id/left_arrow"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -71,7 +70,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.96"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />
 
                 <SearchView
                     android:id="@+id/searchViewPieceFragment"
@@ -86,7 +85,31 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />
+
+                <ImageView
+                    android:id="@+id/left_arrow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/piece_name_piecefragment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_left_arrow" />
+
+                <ImageView
+                    android:id="@+id/right_arrow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/piece_name_piecefragment"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_right_arrow" />
 
                 <!--<TextView-->
                     <!--android:id="@+id/empty"-->
