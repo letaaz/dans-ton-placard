@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.danstonplacard.database.RoomDB;
@@ -163,6 +166,45 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     public void setOnProductItemClickListener(OnProductItemClickListener onProductItemClickListener) {
         this.onProductItemClickListener = onProductItemClickListener;
     }
+
+    public Filter getFilter(){
+        return filter;
+    }
+
+    private Filter filter = new Filter(){
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Produit> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(data);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Produit produit : data) {
+                    if(produit.getNom().toLowerCase().contains(filterPattern) || produit.getMarque().toLowerCase().contains(filterPattern)){
+                        filteredList.add(produit);
+                    }
+                }
+                Log.d("dtp", "size here => " + filteredList.size());
+            }
+
+            Log.d("dtp", "size after => " + filteredList.size());
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            Log.d("dtp", "size results => " + results.count);
+
+
+        }
+    };
 
     public class ProduitViewHolder extends RecyclerView.ViewHolder {
 
