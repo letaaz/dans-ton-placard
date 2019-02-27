@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,12 @@ public class LDCEditFragment extends Fragment
         ldcEditAddProduct = view.findViewById(R.id.ldc_edit_ajout_produit_fab);
         TextView ldcEditDefaultContent = view.findViewById(R.id.ldc_edit_default_content);
         ldcEditProductRecyclerView = view.findViewById(R.id.ldc_product_edit_recyclerview);
+
+        if(idLdc == 1) {
+            ldcNameEdit.setInputType(InputType.TYPE_NULL);
+            ldcNameEdit.setBackgroundColor(getResources().getColor(R.color.transparent_background));
+            ldcEditAddProduct.hide();
+        }
 
 
         if (idLdc == LDCFragment.NEW_LDC) {

@@ -108,9 +108,9 @@ public class DetailLDCFragment extends Fragment{
         setDatasProduitsAPrendre(view, listeCoursesViewModel, listeCourses);
 
         // If "Liste des produits manquants" - generated automatically - Its can't be edited
-        if(idLDC == 1){
-            btnEditLdc.setVisibility(View.INVISIBLE);
-        }
+//        if(idLDC == 1){
+//            btnEditLdc.setVisibility(View.INVISIBLE);
+//        }
 
         // If shopping list archived - can't be edited and archived
         if(listeCourses.getEtat() == 1)
