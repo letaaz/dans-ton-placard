@@ -67,6 +67,12 @@
     <string name="prix">Prix :</string>
     <string name="quantit">Quantité :</string>
     <string name="dlc">Dlc :</string>
+    <string name="app_intro_slide_1_title">Dans ton placard !</string>
+    <string name="app_intro_slide_1_desc">L\'application a pour but de t\'aider à gérer ton <i>inventaire</i> pour mieux faire tes <b>listes de courses</b></string>
+    <string name="app_intro_slide_2_title">Inventaire</string>
+    <string name="app_intro_slide_2_desc">Dans cet onglet, tu pourras consulter tous les produits disponibles ou non que tu as rajouté dans tes pièces. Tu peux modifier des informations comme le prix et la date limite de consommation des produits ajoutés</string>
+    <string name="app_intro_slide_3_title">Listes de courses</string>
+    <string name="app_intro_slide_3_desc">Ici, on te mets à disposition une liste de courses auto générée en fonction de tes produits manquants. Tu peux aussi créer de nouvelles listes et y ajouter d\'autres produits</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.danstonplacard.view.activity.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
+            android:parentActivityName=".view.activity.AppIntroActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -29,9 +30,14 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-        <activity android:name="com.danstonplacard.view.activity.AboutActivity"
+        <activity
+            android:name=".view.activity.AboutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar2" />
+
+        <activity android:name=".view.activity.AppIntroActivity"
+            android:theme="@style/AppTheme.NoActionBar2"
+            android:label="app_intro" />
     </application>
 
 </manifest>
