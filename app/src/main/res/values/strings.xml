@@ -58,6 +58,15 @@
     <string name="msgAlertDialogInternetConnection">Le scan nécessite une connexion internet active pour fonctionner, penser à l\'activer.</string>
     <string name="titleAlertDialogInternetConnection">Aucune connexion internet détectée</string>
     <string name="buttonAlertDialogInternetConnection">OK</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="nom_produit">Nom produit</string>
+    <string name="poids_produit">Poids</string>
+    <string name="prix_du_produit">Prix du produit</string>
+    <string name="devise_monnaie">€</string>
+    <string name="date_default">01/01/1970</string>
+    <string name="prix">Prix :</string>
+    <string name="quantit">Quantité :</string>
+    <string name="dlc">Dlc :</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

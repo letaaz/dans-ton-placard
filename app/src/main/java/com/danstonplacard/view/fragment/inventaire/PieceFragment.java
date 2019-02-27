@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,13 +20,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -42,6 +49,7 @@ import com.danstonplacard.database.model.Rayon;
 import com.danstonplacard.view.SearchItemArrayAdapter;
 import com.danstonplacard.view.fragment.AjouterProduitFragment;
 import com.danstonplacard.view.fragment.DetailProduitFragment;
+import com.danstonplacard.view.fragment.ScanbarFragment;
 import com.danstonplacard.viewmodel.ProduitViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.danstonplacard.R;
@@ -83,6 +91,8 @@ public class PieceFragment extends Fragment
     private View view;
     private int mPosition;
 
+    private ArrayAdapter<ProduitDefaut> adapterActv;
+
     public static Fragment newInstance(String param) {
         Bundle args = new Bundle();
         args.putString(ARG_PIECE, param);
@@ -111,6 +121,36 @@ public class PieceFragment extends Fragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.activity_menu_piece_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String[] piecesStringFormat = getResources().getStringArray(R.array.pieces_format);
+
+        switch (item.getItemId()) {
+            case R.id.action_piece_precedente:
+                for (int i = 0; i < piecesStringFormat.length; i++) {
+                    if (piecesStringFormat[i].equals(mParam)) {
+                        if (i > 0) {
+                            openAnOtherPieces(piecesStringFormat[i - 1]);
+                        }
+                    }
+                }                return true;
+            case R.id.action_piece_suivante:
+                for (int i = 0; i < piecesStringFormat.length; i++) {
+                    if (piecesStringFormat[i].equals(mParam)) {
+                        if (i < piecesStringFormat.length - 1) {
+                            openAnOtherPieces(piecesStringFormat[i + 1]);
+                        }
+                    }
+                }                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.piece_fragment, container, false);
         this.view = view;
@@ -120,8 +160,12 @@ public class PieceFragment extends Fragment
         setProduitsDisponibles(colonneTri, trierPar, "");
         setProduitsIndisponibles(colonneTri, trierPar, "");
 
-        TextView textViewPiece = view.findViewById(R.id.piece_name_piecefragment);
-        textViewPiece.setText("" + getPiece(mPiece));
+
+
+        getActivity().setTitle(getPiece(mPiece));
+        setHasOptionsMenu(true);
+
+
 
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
@@ -129,21 +173,16 @@ public class PieceFragment extends Fragment
         ImageView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
-        ImageView leftArrow = view.findViewById(R.id.left_arrow);
-        ImageView rightArrow = view.findViewById(R.id.right_arrow);
+
         AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
 
-        setOnClickOnArrow(leftArrow, rightArrow);
 
         // Get Produit Defaut
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(), "products_FR_fr.json");
 
-        ArrayAdapter<ProduitDefaut> adapter = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
-        actv.setAdapter(adapter);
-        actv.setThreshold(1);
-
-        ajouterProduitDefautAInventaire(actv, adapter);
-
+        adapterActv = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
+        actv.setAdapter(adapterActv);
+        actv.setThreshold(2);
         actv.addTextChangedListener(new TextWatcher() {
                                         @Override
                                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -155,14 +194,47 @@ public class PieceFragment extends Fragment
                                             String searchWord = s.toString().trim();
                                             setProduitsDisponibles(colonneTri, trierPar, searchWord);
                                             setProduitsIndisponibles(colonneTri, trierPar, searchWord);
+
+//                                            produits.add(new ProduitDefaut(searchWord, "DIVERS", ""));
+//                                            ArrayAdapter<ProduitDefaut> newAdapter = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
+//                                            actv.setAdapter(newAdapter);
+//                                            adapterActv = newAdapter;
                                         }
 
                                         @Override
                                         public void afterTextChanged(Editable s) {
-
                                         }
                                     }
         );
+
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(mContext, adapterActv.getItem(position).getNom() + "", Toast.LENGTH_SHORT).show();
+                ProduitDao produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
+
+                // Check if product exists
+                Produit produit = produitDao.findProductByNom(adapterActv.getItem(position).getNom(), mPiece);
+                if (produit == null) { // Product not exists
+                    // Insert new product to BDD
+                    Produit newProduit = new Produit(adapterActv.getItem(position).getNom(), 1, Rayon.getRayon(adapterActv.getItem(position).getRayon()), Piece.getPiece(mPiece));
+                    newProduit.setUrlImage(adapterActv.getItem(position).getUrl_image());
+                    produitDao.insert(newProduit);
+                } else { // Products exists
+                    // Update product
+                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
+                }
+            }
+        });
+
+
+
+        ImageView close_actv = view.findViewById(R.id.close_actv);
+        close_actv.setOnClickListener(v -> {
+            actv.setText("");
+            hideKeyboard();
+        });
 
         // Sortting products by something (name, ray, price or date)
         String[] listSortingBy = getResources().getStringArray(R.array.sort_by);
@@ -217,6 +289,8 @@ public class PieceFragment extends Fragment
     private void ajouterProduitDefautAInventaire(AutoCompleteTextView actv, ArrayAdapter<ProduitDefaut> adapter) {
         actv.setOnItemClickListener((parent, view1, position, id) -> {
 
+            Toast.makeText(mContext, "CLICKED : " + adapter.getItem(position).getNom(), Toast.LENGTH_SHORT).show();
+
             ProduitDao produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
 
             // Check if product exists
@@ -226,42 +300,13 @@ public class PieceFragment extends Fragment
                 Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
                 newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
                 produitDao.insert(newProduit);
-//
-//                    hideKeyboard();
-//                    showSnackBar(R.string.msg_produit_ajoute);
             } else { // Products exists
                 // Update product
                 produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
-//                    hideKeyboard();
-//                    showSnackBar(R.string.msg_produit_miseajour);
             }
         });
     }
 
-
-    private void setOnClickOnArrow(ImageView leftArrow, ImageView rightArrow) {
-        String[] piecesStringFormat = getResources().getStringArray(R.array.pieces_format);
-
-        leftArrow.setOnClickListener(v -> {
-            for (int i = 0; i < piecesStringFormat.length; i++) {
-                if (piecesStringFormat[i].equals(mParam)) {
-                    if (i > 0) {
-                        openAnOtherPieces(piecesStringFormat[i - 1]);
-                    }
-                }
-            }
-        });
-
-        rightArrow.setOnClickListener(v -> {
-            for (int i = 0; i < piecesStringFormat.length; i++) {
-                if (piecesStringFormat[i].equals(mParam)) {
-                    if (i < piecesStringFormat.length - 1) {
-                        openAnOtherPieces(piecesStringFormat[i + 1]);
-                    }
-                }
-            }
-        });
-    }
 
     private void openAnOtherPieces(String pieceToOpen) {
         getFragmentManager().popBackStack();
@@ -273,39 +318,6 @@ public class PieceFragment extends Fragment
         trans.commit();
     }
 
-    private void setSearchView(SearchView searchView) {
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnClickListener(v -> searchView.setIconified(false));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                setProduitsDisponibles(colonneTri, trierPar, newText.trim());
-                setProduitsIndisponibles(colonneTri, trierPar, newText.trim());
-                return false;
-            }
-        });
-
-        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                Log.d("dtp", "!hasFocus");
-                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                if (inputMethodManager.isActive()) {
-                    inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
-                } else {
-                    Log.d("dtp", "else");
-                    searchView.setIconified(true);
-                    NestedScrollView nsv = view.findViewById(R.id.nestedScrollView);
-                    nsv.scrollTo(0, 0);
-                }
-
-            }
-        });
-    }
 
     private void refreshSortCriteria(String[] parts) {
         switch (parts[0]) {
@@ -390,13 +402,37 @@ public class PieceFragment extends Fragment
      * @param add_fab
      */
     private void setOnClickToFloatingButton(FloatingActionButton add_fab) {
+//        add_fab.setOnClickListener(view1 -> {
+//            // Launch the view for adding a product to the current piece
+//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//            transaction.replace(R.id.root_inventaire_frame, AjouterProduitFragment.newInstance(mPiece));
+//            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//            transaction.addToBackStack(null);
+//            transaction.commit();
+//        });
+
         add_fab.setOnClickListener(view1 -> {
-            // Launch the view for adding a product to the current piece
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.root_inventaire_frame, AjouterProduitFragment.newInstance(mPiece));
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
-            transaction.commit();
+
+            // Check if internet is available
+            if (isNetworkAvailable()) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.root_inventaire_frame, ScanbarFragment.newInstance(mPiece, -1));
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            } else { // Show alert dialog to put on internet connection
+                String alertMsg = mContext.getResources().getString(R.string.msgAlertDialogInternetConnection);
+                String title = mContext.getResources().getString(R.string.titleAlertDialogInternetConnection);
+                String buttonText = mContext.getResources().getString(R.string.buttonAlertDialogInternetConnection);
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+                alertDialog.setTitle(title);
+
+                alertDialog.setMessage(Html.fromHtml(alertMsg));
+                alertDialog.setPositiveButton(buttonText, (dialog, which) -> dialog.cancel());
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+            }
         });
     }
 
@@ -573,5 +609,25 @@ public class PieceFragment extends Fragment
             e.printStackTrace();
         }
         return produits;
+    }
+
+    /**
+     * Method called to hide the keyboard
+     */
+    public void hideKeyboard()
+    {
+        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
+    }
+
+    /**
+     * Method that verifies that the internet connection is active
+     * @return true if internet is available - false otherwise
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 }

@@ -24,35 +24,13 @@
 
 
                 <TextView
-                    android:id="@+id/piece_name_piecefragment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:fontFamily="sans-serif"
-                    android:text="Pièce"
-                    android:textAlignment="textStart"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic"
-                    android:typeface="normal"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toTopOf="@+id/sort_by_btn"
-                    app:layout_constraintEnd_toStartOf="@+id/right_arrow"
-                    app:layout_constraintStart_toEndOf="@+id/left_arrow"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/sort_by_btn"
-                    android:layout_width="90dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/rounded_corner_sort"
                     android:clickable="true"
                     android:elevation="2dp"
@@ -61,7 +39,7 @@
                     android:paddingTop="8dp"
                     android:paddingRight="15dp"
                     android:paddingBottom="8dp"
-                    android:text="Trier par"
+                    android:text="Trier"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
@@ -70,7 +48,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.96"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!--<SearchView-->
                     <!--android:id="@+id/searchViewPieceFragment"-->
@@ -101,13 +79,13 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/imageView7"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="6dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -129,12 +107,12 @@
                         android:inputType="text"
                         android:maxLines="1"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                        app:layout_constraintEnd_toStartOf="@+id/close_actv"
                         app:layout_constraintStart_toEndOf="@+id/imageView7"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/close_actv"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="8dp"
@@ -147,30 +125,6 @@
                         app:srcCompat="@drawable/close" />
 
                 </android.support.constraint.ConstraintLayout>
-
-                <ImageView
-                    android:id="@+id/left_arrow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/piece_name_piecefragment"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_left_arrow" />
-
-                <ImageView
-                    android:id="@+id/right_arrow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/piece_name_piecefragment"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_right_arrow" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -319,7 +273,7 @@
         android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_plus_white"
+        android:src="@drawable/ic_barcode_white"
         android:visibility="visible"
         app:backgroundTint="@color/colorTabLayoutBackground"
         app:backgroundTintMode="src_over"

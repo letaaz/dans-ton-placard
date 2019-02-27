@@ -58,6 +58,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this.getContext();
+        getActivity().setTitle(R.string.title_activity_main);
     }
 
     @Override

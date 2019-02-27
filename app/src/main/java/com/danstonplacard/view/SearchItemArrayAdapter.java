@@ -54,6 +54,12 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
         return produit;
     }
 
+    public void addProduct(ProduitDefaut produitDefaut)
+    {
+        produitsDefautsList.add(produitDefaut);
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;

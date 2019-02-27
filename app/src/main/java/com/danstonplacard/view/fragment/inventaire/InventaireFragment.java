@@ -37,6 +37,7 @@ public class InventaireFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
         this.setRecyclerViewPiece(view);
+        getActivity().setTitle(R.string.title_activity_main);
         return view;
     }
 
