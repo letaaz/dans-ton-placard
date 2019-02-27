@@ -136,6 +136,10 @@ public class PieceFragment extends Fragment
                         if (i > 0) {
                             openAnOtherPieces(piecesStringFormat[i - 1]);
                         }
+                        else
+                        {
+                            openAnOtherPieces(piecesStringFormat[piecesStringFormat.length-1]);
+                        }
                     }
                 }                return true;
             case R.id.action_piece_suivante:
@@ -144,6 +148,7 @@ public class PieceFragment extends Fragment
                         if (i < piecesStringFormat.length - 1) {
                             openAnOtherPieces(piecesStringFormat[i + 1]);
                         }
+                        else{ openAnOtherPieces(piecesStringFormat[0]);}
                     }
                 }                return true;
         }
