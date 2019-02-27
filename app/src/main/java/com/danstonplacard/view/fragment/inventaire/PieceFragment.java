@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -61,6 +65,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment that contains the available and unavailable products depending on the selected room
@@ -91,7 +96,7 @@ public class PieceFragment extends Fragment
     private View view;
     private int mPosition;
 
-    private ArrayAdapter<ProduitDefaut> adapterActv;
+    private Handler handler;
 
     public static Fragment newInstance(String param) {
         Bundle args = new Bundle();
@@ -185,9 +190,9 @@ public class PieceFragment extends Fragment
         // Get Produit Defaut
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(), "products_FR_fr.json");
 
-        adapterActv = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
-        actv.setAdapter(adapterActv);
-        actv.setThreshold(2);
+        ArrayAdapter<ProduitDefaut> adapter = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
+        actv.setAdapter(adapter);
+        actv.setThreshold(1);
         actv.addTextChangedListener(new TextWatcher() {
                                         @Override
                                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -199,37 +204,48 @@ public class PieceFragment extends Fragment
                                             String searchWord = s.toString().trim();
                                             setProduitsDisponibles(colonneTri, trierPar, searchWord);
                                             setProduitsIndisponibles(colonneTri, trierPar, searchWord);
-
-//                                            produits.add(new ProduitDefaut(searchWord, "DIVERS", ""));
-//                                            ArrayAdapter<ProduitDefaut> newAdapter = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
-//                                            actv.setAdapter(newAdapter);
-//                                            adapterActv = newAdapter;
                                         }
 
                                         @Override
                                         public void afterTextChanged(Editable s) {
+                                            if(adapter.getCount() == 0) {
+                                                handler.removeMessages(100);
+                                                handler.sendEmptyMessageDelayed(100, 100);
+                                            }
                                         }
                                     }
-        );
+                                    );
 
-        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        handler = new Handler(new Handler.Callback() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(mContext, adapterActv.getItem(position).getNom() + "", Toast.LENGTH_SHORT).show();
-                ProduitDao produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
-
-                // Check if product exists
-                Produit produit = produitDao.findProductByNom(adapterActv.getItem(position).getNom(), mPiece);
-                if (produit == null) { // Product not exists
-                    // Insert new product to BDD
-                    Produit newProduit = new Produit(adapterActv.getItem(position).getNom(), 1, Rayon.getRayon(adapterActv.getItem(position).getRayon()), Piece.getPiece(mPiece));
-                    newProduit.setUrlImage(adapterActv.getItem(position).getUrl_image());
-                    produitDao.insert(newProduit);
-                } else { // Products exists
-                    // Update product
-                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
+            public boolean handleMessage(Message msg) {
+                if(msg.what == 100){
+                    if(!TextUtils.isEmpty(actv.getText())){
+                        List<ProduitDefaut> newProduits = new ArrayList<>();
+                        newProduits.add(new ProduitDefaut(actv.getText().toString(), "DIVERS", ""));
+                        ((SearchItemArrayAdapter) adapter).setData(newProduits);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
+                return false;
+            }
+        });
+
+        actv.setOnItemClickListener((parent, view1, position, id) -> {
+
+            Toast.makeText(mContext, adapter.getItem(position).getNom() + "", Toast.LENGTH_SHORT).show();
+            ProduitDao produitDao = RoomDB.getDatabase(view1.getContext()).produitDao();
+
+            // Check if product exists
+            Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
+            if (produit == null) { // Product not exists
+                // Insert new product to BDD
+                Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
+                newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
+                produitDao.insert(newProduit);
+            } else { // Products exists
+                // Update product
+                produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
             }
         });
 

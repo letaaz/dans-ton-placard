@@ -28,12 +28,12 @@ public class ProduitViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Produit>> getProduitsDisponiblesTrierPar(String piece, String colonne, String trierPar, String nom){
-        String query = "SELECT * from produit WHERE nom LIKE '%"+ nom +"%' AND piece = '" + Piece.valueOf(piece) + "' AND quantite > 0 ORDER BY " + colonne + " " + trierPar;
+        String query = "SELECT * from produit WHERE nom LIKE \"%"+ nom +"%\" AND piece = '" + Piece.valueOf(piece) + "' AND quantite > 0 ORDER BY " + colonne + " " + trierPar;
         return produitDao.runtimeQuery(new SimpleSQLiteQuery(query));
     }
 
     public LiveData<List<Produit>> getProduitsIndisponiblesTrierPar(String piece, String colonne, String trierPar, String nom){
-        String query = "SELECT * from produit WHERE nom LIKE '%"+ nom +"%' AND piece = '" + Piece.valueOf(piece) + "' AND quantite = 0 ORDER BY " + colonne + " " + trierPar;
+        String query = "SELECT * from produit WHERE nom LIKE \"%"+ nom +"%\" AND piece = '" + Piece.valueOf(piece) + "' AND quantite = 0 ORDER BY " + colonne + " " + trierPar;
         return produitDao.runtimeQuery(new SimpleSQLiteQuery(query));
     }
 
