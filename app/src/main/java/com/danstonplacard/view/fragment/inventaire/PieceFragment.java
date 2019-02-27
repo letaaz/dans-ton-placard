@@ -170,12 +170,8 @@ public class PieceFragment extends Fragment
         setProduitsDisponibles(colonneTri, trierPar, "");
         setProduitsIndisponibles(colonneTri, trierPar, "");
 
-
-
         getActivity().setTitle(getPiece(mPiece));
         setHasOptionsMenu(true);
-
-
 
         RelativeLayout section_dispo = view.findViewById(R.id.section_produits_dispo);
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
@@ -187,7 +183,7 @@ public class PieceFragment extends Fragment
         AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
 
 
-        // Get Produit Defaut
+        // Set autoCompleteTextView to suggest defaults products (with no barcode for example)
         ArrayList<ProduitDefaut> produits = getProduitsDefaults(view.getContext(), "products_FR_fr.json");
 
         ArrayAdapter<ProduitDefaut> adapter = new SearchItemArrayAdapter(mContext, R.layout.search_listitem, produits);
@@ -216,23 +212,19 @@ public class PieceFragment extends Fragment
                                     }
                                     );
 
-        handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if(msg.what == 100){
-                    if(!TextUtils.isEmpty(actv.getText())){
-                        List<ProduitDefaut> newProduits = new ArrayList<>();
-                        newProduits.add(new ProduitDefaut(actv.getText().toString(), "DIVERS", ""));
-                        ((SearchItemArrayAdapter) adapter).setData(newProduits);
-                        adapter.notifyDataSetChanged();
-                    }
+        handler = new Handler(msg -> {
+            if(msg.what == 100){
+                if(!TextUtils.isEmpty(actv.getText())){
+                    List<ProduitDefaut> newProduits = new ArrayList<>();
+                    newProduits.add(new ProduitDefaut(actv.getText().toString(), "DIVERS", ""));
+                    ((SearchItemArrayAdapter) adapter).setData(newProduits);
+                    adapter.notifyDataSetChanged();
                 }
-                return false;
             }
+            return false;
         });
 
         actv.setOnItemClickListener((parent, view1, position, id) -> {
-
             Toast.makeText(mContext, adapter.getItem(position).getNom() + "", Toast.LENGTH_SHORT).show();
             ProduitDao produitDao = RoomDB.getDatabase(view1.getContext()).produitDao();
 
@@ -249,8 +241,7 @@ public class PieceFragment extends Fragment
             }
         });
 
-
-
+        // Add behavior to close icon after autocompletetextview
         ImageView close_actv = view.findViewById(R.id.close_actv);
         close_actv.setOnClickListener(v -> {
             actv.setText("");
@@ -294,38 +285,7 @@ public class PieceFragment extends Fragment
         hideFloatingButton(nestedScrollView, add_fab);
 
 
-        /**/
-//        SearchView searchView = (SearchView) view.findViewById(R.id.searchViewPieceFragment);
-//        setSearchView(searchView);
-
         return view;
-    }
-
-    /**
-     * Method called to add a default product to the inventory
-     *
-     * @param actv
-     * @param adapter
-     */
-    private void ajouterProduitDefautAInventaire(AutoCompleteTextView actv, ArrayAdapter<ProduitDefaut> adapter) {
-        actv.setOnItemClickListener((parent, view1, position, id) -> {
-
-            Toast.makeText(mContext, "CLICKED : " + adapter.getItem(position).getNom(), Toast.LENGTH_SHORT).show();
-
-            ProduitDao produitDao = RoomDB.getDatabase(view.getContext()).produitDao();
-
-            // Check if product exists
-            Produit produit = produitDao.findProductByNom(adapter.getItem(position).getNom(), mPiece);
-            if (produit == null) { // Product not exists
-                // Insert new product to BDD
-                Produit newProduit = new Produit(adapter.getItem(position).getNom(), 1, Rayon.getRayon(adapter.getItem(position).getRayon()), Piece.getPiece(mPiece));
-                newProduit.setUrlImage(adapter.getItem(position).getUrl_image());
-                produitDao.insert(newProduit);
-            } else { // Products exists
-                // Update product
-                produitDao.updateQuantityById(produit.getId(), produit.getQuantite() + 1);
-            }
-        });
     }
 
 
@@ -337,66 +297,6 @@ public class PieceFragment extends Fragment
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         trans.addToBackStack(null);
         trans.commit();
-    }
-
-
-    private void refreshSortCriteria(String[] parts) {
-        switch (parts[0]) {
-            case "Nom":
-                this.colonneTri = "nom";
-                break;
-            case "Rayon":
-                this.colonneTri = "rayon";
-                break;
-            case "Date":
-                this.colonneTri = "dlc";
-                break;
-            case "Prix":
-                this.colonneTri = "prix";
-                break;
-
-        }
-        switch (parts[1]) {
-            case "[A-Z]":
-                this.trierPar = "ASC";
-                break;
-            case "[Z-A]":
-                this.trierPar = "DESC";
-                break;
-            case "[- récent]":
-                this.trierPar = "ASC";
-                break;
-            case "[+ récent]":
-                this.trierPar = "DESC";
-                break;
-            case "[croissant]":
-                this.trierPar = "ASC";
-                break;
-            case "[décroissant]":
-                this.trierPar = "DESC";
-                break;
-        }
-    }
-
-    private String getPiece(String mPiece) {
-        switch (mPiece) {
-            case "CUISINE":
-                return "Cuisine";
-            case "SALLE_DE_BAIN":
-                return "Salle de bain";
-            case "CAVE":
-                return "Cave";
-            case "GARAGE":
-                return "Garage";
-            case "SALLE_A_MANGER":
-                return "Séjour";
-            case "CHAMBRE":
-                return "Chambre";
-            case "DIVERS":
-                return "Divers";
-            default:
-                return "Divers";
-        }
     }
 
     /**
@@ -423,15 +323,6 @@ public class PieceFragment extends Fragment
      * @param add_fab
      */
     private void setOnClickToFloatingButton(FloatingActionButton add_fab) {
-//        add_fab.setOnClickListener(view1 -> {
-//            // Launch the view for adding a product to the current piece
-//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//            transaction.replace(R.id.root_inventaire_frame, AjouterProduitFragment.newInstance(mPiece));
-//            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-//        });
-
         add_fab.setOnClickListener(view1 -> {
 
             // Check if internet is available
@@ -650,5 +541,64 @@ public class PieceFragment extends Fragment
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
+    }
+
+    private void refreshSortCriteria(String[] parts) {
+        switch (parts[0]) {
+            case "Nom":
+                this.colonneTri = "nom";
+                break;
+            case "Rayon":
+                this.colonneTri = "rayon";
+                break;
+            case "Date":
+                this.colonneTri = "dlc";
+                break;
+            case "Prix":
+                this.colonneTri = "prix";
+                break;
+
+        }
+        switch (parts[1]) {
+            case "[A-Z]":
+                this.trierPar = "ASC";
+                break;
+            case "[Z-A]":
+                this.trierPar = "DESC";
+                break;
+            case "[- récent]":
+                this.trierPar = "ASC";
+                break;
+            case "[+ récent]":
+                this.trierPar = "DESC";
+                break;
+            case "[croissant]":
+                this.trierPar = "ASC";
+                break;
+            case "[décroissant]":
+                this.trierPar = "DESC";
+                break;
+        }
+    }
+
+    private String getPiece(String mPiece) {
+        switch (mPiece) {
+            case "CUISINE":
+                return "Cuisine";
+            case "SALLE_DE_BAIN":
+                return "Salle de bain";
+            case "CAVE":
+                return "Cave";
+            case "GARAGE":
+                return "Garage";
+            case "SALLE_A_MANGER":
+                return "Séjour";
+            case "CHAMBRE":
+                return "Chambre";
+            case "DIVERS":
+                return "Divers";
+            default:
+                return "Divers";
+        }
     }
 }
