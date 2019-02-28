@@ -67,6 +67,12 @@
     <string name="prix">Prix :</string>
     <string name="quantit">Quantité :</string>
     <string name="dlc">Dlc :</string>
+    <string name="app_intro_slide_1_title">Optmise tes courses !</string>
+    <string name="app_intro_slide_1_desc">Avec Dans ton placard, gagne du temps, gère tes dépenses et dit stop aux oublis.</string>
+    <string name="app_intro_slide_2_title">Étape 1 : Inventaire</string>
+    <string name="app_intro_slide_2_desc">Ajoute et consulte les produits disponibles/indisponibles chez toi par pièce. C\'est simple et rapide.</string>
+    <string name="app_intro_slide_3_title">Étape 2 : Listes de courses</string>
+    <string name="app_intro_slide_3_desc">Crée ta propre liste de course ou utilise la liste des produits manquants mise à jour automatiquement en fonction de ton inventaire !</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>

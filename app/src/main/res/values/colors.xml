@@ -6,7 +6,7 @@
     <color name="colorAccent">#f8d81b4d</color>
     <color name="colorTabLayoutBackground">#2877e8</color>
     <color name="colorPrimaryText">#1E2D3E</color>
-
+    <color name="app_intro_background">#d08cc3df</color>
 
     <color name="colorBackgroundPiece">#f8f8f8</color>
     <color name="kitchen_background">#DDA853</color>
