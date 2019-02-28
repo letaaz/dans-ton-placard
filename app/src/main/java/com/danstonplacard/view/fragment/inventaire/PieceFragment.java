@@ -97,6 +97,9 @@ public class PieceFragment extends Fragment
     private int mPosition;
 
     private Handler handler;
+    private NestedScrollView nestedScrollView;
+    private int scrollX = 0;
+    private int scrollY = -1;
 
     public static Fragment newInstance(String param) {
         Bundle args = new Bundle();
@@ -122,7 +125,14 @@ public class PieceFragment extends Fragment
         super.onResume();
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
+        nestedScrollView.postDelayed(() -> nestedScrollView.scrollTo(scrollX, scrollY), 100);
+    }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        scrollX = nestedScrollView.getScrollX();
+        scrollY = nestedScrollView.getScrollY();
     }
 
     @Override
@@ -177,7 +187,7 @@ public class PieceFragment extends Fragment
         ImageView btn_hide_show_available_product = view.findViewById(R.id.section_show_all_button_dispo);
         RelativeLayout section_indispo = view.findViewById(R.id.section_produits_indispo);
         ImageView btn_hide_show_unavailable_product = view.findViewById(R.id.section_show_all_button_indispo);
-        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        nestedScrollView = view.findViewById(R.id.nestedScrollView);
         FloatingActionButton add_fab = view.findViewById(R.id.ajout_produit_fab);
 
         AutoCompleteTextView actv = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
