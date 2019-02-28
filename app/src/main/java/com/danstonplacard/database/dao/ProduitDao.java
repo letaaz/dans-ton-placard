@@ -1,10 +1,13 @@
 package com.danstonplacard.database.dao;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.persistence.db.SimpleSQLiteQuery;
+import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RawQuery;
 import android.arch.persistence.room.Update;
 
 import com.danstonplacard.database.model.Produit;
@@ -47,64 +50,27 @@ public interface ProduitDao {
 
 
     // TRI PRODUITS DISPONIBLES
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY nom ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNomASC(String piece);
+    /* piece => piece - column_sort => name of the column that will be sort */
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY :column_sort ASC")
+    LiveData<List<Produit>> getProduitsDisponiblesSortASC(String piece, String column_sort);
 
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY nom DESC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParNomDESC(String piece);
-
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY rayon ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayonASC(String piece);
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY rayon DESC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParRayonDESC(String piece);
+    @RawQuery(observedEntities = Produit.class)
+    LiveData<List<Produit>> runtimeQuery(SupportSQLiteQuery sortQuery);
 
 
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY dlc ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDateASC(String piece);
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY dlc DESC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParDateDESC(String piece);
 
 
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY prix ASC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrixASC(String piece);
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY prix DESC")
-    LiveData<List<Produit>> getProduitsDisponiblesParPieceTrierParPrixDESC(String piece);
-
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite > 0 ORDER BY :column_sort DESC")
+    LiveData<List<Produit>> getProduitsDisponiblesSortDESC(String piece, String column_sort);
 
 
     // TRI PRODUITS INDISPONIBLES
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY nom ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNomASC(String piece);
+    /* piece => piece - column_sort => name of the column that will be sort */
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY :column_sort ASC")
+    LiveData<List<Produit>> getProduitsIndisponiblesSortASC(String piece, String column_sort);
 
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY nom DESC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParNomDESC(String piece);
-
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY rayon ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayonASC(String piece);
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY rayon DESC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParRayonDESC(String piece);
-
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY dlc ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDateASC(String piece);
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY dlc DESC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParDateDESC(String piece);
-
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY prix ASC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrixASC(String piece);
-
-    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY prix DESC")
-    LiveData<List<Produit>> getProduitsIndisponiblesParPieceTrierParPrixDESC(String piece);
-
-
+    @Query("SELECT * from produit WHERE piece = :piece AND quantite = 0 ORDER BY :column_sort DESC")
+    LiveData<List<Produit>> getProduitsIndisponiblesSortDESC(String piece, String column_sort);
 
 
 

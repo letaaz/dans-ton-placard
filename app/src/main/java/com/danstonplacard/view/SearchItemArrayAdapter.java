@@ -27,7 +27,6 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
 
     private Context context;
 
-    private List<ProduitDefaut> dataListAllItems;
     private List<ProduitDefaut> produitsDefautsList;
 
     private ListFilter listFilter = new ListFilter();
@@ -53,6 +52,13 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
         ProduitDefaut produit = this.produitsDefautsList.get(position);
         return produit;
     }
+
+    public void setData(List<ProduitDefaut> produitsDefautsList)
+    {
+        this.produitsDefautsList.clear();
+        this.produitsDefautsList = produitsDefautsList;
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -106,7 +112,9 @@ public class SearchItemArrayAdapter extends ArrayAdapter<ProduitDefaut> {
     }
 
     public class ListFilter extends Filter {
+
         private Object lock = new Object();
+        private List<ProduitDefaut> dataListAllItems;
 
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
