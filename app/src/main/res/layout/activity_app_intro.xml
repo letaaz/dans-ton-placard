@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.AppIntroActivity">
 
+    <TextView
+        android:id="@+id/slide_intro_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/slide_intro_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="76dp"
+        android:padding="2dp"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/slide_intro_img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/slide_intro_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slide_intro_title"
+        tools:src="@tools:sample/backgrounds/scenic" />
 </android.support.constraint.ConstraintLayout>
