@@ -2,9 +2,11 @@ package com.danstonplacard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -56,44 +58,44 @@ public class MainActivity extends AppCompatActivity
         /* Set the tabLayout of the application*/
         setTabLayout(viewPager);
 
-        startActivity(new Intent(this, AppIntroActivity.class));
+//        startActivity(new Intent(this, AppIntroActivity.class));
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //  Initialize SharedPreferences
-//                SharedPreferences getPrefs = PreferenceManager
-//                        .getDefaultSharedPreferences(getBaseContext());
-//
-//                //  Create a new boolean and preference and set it to true
-//                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
-//
-//                //  If the activity has never started before...
-//                if (isFirstStart) {
-//
-//                    //  Launch app intro
-//                    final Intent i = new Intent(MainActivity.this, AppIntroActivity.class);
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override public void run() {
-//                            startActivity(i);
-//                        }
-//                    });
-//
-//                    //  Make a new preferences editor
-//                    SharedPreferences.Editor e = getPrefs.edit();
-//
-//                    //  Edit preference to make it false because we don't want this to run again
-//                    e.putBoolean("firstStart", false);
-//
-//                    //  Apply changes
-//                    e.apply();
-//                }
-//            }
-//        });
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //  Initialize SharedPreferences
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                //  Create a new boolean and preference and set it to true
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                //  If the activity has never started before...
+                if (isFirstStart) {
+
+                    //  Launch app intro
+                    final Intent i = new Intent(MainActivity.this, AppIntroActivity.class);
+
+                    runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            startActivity(i);
+                        }
+                    });
+
+                    //  Make a new preferences editor
+                    SharedPreferences.Editor e = getPrefs.edit();
+
+                    //  Edit preference to make it false because we don't want this to run again
+                    e.putBoolean("firstStart", false);
+
+                    //  Apply changes
+                    e.apply();
+                }
+            }
+        });
 
         // Start the thread
-//        t.start();
+        t.start();
     }
 
     /**
