@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -25,25 +23,21 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ProduitDao;
 import com.danstonplacard.database.model.Piece;
@@ -51,12 +45,10 @@ import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.database.model.ProduitDefaut;
 import com.danstonplacard.database.model.Rayon;
 import com.danstonplacard.view.SearchItemArrayAdapter;
-import com.danstonplacard.view.fragment.AjouterProduitFragment;
 import com.danstonplacard.view.fragment.DetailProduitFragment;
 import com.danstonplacard.view.fragment.ScanbarFragment;
 import com.danstonplacard.viewmodel.ProduitViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,16 +74,18 @@ public class PieceFragment extends Fragment
     private String trierPar = "ASC";
     private int checkedItemSort = 0;
 
-    // RecyclerView + Adapter - produits disponibles
+    // RecyclerView + Adapter + TexView - produits disponibles
     private RecyclerView produitsDisponiblesRecyclerView;
     private ProduitAdapter produitsDisponiblesAdapter;
+    private TextView produitsDisponiblesCount;
 
-
-    // RecyclerView + Adapter - produits indisponibles
+    // RecyclerView + Adapter + TextView - produits indisponibles
     private RecyclerView produitsIndisponiblesRecyclerView;
     private ProduitAdapter produitsIndisponiblesAdapter;
+    private TextView produitsIndisponiblesCount;
+
     private ProduitViewModel produitViewModel;
-    private ProduitViewModel produitViewModel2;
+
 
     private View view;
     private int mPosition;
@@ -303,9 +297,9 @@ public class PieceFragment extends Fragment
         getFragmentManager().popBackStack();
         FragmentManager manager = ((AppCompatActivity) mContext).getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
-        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(pieceToOpen));
+        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(pieceToOpen), "PieceFragment");
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        trans.addToBackStack(null);
+        trans.addToBackStack("changePiece");
         trans.commit();
     }
 
@@ -396,7 +390,12 @@ public class PieceFragment extends Fragment
      * Set Produits Disponibles in RecyclerView
      */
     private void setProduitsDisponibles(String colonne, String trierPar, String nom) {
-        produitViewModel.getProduitsDisponiblesTrierPar(mParam, colonne, trierPar, nom).observe(this, produits -> produitsDisponiblesAdapter.setData(produits));
+        produitViewModel.getProduitsDisponiblesTrierPar(mParam, colonne, trierPar, nom).observe(this,
+                produits -> {
+                    produitsDisponiblesAdapter.setData(produits);
+                    produitsDisponiblesCount.setText("(" + produits.size() + ")");
+                }
+        );
         setRecyclerViewProduitsDisponibles();
     }
 
@@ -414,6 +413,8 @@ public class PieceFragment extends Fragment
         RecyclerView.LayoutManager produitsDisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsDisponiblesRecyclerView.setLayoutManager(produitsDisponiblesLayoutManager);
         produitsDisponiblesRecyclerView.setNestedScrollingEnabled(false);
+
+        produitsDisponiblesCount = view.findViewById(R.id.section_count);
     }
 
 
@@ -421,7 +422,11 @@ public class PieceFragment extends Fragment
      * Set Products Indisponibles in RecyclerView
      */
     private void setProduitsIndisponibles(String colonne, String trierPar, String nom) {
-        produitViewModel.getProduitsIndisponiblesTrierPar(mParam, colonne, trierPar, nom).observe(this, produits_indispos -> produitsIndisponiblesAdapter.setData(produits_indispos));
+        produitViewModel.getProduitsIndisponiblesTrierPar(mParam, colonne, trierPar, nom).observe(this,
+                produits_indispos ->  {
+                    produitsIndisponiblesAdapter.setData(produits_indispos);
+                    produitsIndisponiblesCount.setText("(" + produits_indispos.size() + ")");
+                });
         setRecyclerViewProduitsIndisponibles();
     }
 
@@ -439,6 +444,8 @@ public class PieceFragment extends Fragment
         RecyclerView.LayoutManager produitsIndisponiblesLayoutManager = new LinearLayoutManager(getActivity());
         produitsIndisponiblesRecyclerView.setLayoutManager(produitsIndisponiblesLayoutManager);
         produitsIndisponiblesRecyclerView.setNestedScrollingEnabled(false);
+
+        produitsIndisponiblesCount = view.findViewById(R.id.section_count2);
     }
 
 
@@ -479,7 +486,7 @@ public class PieceFragment extends Fragment
         String[] params = new String[]{produit.getId() + "", "-1"};
         transaction.replace(R.id.root_inventaire_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("toDetailProduct");
         transaction.commit();
     }
 
@@ -540,6 +547,11 @@ public class PieceFragment extends Fragment
     {
         InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
+    }
+
+    public String getNamePiece()
+    {
+        return getPiece(mPiece);
     }
 
     /**

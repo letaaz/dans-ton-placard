@@ -155,7 +155,7 @@ public class LDCEditFragment extends Fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_ldc_frame, AjouterProduitFragment.newInstance("DIVERS", idLdc));
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack("toAjoutProduitLDC");
             transaction.commit();
         });
     }
@@ -178,7 +178,7 @@ public class LDCEditFragment extends Fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(idLdc));
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack("fromEdittoDetailLDC");
             transaction.commit();
         });
     }

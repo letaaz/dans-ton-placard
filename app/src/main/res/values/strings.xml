@@ -39,7 +39,7 @@
     <string name="label_prix_ab">Prix :</string>
     <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
     <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
-    <string name="app_version_label">v1.0.0</string>
+    <string name="app_version_label">v1.2.0</string>
     <string name="app_logo_label">Logo application Dans Ton Placard</string>
     <string name="app_credit_label">Credits :</string>
     <string name="credits_content">- <a href="http://www.lunapik.fr">Lunapik</a>\n- <a href="http://www.icons8.com">Icons8</a> \n- <a href="http://www.flaticon.com">Flaticon</a></string>
@@ -67,7 +67,7 @@
     <string name="prix">Prix :</string>
     <string name="quantit">Quantité :</string>
     <string name="dlc">Dlc :</string>
-    <string name="app_intro_slide_1_title">Optmise tes courses !</string>
+    <string name="app_intro_slide_1_title">Simplifie tes courses !</string>
     <string name="app_intro_slide_1_desc">Avec Dans ton placard, gagne du temps, gère tes dépenses et dit stop aux oublis.</string>
     <string name="app_intro_slide_2_title">Étape 1 : Inventaire</string>
     <string name="app_intro_slide_2_desc">Ajoute et consulte les produits disponibles/indisponibles chez toi par pièce. C\'est simple et rapide.</string>

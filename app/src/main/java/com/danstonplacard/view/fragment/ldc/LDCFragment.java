@@ -11,6 +11,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this.getContext();
-        getActivity().setTitle(R.string.title_activity_main);
     }
 
     @Override
@@ -66,7 +66,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         super.onResume();
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
-
     }
 
     @Override
@@ -88,20 +87,13 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         RelativeLayout sectionLdc = view.findViewById(R.id.section_ldc_list);
         RelativeLayout sectionHistory = view.findViewById(R.id.section_history_list);
 
-
-
-
-
         // Set datas LDC
         setLDC(listeCoursesViewModel);
         // Set datas LDC Archivees
         setLDCArchivees(listeCoursesViewModel);
 
-
         setOnClickBtnCreateLDC();
         hideFloatingButtonWhenScrolling(nestedScrollViewLDC);
-
-
 
         // Hide/Show buttons
         setBehaviorToShowHideListOfShoppingLists(sectionLdc);
@@ -243,7 +235,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(ldcDefaut.getId()));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("toDetailLDC");
         transaction.commit();
     }
 
