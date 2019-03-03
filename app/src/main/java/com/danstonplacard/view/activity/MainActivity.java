@@ -1,10 +1,13 @@
 package com.danstonplacard.view.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,7 +21,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.danstonplacard.R;
 import com.danstonplacard.view.SampleFragmentPagerAdapter;
@@ -27,17 +33,21 @@ import com.danstonplacard.view.SampleFragmentPagerAdapter;
  * Main activity of the application - Contains the toolbar - the fragments - Navigation Drawer
  */
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private TabLayout tabLayout;
     private int tabPosition;
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private Activity thisActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.thisActivity = this;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,9 +68,9 @@ public class MainActivity extends AppCompatActivity
         /* Set the tabLayout of the application*/
         setTabLayout(viewPager);
 
-        startActivity(new Intent(this, AppIntroActivity.class));
+        //startActivity(new Intent(this, AppIntroActivity.class));
 
-/*        Thread t = new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 //  Initialize SharedPreferences
@@ -76,11 +86,7 @@ public class MainActivity extends AppCompatActivity
                     //  Launch app intro
                     final Intent i = new Intent(MainActivity.this, AppIntroActivity.class);
 
-                    runOnUiThread(new Runnable() {
-                        @Override public void run() {
-                            startActivity(i);
-                        }
-                    });
+                    runOnUiThread(() -> startActivity(i));
 
                     //  Make a new preferences editor
                     SharedPreferences.Editor e = getPrefs.edit();
@@ -92,14 +98,15 @@ public class MainActivity extends AppCompatActivity
                     e.apply();
                 }
             }
-        });*/
+        });
 
         // Start the thread
-        //  t.start();
+        t.start();
     }
 
     /**
      * Set the tabLayout
+     *
      * @param viewPager The ViewPager which contains the TabLayout
      */
     private void setTabLayout(ViewPager viewPager) {
@@ -109,21 +116,28 @@ public class MainActivity extends AppCompatActivity
         /* Set icons to TabLayout */
 //        int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_list, R.drawable.ic_recipe_book, R.drawable.ic_discount};
         int[] imageResId = {R.drawable.ic_fridge, R.drawable.ic_list};
-        for(int i = 0; i < imageResId.length; i++)
-        {
+        for (int i = 0; i < imageResId.length; i++) {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);
         }
 
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
-            public void onTabSelected(TabLayout.Tab tab){
+            public void onTabSelected(TabLayout.Tab tab) {
                 tabPosition = tab.getPosition();
+                if (tab.getPosition() == 1) {
+                    thisActivity.setTitle(R.string.title_activity_main);
+                    toolbar.getMenu().removeItem(R.id.action_piece_precedente);
+                    toolbar.getMenu().removeItem(R.id.action_piece_suivante);
+                }
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
@@ -149,19 +163,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if(tabPosition != 0 && this.getSupportFragmentManager().getBackStackEntryCount() == 0)
-        {
+        } else if (tabPosition != 0 && this.getSupportFragmentManager().getBackStackEntryCount() == 0) {
             tabLayout.getTabAt(0).select();
 
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
 
     /**
      * Method that manages the different actions to be performed by the items in the navigation drawer
+     *
      * @param item The menuItem selected by the user
      * @return
      */
@@ -203,6 +215,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Method used to open a web page in a browser
+     *
      * @param url the address link to open
      */
     private void openPage(String url) {
@@ -214,6 +227,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Get the link to Facebook Page of the Application - In the format compatible with the mobile application Facebook
+     *
      * @param context Context of the activity
      * @return valid address
      */
