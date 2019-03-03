@@ -11,8 +11,8 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.danstonplacard.database.model.ProduitDefaut;
 import com.danstonplacard.R;
+import com.danstonplacard.database.model.ProduitDefaut;
 
 import java.io.IOException;
 import java.io.InputStream;

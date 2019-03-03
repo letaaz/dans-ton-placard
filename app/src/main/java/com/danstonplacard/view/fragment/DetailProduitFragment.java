@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.converter.DateTypeConverter;
 import com.danstonplacard.database.dao.ListeCoursesDao;
@@ -31,7 +32,6 @@ import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.database.model.Rayon;
 import com.danstonplacard.viewmodel.DetailProduitViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.io.IOException;

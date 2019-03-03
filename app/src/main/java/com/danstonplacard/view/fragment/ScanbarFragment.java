@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.ScanMode;
-import com.danstonplacard.database.utils.FetchData;
 import com.danstonplacard.R;
+import com.danstonplacard.database.utils.FetchData;
 
 import java.util.concurrent.ExecutionException;
 

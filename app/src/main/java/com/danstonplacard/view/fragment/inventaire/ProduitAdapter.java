@@ -15,16 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
 import com.danstonplacard.database.model.ListeCourses;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.database.model.Rayon;
-import com.danstonplacard.R;
 
 import java.io.IOException;
 import java.io.InputStream;

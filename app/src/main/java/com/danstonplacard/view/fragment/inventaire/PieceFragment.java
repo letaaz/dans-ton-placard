@@ -35,7 +35,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;

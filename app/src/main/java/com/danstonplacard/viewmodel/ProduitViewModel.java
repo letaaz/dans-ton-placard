@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.db.SimpleSQLiteQuery;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ProduitDao;

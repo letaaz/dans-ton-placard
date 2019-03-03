@@ -11,13 +11,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
@@ -25,7 +25,6 @@ import com.danstonplacard.database.model.ListeCourses;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.viewmodel.ListeCoursesViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 
 import java.util.ArrayList;
 import java.util.List;

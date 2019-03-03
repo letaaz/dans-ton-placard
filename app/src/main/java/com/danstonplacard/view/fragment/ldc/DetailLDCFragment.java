@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
@@ -25,7 +26,6 @@ import com.danstonplacard.database.model.ListeCourses;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.viewmodel.ListeCoursesViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

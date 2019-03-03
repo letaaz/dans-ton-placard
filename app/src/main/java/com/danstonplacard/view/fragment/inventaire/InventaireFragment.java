@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.danstonplacard.PieceIcone;
-import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.R;
+import com.danstonplacard.database.model.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
