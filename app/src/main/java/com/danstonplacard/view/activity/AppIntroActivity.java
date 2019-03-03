@@ -1,6 +1,5 @@
 package com.danstonplacard.view.activity;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
 import com.danstonplacard.R;

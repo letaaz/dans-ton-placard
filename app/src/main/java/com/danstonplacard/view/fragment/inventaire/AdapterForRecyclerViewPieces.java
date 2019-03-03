@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.danstonplacard.PieceIcone;
-import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.R;
+import com.danstonplacard.database.model.Piece;
 
 import java.util.List;
 

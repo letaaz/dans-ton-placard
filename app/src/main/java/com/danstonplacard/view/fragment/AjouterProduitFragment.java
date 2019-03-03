@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
@@ -29,7 +30,6 @@ import com.danstonplacard.database.model.ProduitDefaut;
 import com.danstonplacard.database.model.Rayon;
 import com.danstonplacard.view.SearchItemArrayAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

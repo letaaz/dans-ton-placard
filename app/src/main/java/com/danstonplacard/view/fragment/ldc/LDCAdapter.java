@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
 import com.danstonplacard.database.model.ListeCourses;
-import com.danstonplacard.R;
 
 import java.util.ArrayList;
 import java.util.List;
