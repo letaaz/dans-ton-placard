@@ -71,7 +71,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.ldc_fragment, container, false);
-        
+
         // Get DAO
         listeCoursesDao = RoomDB.getDatabase(getContext()).listeCoursesDao();
         produitDao = RoomDB.getDatabase(getContext()).produitDao();
