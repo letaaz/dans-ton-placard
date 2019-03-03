@@ -39,7 +39,7 @@
     <string name="label_prix_ab">Prix :</string>
     <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
     <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
-    <string name="app_version_label">v1.2.0</string>
+    <string name="app_version_label">v1.1.0</string>
     <string name="app_logo_label">Logo application Dans Ton Placard</string>
     <string name="app_credit_label">Credits :</string>
     <string name="credits_content">- <a href="http://www.lunapik.fr">Lunapik</a>\n- <a href="http://www.icons8.com">Icons8</a> \n- <a href="http://www.flaticon.com">Flaticon</a></string>
