@@ -51,7 +51,7 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
                 // Start Fragment PieceFragment
                 FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
-                trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece));
+                trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece), "PieceFragment");
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 trans.addToBackStack("toPiece");
                 trans.commit();

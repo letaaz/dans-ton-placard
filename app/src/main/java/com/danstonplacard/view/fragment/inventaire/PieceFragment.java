@@ -297,9 +297,9 @@ public class PieceFragment extends Fragment
         getFragmentManager().popBackStack();
         FragmentManager manager = ((AppCompatActivity) mContext).getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
-        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(pieceToOpen));
+        trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(pieceToOpen), "PieceFragment");
         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        trans.addToBackStack(null);
+        trans.addToBackStack("changePiece");
         trans.commit();
     }
 
@@ -547,6 +547,11 @@ public class PieceFragment extends Fragment
     {
         InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getRootView().getWindowToken(), 0);
+    }
+
+    public String getNamePiece()
+    {
+        return getPiece(mPiece);
     }
 
     /**

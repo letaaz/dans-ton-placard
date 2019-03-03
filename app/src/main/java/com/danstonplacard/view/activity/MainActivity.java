@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,7 @@ import android.view.View;
 
 import com.danstonplacard.R;
 import com.danstonplacard.view.SampleFragmentPagerAdapter;
+import com.danstonplacard.view.fragment.inventaire.PieceFragment;
 
 /**
  * Main activity of the application - Contains the toolbar - the fragments - Navigation Drawer
@@ -130,8 +132,27 @@ public class MainActivity extends AppCompatActivity
                 tabPosition = tab.getPosition();
                 if (tab.getPosition() == 1) {
                     thisActivity.setTitle(R.string.title_activity_main);
-                    toolbar.getMenu().removeItem(R.id.action_piece_precedente);
-                    toolbar.getMenu().removeItem(R.id.action_piece_suivante);
+                    MenuItem itemArrowLeft = toolbar.getMenu().findItem(R.id.action_piece_precedente);
+                    MenuItem itemArrowRight = toolbar.getMenu().findItem(R.id.action_piece_suivante);
+
+                    if(itemArrowLeft != null){
+                        itemArrowLeft.setVisible(false);
+                    }
+                    if(itemArrowRight != null){ itemArrowRight.setVisible(false);}
+                }
+                if(tab.getPosition() == 0)
+                {
+                    PieceFragment pieceFragment = (PieceFragment) getSupportFragmentManager().findFragmentByTag("PieceFragment");
+                    if(pieceFragment != null && pieceFragment.isVisible())
+                    {
+                        thisActivity.setTitle(pieceFragment.getNamePiece());
+                        MenuItem itemArrowLeft = toolbar.getMenu().findItem(R.id.action_piece_precedente);
+                        MenuItem itemArrowRight = toolbar.getMenu().findItem(R.id.action_piece_suivante);
+                        if(itemArrowLeft != null){
+                            itemArrowLeft.setVisible(true);
+                        }
+                        if(itemArrowRight != null){ itemArrowRight.setVisible(true);}
+                    }
                 }
             }
 
@@ -145,6 +166,7 @@ public class MainActivity extends AppCompatActivity
 
                 if (fm.getBackStackEntryCount() > 0) {
                     if (tabPosition == 0) {
+                        fm.popBackStack("changePiece", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         fm.popBackStack("toPiece", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         fm.popBackStack("toDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     } else {
