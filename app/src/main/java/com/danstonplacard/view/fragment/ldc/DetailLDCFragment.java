@@ -80,6 +80,8 @@ public class DetailLDCFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_ldc_fragment, container, false);
 
+        getActivity().setTitle(R.string.title_activity_main);
+
         // Get ViewModel
         ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
@@ -191,7 +193,7 @@ public class DetailLDCFragment extends Fragment{
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(idLDC));
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack("toEditLDC");
             transaction.commit();
         });
     }

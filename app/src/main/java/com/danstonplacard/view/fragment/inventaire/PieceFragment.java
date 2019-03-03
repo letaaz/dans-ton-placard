@@ -486,7 +486,7 @@ public class PieceFragment extends Fragment
         String[] params = new String[]{produit.getId() + "", "-1"};
         transaction.replace(R.id.root_inventaire_frame, DetailProduitFragment.newInstance(params));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("toDetailProduct");
         transaction.commit();
     }
 

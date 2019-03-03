@@ -58,7 +58,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this.getContext();
-        getActivity().setTitle(R.string.title_activity_main);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.ldc_fragment, container, false);
-
+        
         // Get DAO
         listeCoursesDao = RoomDB.getDatabase(getContext()).listeCoursesDao();
         produitDao = RoomDB.getDatabase(getContext()).produitDao();
@@ -88,20 +87,13 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         RelativeLayout sectionLdc = view.findViewById(R.id.section_ldc_list);
         RelativeLayout sectionHistory = view.findViewById(R.id.section_history_list);
 
-
-
-
-
         // Set datas LDC
         setLDC(listeCoursesViewModel);
         // Set datas LDC Archivees
         setLDCArchivees(listeCoursesViewModel);
 
-
         setOnClickBtnCreateLDC();
         hideFloatingButtonWhenScrolling(nestedScrollViewLDC);
-
-
 
         // Hide/Show buttons
         setBehaviorToShowHideListOfShoppingLists(sectionLdc);
@@ -243,7 +235,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(ldcDefaut.getId()));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("toDetailLDC");
         transaction.commit();
     }
 

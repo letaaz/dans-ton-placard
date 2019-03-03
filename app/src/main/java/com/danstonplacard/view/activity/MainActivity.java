@@ -2,14 +2,13 @@ package com.danstonplacard.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -31,7 +30,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private TabLayout tabLayout;
-    private int tab_position;
+    private int tabPosition;
+    private Toolbar toolbar;
     private NavigationView navigationView;
 
     @Override
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity
         /* Set the tabLayout of the application*/
         setTabLayout(viewPager);
 
-//        startActivity(new Intent(this, AppIntroActivity.class));
+        startActivity(new Intent(this, AppIntroActivity.class));
 
-        Thread t = new Thread(new Runnable() {
+/*        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 //  Initialize SharedPreferences
@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity
                     e.apply();
                 }
             }
-        });
+        });*/
 
         // Start the thread
-        t.start();
+        //  t.start();
     }
 
     /**
@@ -116,19 +116,30 @@ public class MainActivity extends AppCompatActivity
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+
             @Override
             public void onTabSelected(TabLayout.Tab tab){
-                tab_position = tab.getPosition();
+                tabPosition = tab.getPosition();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                return;
-            }
+            public void onTabUnselected(TabLayout.Tab tab) { }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                return;
+                FragmentManager fm = getSupportFragmentManager();
+
+                if (fm.getBackStackEntryCount() > 0) {
+                    if (tabPosition == 0) {
+                        fm.popBackStack("toPiece", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        fm.popBackStack("toDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    } else {
+                        fm.popBackStack("toDetailLDC", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        fm.popBackStack("toAjoutProduitLDC", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        fm.popBackStack("toEditLDC", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        fm.popBackStack("fromEdittoDetailLDC", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
+                }
             }
         });
     }
@@ -139,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if(tab_position != 0 && this.getSupportFragmentManager().getBackStackEntryCount() == 0)
+        else if(tabPosition != 0 && this.getSupportFragmentManager().getBackStackEntryCount() == 0)
         {
             tabLayout.getTabAt(0).select();
 
