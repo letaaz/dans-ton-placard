@@ -229,7 +229,6 @@ public class PieceFragment extends Fragment
         });
 
         actv.setOnItemClickListener((parent, view1, position, id) -> {
-            Toast.makeText(mContext, adapter.getItem(position).getNom() + "", Toast.LENGTH_SHORT).show();
             ProduitDao produitDao = RoomDB.getDatabase(view1.getContext()).produitDao();
 
             // Check if product exists
