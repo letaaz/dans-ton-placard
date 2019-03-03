@@ -39,7 +39,7 @@
     <string name="label_prix_ab">Prix :</string>
     <string name="titre_listecourse_defaut">Nouvelle liste de course</string>
     <string name="label_titre_listecourse_auto_generee_automatique">Liste des produits manquants</string>
-    <string name="app_version_label">v1.0.0</string>
+    <string name="app_version_label">v1.1.0</string>
     <string name="app_logo_label">Logo application Dans Ton Placard</string>
     <string name="app_credit_label">Credits :</string>
     <string name="credits_content">- <a href="http://www.lunapik.fr">Lunapik</a>\n- <a href="http://www.icons8.com">Icons8</a> \n- <a href="http://www.flaticon.com">Flaticon</a></string>
@@ -58,6 +58,21 @@
     <string name="msgAlertDialogInternetConnection">Le scan nécessite une connexion internet active pour fonctionner, penser à l\'activer.</string>
     <string name="titleAlertDialogInternetConnection">Aucune connexion internet détectée</string>
     <string name="buttonAlertDialogInternetConnection">OK</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="nom_produit">Nom produit</string>
+    <string name="poids_produit">Poids</string>
+    <string name="prix_du_produit">Prix du produit</string>
+    <string name="devise_monnaie">€</string>
+    <string name="date_default">01/01/1970</string>
+    <string name="prix">Prix :</string>
+    <string name="quantit">Quantité :</string>
+    <string name="dlc">Dlc :</string>
+    <string name="app_intro_slide_1_title">Simplifie tes courses !</string>
+    <string name="app_intro_slide_1_desc">Avec Dans ton placard, gagne du temps, gère tes dépenses et dit stop aux oublis.</string>
+    <string name="app_intro_slide_2_title">Étape 1 : Inventaire</string>
+    <string name="app_intro_slide_2_desc">Ajoute et consulte les produits disponibles/indisponibles chez toi par pièce. C\'est simple et rapide.</string>
+    <string name="app_intro_slide_3_title">Étape 2 : Listes de courses</string>
+    <string name="app_intro_slide_3_desc">Crée ta propre liste de course ou utilise la liste des produits manquants mise à jour automatiquement en fonction de ton inventaire !</string>
 
     <string-array name="pieces">
         <item name="cuisine">Cuisine</item>
@@ -67,6 +82,16 @@
         <item name="chambre">Chambre</item>
         <item name="garage">Garage</item>
         <item name="divers">Divers</item>
+    </string-array>
+
+    <string-array name="pieces_format">
+        <item name="CUISINE">CUISINE</item>
+        <item name="SALLE_DE_BAIN">SALLE_DE_BAIN</item>
+        <item name="SALLE_A_MANGER">SALLE_A_MANGER</item>
+        <item name="CAVE">CAVE</item>
+        <item name="CHAMBRE">CHAMBRE</item>
+        <item name="GARAGE">GARAGE</item>
+        <item name="DIVERS">DIVERS</item>
     </string-array>
 
     <string-array name="rayons">

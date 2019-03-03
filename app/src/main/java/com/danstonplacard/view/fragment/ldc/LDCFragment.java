@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
@@ -24,7 +26,6 @@ import com.danstonplacard.database.model.ListeCourses;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.viewmodel.ListeCoursesViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +37,16 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
 
     public static String ARGS = "ARGUMENTS_LDC_FRAG";
     public static Integer NEW_LDC = 0x999999;
+
     private Context mContext;
     private RecyclerView ldcDisponiblesRecyclerView, historyLdcRecyclerView;
     private ImageView btn_hide_show_history, btn_hide_show_ldc;
+    private TextView historyCount, ldcListCount;
     private FloatingActionButton btn_create_ldc_fab;
     private ListeCoursesDao listeCoursesDao = null;
     private ProduitDao produitDao = null;
     private ListeCoursesViewModel listeCoursesViewModel;
     private View view;
-
 
     public static Fragment newInstance(String params) {
         Bundle args = new Bundle();
@@ -65,7 +67,6 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         super.onResume();
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
         firebaseAnalytics.setCurrentScreen(this.getActivity(), this.getClass().getSimpleName(), this.getClass().getSimpleName());
-
     }
 
     @Override
@@ -87,20 +88,13 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         RelativeLayout sectionLdc = view.findViewById(R.id.section_ldc_list);
         RelativeLayout sectionHistory = view.findViewById(R.id.section_history_list);
 
-
-
-
-
         // Set datas LDC
         setLDC(listeCoursesViewModel);
         // Set datas LDC Archivees
         setLDCArchivees(listeCoursesViewModel);
 
-
         setOnClickBtnCreateLDC();
         hideFloatingButtonWhenScrolling(nestedScrollViewLDC);
-
-
 
         // Hide/Show buttons
         setBehaviorToShowHideListOfShoppingLists(sectionLdc);
@@ -182,7 +176,11 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
     private void setLDCArchivees(ListeCoursesViewModel listeCoursesViewModel) {
         // RecyclerView hist LDC
         LDCAdapter historyAdapter = new LDCAdapter(mContext, this);
-        listeCoursesViewModel.getListesCoursesArchivees().observe(this, ldc_archivees -> historyAdapter.setData(ldc_archivees));
+        listeCoursesViewModel.getListesCoursesArchivees().observe(this,
+                ldc_archivees -> {
+            historyAdapter.setData(ldc_archivees);
+            historyCount.setText("(" +  ldc_archivees.size() + ")");
+        });
 
         setRecyclerForLDCArchivees(historyAdapter);
 
@@ -201,6 +199,8 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         RecyclerView.LayoutManager historyLayoutManager = new LinearLayoutManager(getActivity());
         historyLdcRecyclerView.setLayoutManager(historyLayoutManager);
         historyLdcRecyclerView.setNestedScrollingEnabled(false);
+
+        historyCount = view.findViewById(R.id.history_count);
     }
 
     /**
@@ -209,7 +209,11 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
      */
     private void setLDC(ListeCoursesViewModel listeCoursesViewModel) {
         LDCAdapter ldcAdapter = new LDCAdapter(mContext, this);
-        listeCoursesViewModel.getListesCoursesDisponibles().observe(this, ldc_disponibles -> ldcAdapter.setData(ldc_disponibles));
+        listeCoursesViewModel.getListesCoursesDisponibles().observe(this,
+                ldc_disponibles -> {
+            ldcAdapter.setData(ldc_disponibles);
+            ldcListCount.setText("(" + ldc_disponibles.size() + ")");
+                });
 
         setRecyclerForLDC(ldcAdapter);
     }
@@ -228,6 +232,8 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         RecyclerView.LayoutManager ldcLayoutManager = new LinearLayoutManager(getActivity());
         ldcDisponiblesRecyclerView.setLayoutManager(ldcLayoutManager);
         ldcDisponiblesRecyclerView.setNestedScrollingEnabled(false);
+
+        ldcListCount = view.findViewById(R.id.ldc_list_count);
     }
 
     @Override
@@ -242,7 +248,7 @@ public class LDCFragment extends Fragment implements LDCAdapter.OnItemClickListe
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(ldcDefaut.getId()));
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("toDetailLDC");
         transaction.commit();
     }
 

@@ -33,12 +33,18 @@
 
                 <TextView
                     style="@style/ListLabelStyle"
+                    android:id="@+id/ldc_list_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignBaseline="@id/btn_expand_ldc_list"
-                    android:duplicateParentState="true"
-                    android:text="@string/ldc_disponibles_label"
-                    android:textSize="17sp" />
+                    android:layout_height="wrap_content"
+                    android:text="@string/ldc_disponibles_label" />
+
+                <TextView
+                    android:id="@+id/ldc_list_count"
+                    style="@style/ListCountStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/ldc_list_label"
+                    android:text="(3)" />
 
                 <ImageView
                     android:id="@+id/btn_expand_ldc_list"
@@ -93,14 +99,18 @@
 
                 <TextView
                     style="@style/ListLabelStyle"
+                    android:id="@+id/history_label"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignBaseline="@id/btn_expand_history_list"
-                    android:layout_marginEnd="-8dp"
-                    android:layout_toStartOf="@+id/btn_expand_history_list"
-                    android:duplicateParentState="true"
-                    android:text="@string/history_ldc_label"
-                    android:textSize="17sp" />
+                    android:text="@string/history_ldc_label" />
+
+                <TextView
+                    android:id="@+id/history_count"
+                    style="@style/ListCountStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/history_label"
+                    android:text="(3)" />
 
                 <ImageView
                     android:id="@+id/btn_expand_history_list"

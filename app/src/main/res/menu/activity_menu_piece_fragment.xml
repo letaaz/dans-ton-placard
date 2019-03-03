@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_piece_precedente"
+        android:icon="@drawable/ic_left_arrow_white"
+        android:title="Piece précédente"
+        app:showAsAction="always"></item>
+
+    <item android:id="@+id/action_piece_suivante"
+        android:icon="@drawable/ic_right_arrow_white"
+        android:title="Pièce suivante"
+        app:showAsAction="always"></item>
+</menu>

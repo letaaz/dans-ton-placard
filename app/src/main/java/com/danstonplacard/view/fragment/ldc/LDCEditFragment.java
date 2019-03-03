@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,12 @@ public class LDCEditFragment extends Fragment
         TextView ldcEditDefaultContent = view.findViewById(R.id.ldc_edit_default_content);
         ldcEditProductRecyclerView = view.findViewById(R.id.ldc_product_edit_recyclerview);
 
+        if(idLdc == 1) {
+            ldcNameEdit.setInputType(InputType.TYPE_NULL);
+            ldcNameEdit.setBackgroundColor(getResources().getColor(R.color.transparent_background));
+            ldcEditAddProduct.hide();
+        }
+
 
         if (idLdc == LDCFragment.NEW_LDC) {
             listeCourse = new ListeCourses("");
@@ -148,7 +155,7 @@ public class LDCEditFragment extends Fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_ldc_frame, AjouterProduitFragment.newInstance("DIVERS", idLdc));
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack("toAjoutProduitLDC");
             transaction.commit();
         });
     }
@@ -171,7 +178,7 @@ public class LDCEditFragment extends Fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_ldc_frame, DetailLDCFragment.newInstance(idLdc));
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack("fromEdittoDetailLDC");
             transaction.commit();
         });
     }

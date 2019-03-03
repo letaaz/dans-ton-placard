@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.RoomDB;
 import com.danstonplacard.database.dao.ListeCoursesDao;
 import com.danstonplacard.database.dao.ProduitDao;
@@ -25,7 +26,6 @@ import com.danstonplacard.database.model.ListeCourses;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.viewmodel.ListeCoursesViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.danstonplacard.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -80,6 +80,8 @@ public class DetailLDCFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_ldc_fragment, container, false);
 
+        getActivity().setTitle(R.string.title_activity_main);
+
         // Get ViewModel
         ListeCoursesViewModel listeCoursesViewModel = ViewModelProviders.of(this).get(ListeCoursesViewModel.class);
 
@@ -108,9 +110,9 @@ public class DetailLDCFragment extends Fragment{
         setDatasProduitsAPrendre(view, listeCoursesViewModel, listeCourses);
 
         // If "Liste des produits manquants" - generated automatically - Its can't be edited
-        if(idLDC == 1){
-            btnEditLdc.setVisibility(View.INVISIBLE);
-        }
+//        if(idLDC == 1){
+//            btnEditLdc.setVisibility(View.INVISIBLE);
+//        }
 
         // If shopping list archived - can't be edited and archived
         if(listeCourses.getEtat() == 1)
@@ -191,7 +193,7 @@ public class DetailLDCFragment extends Fragment{
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.root_ldc_frame, LDCEditFragment.newInstance(idLDC));
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack("toEditLDC");
             transaction.commit();
         });
     }
@@ -220,7 +222,7 @@ public class DetailLDCFragment extends Fragment{
                 listeCoursesDao.insert(li);
 
                 for(Produit produit : li.getProduitsPris()) {
-                    produitDao.updateQuantityById(produit.getId(), 1);
+                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
                 }
             }
             else { // Update LDC and Product in inventory

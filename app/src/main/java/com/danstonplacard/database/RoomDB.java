@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
+import com.danstonplacard.R;
 import com.danstonplacard.database.converter.DateTypeConverter;
 import com.danstonplacard.database.converter.IngredientTypeConverter;
 import com.danstonplacard.database.converter.PieceTypeConverter;
@@ -20,7 +21,6 @@ import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.database.model.Produit;
 import com.danstonplacard.database.model.Rayon;
 import com.danstonplacard.database.model.Recette;
-import com.danstonplacard.R;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background">
@@ -24,109 +23,106 @@
 
 
                 <TextView
-                    android:id="@+id/piece_name_piecefragment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="Pièce"
-                    android:textAlignment="textStart"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic"
-                    android:typeface="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/sort_by_btn"
-                    android:layout_width="90dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/rounded_corner_sort"
                     android:clickable="true"
                     android:elevation="2dp"
                     android:focusable="true"
+                    android:fontFamily="sans-serif-condensed"
                     android:paddingLeft="15dp"
                     android:paddingTop="8dp"
                     android:paddingRight="15dp"
                     android:paddingBottom="8dp"
-                    android:text="Trier par"
+                    android:text="Trier"
                     android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.96"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!--<TextView-->
-                    <!--android:id="@+id/empty"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentEnd="true"-->
+                <!--<SearchView-->
+                    <!--android:id="@+id/searchViewPieceFragment"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="0dp"-->
                     <!--android:layout_marginStart="8dp"-->
                     <!--android:layout_marginTop="8dp"-->
                     <!--android:layout_marginEnd="8dp"-->
                     <!--android:layout_marginBottom="4dp"-->
-                    <!--android:background="@drawable/rounded_corner_sort"-->
-                    <!--android:clickable="true"-->
+                    <!--android:background="@drawable/corners"-->
                     <!--android:elevation="2dp"-->
-                    <!--android:focusable="true"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingTop="8dp"-->
-                    <!--android:paddingRight="15dp"-->
-                    <!--android:paddingBottom="8dp"-->
-                    <!--android:text="Trier par"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textAllCaps="true"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="12sp"-->
-                    <!--android:visibility="gone"-->
                     <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toStartOf="@+id/empty2"-->
-                    <!--app:layout_constraintStart_toEndOf="@+id/sort_by_btn"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+                    <!--app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/piece_name_piecefragment" />-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/empty2"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="32dp"-->
-                    <!--android:layout_alignParentEnd="true"-->
-                    <!--android:layout_marginStart="8dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:layout_marginEnd="8dp"-->
-                    <!--android:layout_marginBottom="4dp"-->
-                    <!--android:background="@drawable/rounded_corner_sort"-->
-                    <!--android:clickable="true"-->
-                    <!--android:elevation="2dp"-->
-                    <!--android:focusable="true"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingTop="8dp"-->
-                    <!--android:paddingRight="15dp"-->
-                    <!--android:paddingBottom="8dp"-->
-                    <!--android:text="Trier par"-->
-                    <!--android:textAlignment="center"-->
-                    <!--android:textAllCaps="true"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="12sp"-->
-                    <!--android:visibility="gone"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toEndOf="@+id/empty"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/corners"
+                    android:elevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/sort_by_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_searching_magnifying_glass" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="8dp"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="Chercher un produit..."
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/close_actv"
+                        app:layout_constraintStart_toEndOf="@+id/imageView7"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/close_actv"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/autoCompleteTextView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/close" />
+
+                </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>
 
@@ -153,12 +149,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/section_show_all_button_dispo"
                     android:padding="0dp"
-                    android:paddingStart="3dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:text="Produits disponibles"
                     android:textSize="17sp" />
 
+                <TextView
+                    android:id="@+id/section_count"
+                    style="@style/ListCountStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/section_label"
+                    android:text="(3)" />
 
                 <ImageView
                     android:id="@+id/section_show_all_button_dispo"
@@ -169,8 +169,6 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:src="@drawable/drag_list_down_dark" />
-
-
 
 
             </RelativeLayout>
@@ -222,12 +220,15 @@
                     style="@style/ListLabelStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/section_show_all_button_indispo"
-                    android:paddingStart="3dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="Produits indisponibles"
-                    android:textSize="17sp" />
+                    android:text="Produits indisponibles" />
+
+                <TextView
+                    android:id="@+id/section_count2"
+                    style="@style/ListCountStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/section_label2"
+                    android:text="(3)" />
 
                 <ImageView
                     android:id="@+id/section_show_all_button_indispo"
@@ -275,7 +276,7 @@
         android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_plus_white"
+        android:src="@drawable/ic_barcode_sans_contours"
         android:visibility="visible"
         app:backgroundTint="@color/colorTabLayoutBackground"
         app:backgroundTintMode="src_over"

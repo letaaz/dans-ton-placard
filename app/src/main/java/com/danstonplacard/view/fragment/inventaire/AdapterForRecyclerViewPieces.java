@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.danstonplacard.PieceIcone;
-import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.R;
+import com.danstonplacard.database.model.Piece;
 
 import java.util.List;
 
@@ -51,9 +51,9 @@ public class AdapterForRecyclerViewPieces extends RecyclerView.Adapter<AdapterFo
                 // Start Fragment PieceFragment
                 FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
-                trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece));
+                trans.replace(R.id.root_inventaire_frame, PieceFragment.newInstance(piece), "PieceFragment");
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                trans.addToBackStack(null);
+                trans.addToBackStack("toPiece");
                 trans.commit();
 
             }

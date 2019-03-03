@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.danstonplacard.PieceIcone;
-import com.danstonplacard.database.model.Piece;
 import com.danstonplacard.R;
+import com.danstonplacard.database.model.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,7 @@ public class InventaireFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.inventaire_fragment, container, false);
         this.setRecyclerViewPiece(view);
+        getActivity().setTitle(R.string.title_activity_main);
         return view;
     }
 

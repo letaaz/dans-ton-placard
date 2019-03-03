@@ -1,7 +1,6 @@
 package com.danstonplacard.database.converter;
 
 import android.arch.persistence.room.TypeConverter;
-import android.util.Log;
 
 import com.danstonplacard.database.model.Produit;
 import com.google.gson.Gson;

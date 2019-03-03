@@ -6,6 +6,8 @@
     android:layout_marginBottom="45dp"
     android:background="@color/default_background">
 
+
+
     <RelativeLayout
         android:id="@+id/ldc_label"
         android:layout_width="match_parent"
@@ -20,40 +22,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/ldc_name_detail"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/topLdcDetail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Liste de courses de produits manquants"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
-        <ImageButton
-            android:id="@+id/btn_edit_ldc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:padding="2dp"
-            android:layout_toStartOf="@id/btn_archive_ldc"
-            android:background="@color/transparent_background"
-            android:src="@drawable/ldc_edit_icon" />
+            <TextView
+                android:id="@+id/ldc_name_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@+id/btn_edit_ldc"
+                android:text="Liste de courses de produits manquants"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_edit_ldc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_archive_ldc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:padding="2dp"
-            android:background="@color/transparent_background"
-            android:src="@drawable/ldc_archived"
-            android:text="@string/archiver_ldc" />
+            <ImageButton
+                android:id="@+id/btn_edit_ldc"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@id/btn_archive_ldc"
+                android:background="@color/transparent_background"
+                android:padding="2dp"
+                android:src="@drawable/ldc_edit_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_archive_ldc"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_archive_ldc"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent_background"
+                android:padding="2dp"
+                android:src="@drawable/ldc_archived"
+                android:text="@string/archiver_ldc"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
     </RelativeLayout>
 
 
