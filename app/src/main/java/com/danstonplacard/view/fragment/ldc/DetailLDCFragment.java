@@ -222,8 +222,12 @@ public class DetailLDCFragment extends Fragment{
                 listeCoursesDao.insert(li);
 
                 for(Produit produit : li.getProduitsPris()) {
-                    produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
-                }
+                    if(produit.getQuantite() != 0) {
+                        produitDao.updateQuantityById(produit.getId(), produit.getQuantite());
+                    }
+                    else {
+                        produitDao.updateQuantityById(produit.getId(), 1);
+                    }                }
             }
             else { // Update LDC and Product in inventory
                 ListeCourses li = listeCoursesDao.getListeCoursesById(listeCourses.getId());
